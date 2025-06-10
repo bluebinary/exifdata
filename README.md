@@ -122,12 +122,14 @@ The code sample below illustrates the use of the EXIFData library to read metada
 ```python
 import exifdata
 
+# Open an image file from disk and attempt to parse its embedded metadata
 models = exifdata.Models.open("/path/to/image-file.jpg")
 
+# Print out the existing metadata model assigned fields and values
 for model in models:
     print(model.name)
     for field, value in model.items(all=False):
-      print(" -> %s => %s" % (field, value))
+        print(" -> %s => %s" % (field, value))
 ```
 
 ### Example Use: Writing Metadata
@@ -162,6 +164,7 @@ image = pyvips.Image.new_from_file("/path/to/image-file.tiff")
 # Attempt to decode the metadata models from the provided image using EXIFData
 models = exifdata.Models.load(image)
 
+# Print out the existing metadata model assigned fields and values
 for model in models:
     print(model.name)
     for field, value in model.items(all=False):
@@ -671,11 +674,34 @@ the most common, these standards are not supported by every image file format.
 
 | File Format | EXIF Read | EXIF Write | IPTC Read | IPTC Write | XMP Read | XMP Write |
 | ----------- | :-------: | :--------: | :-------: | :--------: | :------: | :-------: |
-| JPEG        | Yes       | Yes        | Yes       | Yes        | Yes      | Yes       |
-| TIFF        | Yes       | Yes        | Yes       | Yes        | Yes      | Yes       |
-| PyramidTIFF | Yes       | Yes        | Yes       | Yes        | Yes      | Yes       |
-| PNG         | -         | -          | -         | -          | -        | -         |
-| HEIF        | -         | -          | -         | -          | -        | -         |
+| JPEG        | Yes       | Yes        | Yes       | Yes        | No*      | Yes       |
+| TIFF        | Yes       | Yes        | Yes       | Yes        | No*      | Yes       |
+| PyramidTIFF | Yes       | Yes        | Yes       | Yes        | No*      | Yes       |
+| PNG         | *         | *          | *         | *          | *        | *         |
+| HEIF        | *         | *          | *         | *          | *        | *         |
+
+* XMP read capability is currently in development and will be added in a future release.
+* Support for other image file formats is currently in development.
+
+### Disclaimer
+
+While every effort has been made to ensure that the library works reliably with embedded
+image metadata, you must ensure that all files are backed up before using the EXIFData
+library with such files especially as the library is still in early development.
+
+Furthermore, the library may not be able to read nor preserve all metadata field values
+from an image file, especially if manufacturer specific or custom metadata model values
+are present, so it is possible that some loss of embedded metadata could occur.
+
+Use of the library is entirely at your own risk and the authors bear no responsibility
+for losses of any kind. By using the software you assume all such risk and liability.
+
+THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+OR OTHER DEALINGS IN THE SOFTWARE.
 
 ### Credits & References
 
