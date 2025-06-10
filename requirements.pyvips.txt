@@ -1,0 +1,2 @@
+# EXIFData Library: Optional PyVIPS Runtime Dependencies
+pyvips

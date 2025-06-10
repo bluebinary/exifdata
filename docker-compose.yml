@@ -1,0 +1,29 @@
+x-volumes: &volumes
+  - ./README.md:/README.md
+  - ./source/exifdata:/source/exifdata
+  - ./source/exifdata:/usr/local/lib/python/site-packages/exifdata
+  - ./tests:/tests
+
+services:
+
+  black:
+    container_name: exifdata-black
+    build:
+      dockerfile: ./Dockerfile
+      context: ./
+    image: exifdata-black
+    environment:
+      - SERVICE=black
+    volumes:
+      *volumes
+
+  tests:
+    container_name: exifdata-tests
+    build:
+      dockerfile: ./Dockerfile
+      context: ./
+    image: exifdata-tests
+    environment:
+      - SERVICE=tests
+    volumes:
+      *volumes

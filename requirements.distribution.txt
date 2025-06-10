@@ -1,0 +1,4 @@
+# EXIFData Library: Build & Deployment Dependencies
+build
+twine
+setup

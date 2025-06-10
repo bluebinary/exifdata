@@ -1,0 +1,77 @@
+[project]
+name = "exifdata"
+description = "Streamlined EXIF, IPTC and XMP image metadata creation and parsing."
+readme = {file = "README.md", content-type = "text/markdown"}
+keywords = ["image", "metadata", "exif", "iptc", "xmp"]
+authors = [{name = "Daniel Sissman"}]
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+requires-python = ">=3.10"
+dynamic = [
+  "version",
+  "dependencies",
+  "optional-dependencies",
+]
+
+[project.urls]
+documentation = "https://github.com/bluebinary/exifdata/blob/main/README.md"
+changelog = "https://github.com/bluebinary/exifdata/blob/main/CHANGELOG.md"
+repository = "https://github.com/bluebinary/exifdata"
+issues = "https://github.com/bluebinary/exifdata/issues"
+homepage = "https://github.com/bluebinary/exifdata"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+version = {file = "source/exifdata/version.txt"}
+dependencies = {file = "requirements.txt"}
+
+[tool.setuptools.dynamic.optional-dependencies]
+development = {file = "requirements.development.txt"}
+distribution = {file = "requirements.distribution.txt"}
+pyvips = {file = "requirements.pyvips.txt"}
+
+[tool.setuptools]
+platforms = ["any"]
+zip-safe = true
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["source"]
+exclude = ["resources*", "*#*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.json", "*.tsv", "*.csv", "*.xml", "*.jpg", "*.jpeg", "*.png", "*.tiff", "*.tif"]
+source = ["*.json", "*.tsv", "*.csv", "*.xml"]
+tests = ["tests/data/*/*.jpg", "tests/data/*/*.tif*", "tests/data/examples/xmp/*.xml"]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["*#*", "#*", "@*"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests"
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # The following are specific to Black, you probably don't want those.
+  | blib2to3
+  | tests/data
+  | profiling
+)/
+'''

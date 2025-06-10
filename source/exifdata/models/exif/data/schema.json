@@ -1,0 +1,1388 @@
+{
+  "exif": {
+    "name": "exif",
+    "label": "EXIF namespace",
+    "unwrap": true,
+    "fields": {
+      "exif:EXIFIFDPointer": {
+        "name": "EXIFIFDPointer",
+        "label": null,
+        "definition": "EXIF IDF pointer",
+        "section": "8769.H",
+        "type": "Long",
+        "count": 1,
+        "tagid": 34665,
+        "default": null
+      },
+      "exif:GPSInfoIFDPointer": {
+        "name": "GPSInfoIFDPointer",
+        "label": null,
+        "definition": "GPS Info IDF pointer",
+        "section": "8825.H",
+        "type": "Long",
+        "count": 1,
+        "tagid": 34853,
+        "default": null
+      },
+      "exif:InteroperabilityIFDPointer": {
+        "name": "InteroperabilityIFDPointer",
+        "label": null,
+        "definition": "Interoperability IDF pointer",
+        "section": "A005.H",
+        "type": "Long",
+        "count": 1,
+        "tagid": 40965,
+        "default": null
+      },
+      "exif:ImageWidth": {
+        "name": "ImageWidth",
+        "label": null,
+        "definition": "Image width",
+        "section": null,
+        "type": [
+          "Short",
+          "Long"
+        ],
+        "count": 1,
+        "tagid": 256,
+        "default": null
+      },
+      "exif:ImageHeight": {
+        "name": "ImageHeight",
+        "label": null,
+        "definition": "Image height",
+        "section": null,
+        "type": [
+          "Short",
+          "Long"
+        ],
+        "count": 1,
+        "tagid": 257,
+        "default": null
+      },
+      "exif:BitsPerSample": {
+        "name": "BitsPerSample",
+        "label": null,
+        "definition": "Number of bits per component",
+        "section": null,
+        "type": "Short",
+        "count": 3,
+        "tagid": 258,
+        "default": null
+      },
+      "exif:Compression": {
+        "name": "Compression",
+        "label": null,
+        "definition": "Compression scheme",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 259,
+        "default": null
+      },
+      "exif:PhotometricInterpretation": {
+        "name": "PhotometricInterpretation",
+        "label": null,
+        "definition": "Pixel composition",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 262,
+        "default": null
+      },
+      "exif:Orientation": {
+        "name": "Orientation",
+        "label": null,
+        "definition": "Orientation of image",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 274,
+        "default": null
+      },
+      "exif:SamplesPerPixel": {
+        "name": "SamplesPerPixel",
+        "label": null,
+        "definition": "Number of components",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 277,
+        "default": null
+      },
+      "exif:PlanarConfiguration": {
+        "name": "PlanarConfiguration",
+        "label": null,
+        "definition": "Image data arrangement",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 284,
+        "default": null
+      },
+      "exif:YCbCrSubSampling": {
+        "name": "YCbCrSubSampling",
+        "label": null,
+        "definition": "Subsampling ratio of Y to C",
+        "section": null,
+        "type": "Short",
+        "count": 2,
+        "tagid": 530,
+        "default": null
+      },
+      "exif:YCbCrPositioning": {
+        "name": "YCbCrPositioning",
+        "label": null,
+        "definition": "Y and C positioning",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 531,
+        "default": null
+      },
+      "exif:XResolution": {
+        "name": "XResolution",
+        "label": null,
+        "definition": "Image resolution in width direction",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 282,
+        "default": null
+      },
+      "exif:YResolution": {
+        "name": "YResolution",
+        "label": null,
+        "definition": "Image resolution in height direction",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 283,
+        "default": null
+      },
+      "exif:ResolutionUnit": {
+        "name": "ResolutionUnit",
+        "label": null,
+        "definition": "Unit of X and Y resolution",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 296,
+        "default": null
+      },
+      "exif:PageNumber": {
+        "name": "PageNumber",
+        "label": null,
+        "definition": "The page number of the page from which this image was scanned",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 297,
+        "default": null
+      },
+      "exif:StripOffsets": {
+        "name": "StripOffsets",
+        "label": null,
+        "definition": "Image data location",
+        "section": null,
+        "type": [
+          "Short",
+          "Long"
+        ],
+        "count": -1,
+        "tagid": 273,
+        "default": null
+      },
+      "exif:RowsPerStrip": {
+        "name": "RowsPerStrip",
+        "label": null,
+        "definition": "Number of rows per strip",
+        "section": null,
+        "type": [
+          "Short",
+          "Long"
+        ],
+        "count": 1,
+        "tagid": 278,
+        "default": null
+      },
+      "exif:StripByteCounts": {
+        "name": "StripByteCounts",
+        "label": null,
+        "definition": "Bytes per compressed strip",
+        "section": null,
+        "type": [
+          "Short",
+          "Long"
+        ],
+        "count": -1,
+        "tagid": 279,
+        "default": null
+      },
+      "exif:JPEGInterchangeFormat": {
+        "name": "JPEGInterchangeFormat",
+        "label": null,
+        "definition": "Offset to JPEG SOI",
+        "section": null,
+        "type": "Long",
+        "count": 1,
+        "tagid": 513,
+        "default": null
+      },
+      "exif:JPEGInterchangeFormatLength": {
+        "name": "JPEGInterchangeFormatLength",
+        "label": null,
+        "definition": "Bytes of JPEG data",
+        "section": null,
+        "type": "Long",
+        "count": 1,
+        "tagid": 514,
+        "default": null
+      },
+      "exif:TransferFunction": {
+        "name": "TransferFunction",
+        "label": null,
+        "definition": "Transfer function",
+        "section": null,
+        "type": "Short",
+        "count": -2,
+        "tagid": 301,
+        "default": null
+      },
+      "exif:WhitePoint": {
+        "name": "WhitePoint",
+        "label": null,
+        "definition": "White point chromaticity",
+        "section": null,
+        "type": "Rational",
+        "count": 2,
+        "tagid": 318,
+        "default": null
+      },
+      "exif:PrimaryChromaticities": {
+        "name": "PrimaryChromaticities",
+        "label": null,
+        "definition": "Chromaticities of primaries",
+        "section": null,
+        "type": "Rational",
+        "count": 6,
+        "tagid": 319,
+        "default": null
+      },
+      "exif:YCbCrCoefficients": {
+        "name": "YCbCrCoefficients",
+        "label": null,
+        "definition": "Color space transformation matrix coefficients",
+        "section": null,
+        "type": "Rational",
+        "count": 3,
+        "tagid": 529,
+        "default": null
+      },
+      "exif:ReferenceBlackWhite": {
+        "name": "ReferenceBlackWhite",
+        "label": null,
+        "definition": "Pair of black and white reference values",
+        "section": null,
+        "type": "Rational",
+        "count": 6,
+        "tagid": 532,
+        "default": null
+      },
+      "exif:DateTime": {
+        "name": "DateTime",
+        "label": null,
+        "definition": "File change date and time",
+        "section": null,
+        "type": "ASCII",
+        "count": 20,
+        "tagid": 306,
+        "default": null
+      },
+      "exif:ImageDescription": {
+        "name": "ImageDescription",
+        "pseudonym": {
+          "exifdata": "dc:Title"
+        },
+        "label": null,
+        "definition": "Image title",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 270,
+        "default": null,
+        "alias": "Description"
+      },
+      "exif:Make": {
+        "name": "Make",
+        "label": null,
+        "definition": "Image input equipment manufacturer",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 271,
+        "default": null
+      },
+      "exif:Model": {
+        "name": "Model",
+        "label": null,
+        "definition": "Image input equipment model",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 272,
+        "default": null
+      },
+      "exif:Software": {
+        "name": "Software",
+        "label": null,
+        "definition": "Software used",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 305,
+        "default": null
+      },
+      "exif:Artist": {
+        "name": "Artist",
+        "label": null,
+        "definition": "Person who created the image",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 315,
+        "default": null
+      },
+      "exif:Copyright": {
+        "name": "Copyright",
+        "label": null,
+        "definition": "Copyright holder",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 33432,
+        "default": null
+      },
+      "exif:EXIFVersion": {
+        "name": "EXIFVersion",
+        "label": null,
+        "definition": "EXIF version",
+        "section": null,
+        "type": "Undefined",
+        "count": 4,
+        "tagid": 36864,
+        "default": null
+      },
+      "exif:FlashpixVersion": {
+        "name": "FlashpixVersion",
+        "label": null,
+        "definition": "Supported Flashpix version",
+        "section": null,
+        "type": "Undefined",
+        "count": 4,
+        "tagid": 40960,
+        "default": null
+      },
+      "exif:ColorSpace": {
+        "name": "ColorSpace",
+        "label": null,
+        "definition": "Color space information",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 40961,
+        "default": null
+      },
+      "exif:Gamma": {
+        "name": "Gamma",
+        "label": null,
+        "definition": "Gamma",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 42240,
+        "default": null
+      },
+      "exif:ComponentsConfiguration": {
+        "name": "ComponentsConfiguration",
+        "label": null,
+        "definition": "Meaning of each component",
+        "section": null,
+        "type": "Undefined",
+        "count": 4,
+        "tagid": 37121,
+        "default": null
+      },
+      "exif:CompressedBitsPerPixel": {
+        "name": "CompressedBitsPerPixel",
+        "label": null,
+        "definition": "Image compression mode",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 37122,
+        "default": null
+      },
+      "exif:PixelXDimension": {
+        "name": "PixelXDimension",
+        "label": null,
+        "definition": "Valid image width",
+        "section": null,
+        "type": [
+          "Short",
+          "Long"
+        ],
+        "count": 1,
+        "tagid": 40962,
+        "default": null
+      },
+      "exif:PixelYDimension": {
+        "name": "PixelYDimension",
+        "label": null,
+        "definition": "Valid image height",
+        "section": null,
+        "type": [
+          "Short",
+          "Long"
+        ],
+        "count": 1,
+        "tagid": 40963,
+        "default": null
+      },
+      "exif:MakerNote": {
+        "name": "MakerNote",
+        "label": null,
+        "definition": "Manufacturer notes",
+        "section": null,
+        "type": "Undefined",
+        "count": -3,
+        "tagid": 37500,
+        "default": null
+      },
+      "exif:UserComment": {
+        "name": "UserComment",
+        "label": null,
+        "definition": "User comments",
+        "section": null,
+        "type": "Undefined",
+        "count": -3,
+        "tagid": 37510,
+        "default": null
+      },
+      "exif:RelatedSoundFile": {
+        "name": "RelatedSoundFile",
+        "label": null,
+        "definition": "Related audio file",
+        "section": null,
+        "type": "ASCII",
+        "count": 13,
+        "tagid": 40964,
+        "default": null
+      },
+      "exif:DateTimeOriginal": {
+        "name": "DateTimeOriginal",
+        "label": null,
+        "definition": "Date and time of original data generation",
+        "section": null,
+        "type": "ASCII",
+        "count": 20,
+        "tagid": 36867,
+        "default": null
+      },
+      "exif:DateTimeDigitized": {
+        "name": "DateTimeDigitized",
+        "label": null,
+        "definition": "Date and time of digital data generation",
+        "section": null,
+        "type": "ASCII",
+        "count": 20,
+        "tagid": 36868,
+        "default": null
+      },
+      "exif:SubSecTime": {
+        "name": "SubSecTime",
+        "label": null,
+        "definition": "File change date and time sub-seconds",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 37520,
+        "default": null
+      },
+      "exif:SubSecTimeOriginal": {
+        "name": "SubSecTimeOriginal",
+        "label": null,
+        "definition": "Date and time of original data generation sub-seconds",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 37521,
+        "default": null
+      },
+      "exif:SubSecTimeDigitized": {
+        "name": "SubSecTimeDigitized",
+        "label": null,
+        "definition": "Date and time of digital data generation sub-seconds",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 37522,
+        "default": null
+      },
+      "exif:ExposureTime": {
+        "name": "ExposureTime",
+        "label": null,
+        "definition": "Exposure time",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 33434,
+        "default": null
+      },
+      "exif:FNumber": {
+        "name": "FNumber",
+        "label": null,
+        "definition": "F number",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 33437,
+        "default": null
+      },
+      "exif:ExposureProgram": {
+        "name": "ExposureProgram",
+        "label": null,
+        "definition": "Exposure program",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 34850,
+        "default": null
+      },
+      "exif:SpectralSensitivity": {
+        "name": "SpectralSensitivity",
+        "label": null,
+        "definition": "Spectral sensitivity",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 34852,
+        "default": null
+      },
+      "exif:PhotographicSensitivity": {
+        "name": "PhotographicSensitivity",
+        "label": null,
+        "definition": "Photographic sensitivity",
+        "section": null,
+        "type": "Short",
+        "count": -3,
+        "tagid": 34855,
+        "default": null
+      },
+      "exif:OptoElectricConversionFactor": {
+        "name": "OptoElectricConversionFactor",
+        "label": null,
+        "definition": "Opto-electric conversion factor",
+        "section": null,
+        "type": "Undefined",
+        "count": -3,
+        "tagid": 34856,
+        "default": null
+      },
+      "exif:SensitivityType": {
+        "name": "SensitivityType",
+        "label": null,
+        "definition": "Sensitivity type",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 34864,
+        "default": null
+      },
+      "exif:StandardOutputSensitivity": {
+        "name": "StandardOutputSensitivity",
+        "label": null,
+        "definition": "Standard output sensitivity",
+        "section": null,
+        "type": "Long",
+        "count": 1,
+        "tagid": 34865,
+        "default": null
+      },
+      "exif:RecommendedExposureIndex": {
+        "name": "RecommendedExposureIndex",
+        "label": null,
+        "definition": "Recommended exposure index",
+        "section": null,
+        "type": "Long",
+        "count": 1,
+        "tagid": 34866,
+        "default": null
+      },
+      "exif:ISOSpeed": {
+        "name": "ISOSpeed",
+        "label": null,
+        "definition": "ISO speed",
+        "section": null,
+        "type": "Long",
+        "count": 1,
+        "tagid": 34867,
+        "default": null
+      },
+      "exif:ISOSpeedLatitudeYYY": {
+        "name": "ISOSpeedLatitudeYYY",
+        "label": null,
+        "definition": "ISO speed latitude YYY",
+        "section": null,
+        "type": "Long",
+        "count": 1,
+        "tagid": 34868,
+        "default": null
+      },
+      "exif:ISOSpeedLatitudeZZZ": {
+        "name": "ISOSpeedLatitudeZZZ",
+        "label": null,
+        "definition": "ISO speed latitude ZZZ",
+        "section": null,
+        "type": "Long",
+        "count": 1,
+        "tagid": 34869,
+        "default": null
+      },
+      "exif:ShutterSpeedValue": {
+        "name": "ShutterSpeedValue",
+        "label": null,
+        "definition": "Shutter speed",
+        "section": null,
+        "type": "RationalSigned",
+        "count": 1,
+        "tagid": 37377,
+        "default": null
+      },
+      "exif:ApertureValue": {
+        "name": "ApertureValue",
+        "label": null,
+        "definition": "Aperture",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 37378,
+        "default": null
+      },
+      "exif:BrightnessValue": {
+        "name": "BrightnessValue",
+        "label": null,
+        "definition": "Brightness",
+        "section": null,
+        "type": "RationalSigned",
+        "count": 1,
+        "tagid": 37379,
+        "default": null
+      },
+      "exif:ExposureBiasValue": {
+        "name": "ExposureBiasValue",
+        "label": null,
+        "definition": "Exposure bias",
+        "section": null,
+        "type": "RationalSigned",
+        "count": 1,
+        "tagid": 37380,
+        "default": null
+      },
+      "exif:MaxApertureValue": {
+        "name": "MaxApertureValue",
+        "label": null,
+        "definition": "Maximum lens aperture",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 37381,
+        "default": null
+      },
+      "exif:SubjectDistance": {
+        "name": "SubjectDistance",
+        "label": null,
+        "definition": "Subject distance",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 37382,
+        "default": null
+      },
+      "exif:MeteringMode": {
+        "name": "MeteringMode",
+        "label": null,
+        "definition": "Metering mode",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 37383,
+        "default": null
+      },
+      "exif:LightSource": {
+        "name": "LightSource",
+        "label": null,
+        "definition": "Light source",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 37384,
+        "default": null
+      },
+      "exif:Flash": {
+        "name": "Flash",
+        "label": null,
+        "definition": "Flash",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 37385,
+        "default": null
+      },
+      "exif:FocalLength": {
+        "name": "FocalLength",
+        "label": null,
+        "definition": "Lens focal length",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 37386,
+        "default": null
+      },
+      "exif:SubjectArea": {
+        "name": "SubjectArea",
+        "label": null,
+        "definition": "Subject area",
+        "section": null,
+        "type": "Short",
+        "count": [
+          2,
+          3,
+          4
+        ],
+        "tagid": 37396,
+        "default": null
+      },
+      "exif:FlashEnergy": {
+        "name": "FlashEnergy",
+        "label": null,
+        "definition": "Flash energy",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 41483,
+        "default": null
+      },
+      "exif:SpatialFrequencyResponse": {
+        "name": "SpatialFrequencyResponse",
+        "label": null,
+        "definition": "Spatial frequency response",
+        "section": null,
+        "type": "Undefined",
+        "count": -3,
+        "tagid": 41484,
+        "default": null
+      },
+      "exif:FocalPlaneXResolution": {
+        "name": "FocalPlaneXResolution",
+        "label": null,
+        "definition": "Focal plane X resolution",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 41486,
+        "default": null
+      },
+      "exif:FocalPlaneYResolution": {
+        "name": "FocalPlaneYResolution",
+        "label": null,
+        "definition": "Focal plane Y resolution",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 41487,
+        "default": null
+      },
+      "exif:FocalPlaneResolutionUnit": {
+        "name": "FocalPlaneResolutionUnit",
+        "label": null,
+        "definition": "Focal plane resolution unit",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 41488,
+        "default": null
+      },
+      "exif:SubjectLocation": {
+        "name": "SubjectLocation",
+        "label": null,
+        "definition": "Subject location",
+        "section": null,
+        "type": "Short",
+        "count": 2,
+        "tagid": 41492,
+        "default": null
+      },
+      "exif:ExposureIndex": {
+        "name": "ExposureIndex",
+        "label": null,
+        "definition": "Exposure index",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 41493,
+        "default": null
+      },
+      "exif:SensingMethod": {
+        "name": "SensingMethod",
+        "label": null,
+        "definition": "Sensing method",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 41495,
+        "default": null
+      },
+      "exif:FileSource": {
+        "name": "FileSource",
+        "label": null,
+        "definition": "File source",
+        "section": null,
+        "type": "Undefined",
+        "count": -3,
+        "tagid": 41728,
+        "default": null
+      },
+      "exif:SceneType": {
+        "name": "SceneType",
+        "label": null,
+        "definition": "Scene type",
+        "section": null,
+        "type": "Undefined",
+        "count": -3,
+        "tagid": 41729,
+        "default": null
+      },
+      "exif:CFAPattern": {
+        "name": "CFAPattern",
+        "label": null,
+        "definition": "CFA pattern",
+        "section": null,
+        "type": "Undefined",
+        "count": -3,
+        "tagid": 41730,
+        "default": null
+      },
+      "exif:CustomRendered": {
+        "name": "CustomRendered",
+        "label": null,
+        "definition": "Custom image processing",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 41985,
+        "default": null
+      },
+      "exif:ExposureMode": {
+        "name": "ExposureMode",
+        "label": null,
+        "definition": "Exposure mode",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 41986,
+        "default": null
+      },
+      "exif:WhiteBalance": {
+        "name": "WhiteBalance",
+        "label": null,
+        "definition": "White balance",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 41987,
+        "default": null
+      },
+      "exif:DigitalZoomRatio": {
+        "name": "DigitalZoomRatio",
+        "label": null,
+        "definition": "Digital zoom ratio",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 41988,
+        "default": null
+      },
+      "exif:FocalLength35mmFilm": {
+        "name": "FocalLength35mmFilm",
+        "label": null,
+        "definition": "Focal length in 35mm film",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 41989,
+        "default": null
+      },
+      "exif:SceneCaptureType": {
+        "name": "SceneCaptureType",
+        "label": null,
+        "definition": "Scene capture type",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 41990,
+        "default": null
+      },
+      "exif:GainControl": {
+        "name": "GainControl",
+        "label": null,
+        "definition": "Gain control",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 41991,
+        "default": null
+      },
+      "exif:Contrast": {
+        "name": "Contrast",
+        "label": null,
+        "definition": "Contrast",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 41992,
+        "default": null
+      },
+      "exif:Saturation": {
+        "name": "Saturation",
+        "label": null,
+        "definition": "Saturation",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 41993,
+        "default": null
+      },
+      "exif:Sharpness": {
+        "name": "Sharpness",
+        "label": null,
+        "definition": "Sharpness",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 41964,
+        "default": null
+      },
+      "exif:DeviceSettingDescription": {
+        "name": "DeviceSettingDescription",
+        "label": null,
+        "definition": "Device setting description",
+        "section": null,
+        "type": "Undefined",
+        "count": -3,
+        "tagid": 41995,
+        "default": null
+      },
+      "exif:SubjectDistanceRange": {
+        "name": "SubjectDistanceRange",
+        "label": null,
+        "definition": "Subject distance range",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 41996,
+        "default": null
+      },
+      "exif:ImageUniqueID": {
+        "name": "ImageUniqueID",
+        "label": null,
+        "definition": "Unique image ID",
+        "section": null,
+        "type": "ASCII",
+        "count": 33,
+        "tagid": 42016,
+        "default": null
+      },
+      "exif:CameraOwnerName": {
+        "name": "CameraOwnerName",
+        "label": null,
+        "definition": "Camera owner name",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 42032,
+        "default": null
+      },
+      "exif:BodySerialNumber": {
+        "name": "BodySerialNumber",
+        "label": null,
+        "definition": "Camera body serial number",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 42033,
+        "default": null
+      },
+      "exif:LensSpecification": {
+        "name": "LensSpecification",
+        "label": null,
+        "definition": "Lens specification",
+        "section": null,
+        "type": "Rational",
+        "count": 4,
+        "tagid": 42034,
+        "default": null
+      },
+      "exif:LensMake": {
+        "name": "LensMake",
+        "label": null,
+        "definition": "Lens make",
+        "section": null,
+        "type": "Rational",
+        "count": 4,
+        "tagid": 42035,
+        "default": null
+      },
+      "exif:LensModel": {
+        "name": "LensModel",
+        "label": null,
+        "definition": "Lens model",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 42036,
+        "default": null
+      },
+      "exif:LensSerialNumber": {
+        "name": "LensSerialNumber",
+        "label": null,
+        "definition": "Lens serial number",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 42037,
+        "default": null
+      },
+      "exif:GPSVersionID": {
+        "name": "GPSVersionID",
+        "label": null,
+        "definition": "GPS tag version",
+        "section": null,
+        "type": "Byte",
+        "count": 4,
+        "tagid": 0,
+        "default": null
+      },
+      "exif:GPSLatitudeRef": {
+        "name": "GPSLatitudeRef",
+        "label": null,
+        "definition": "GPS north or south latitude",
+        "section": null,
+        "type": "ASCII",
+        "count": 2,
+        "tagid": 1,
+        "default": null
+      },
+      "exif:GPSLatitude": {
+        "name": "GPSLatitude",
+        "label": null,
+        "definition": "GPS latitude",
+        "section": null,
+        "type": "Rational",
+        "count": 3,
+        "tagid": 2,
+        "default": null
+      },
+      "exif:GPSLongitudeRef": {
+        "name": "GPSLongitudeRef",
+        "label": null,
+        "definition": "GPS east or west longitude",
+        "section": null,
+        "type": "ASCII",
+        "count": 2,
+        "tagid": 3,
+        "default": null
+      },
+      "exif:GPSLongitude": {
+        "name": "GPSLongitude",
+        "label": null,
+        "definition": "GPS longitude",
+        "section": null,
+        "type": "Rational",
+        "count": 3,
+        "tagid": 4,
+        "default": null
+      },
+      "exif:GPSAltitudeRef": {
+        "name": "GPSAltitudeRef",
+        "label": null,
+        "definition": "GPS altitude reference",
+        "section": null,
+        "type": "Byte",
+        "count": 1,
+        "tagid": 5,
+        "default": null
+      },
+      "exif:GPSAltitude": {
+        "name": "GPSAltitude",
+        "label": null,
+        "definition": "GPS altitude",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 6,
+        "default": null
+      },
+      "exif:GPSTimeStamp": {
+        "name": "GPSTimeStamp",
+        "label": null,
+        "definition": "GPS time (atomic clock)",
+        "section": null,
+        "type": "Rational",
+        "count": 3,
+        "tagid": 7,
+        "default": null
+      },
+      "exif:GPSSatellites": {
+        "name": "GPSSatellites",
+        "label": null,
+        "definition": "GPS satellites used for measurement",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 8,
+        "default": null
+      },
+      "exif:GPSStatus": {
+        "name": "GPSStatus",
+        "label": null,
+        "definition": "GPS receiver status",
+        "section": null,
+        "type": "ASCII",
+        "count": 2,
+        "tagid": 9,
+        "default": null
+      },
+      "exif:GPSMeasureMode": {
+        "name": "GPSMeasureMode",
+        "label": null,
+        "definition": "GPS measurement mode",
+        "section": null,
+        "type": "ASCII",
+        "count": 2,
+        "tagid": 10,
+        "default": null
+      },
+      "exif:GPSDOP": {
+        "name": "GPSDOP",
+        "label": null,
+        "definition": "GPS measurement precision",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 11,
+        "default": null
+      },
+      "exif:GPSSpeedRef": {
+        "name": "GPSSpeedRef",
+        "label": null,
+        "definition": "GPS speed unit",
+        "section": null,
+        "type": "ASCII",
+        "count": 2,
+        "tagid": 12,
+        "default": null
+      },
+      "exif:GPSSpeed": {
+        "name": "GPSSpeed",
+        "label": null,
+        "definition": "Speed of GPS receiver",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 13,
+        "default": null
+      },
+      "exif:GPSTrackRef": {
+        "name": "GPSTrackRef",
+        "label": null,
+        "definition": "GPS reference for direction of movement",
+        "section": null,
+        "type": "ASCII",
+        "count": 2,
+        "tagid": 14,
+        "default": null
+      },
+      "exif:GPSTrack": {
+        "name": "GPSTrack",
+        "label": null,
+        "definition": "GPS direction of movement",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 15,
+        "default": null
+      },
+      "exif:GPSImgDirectionRef": {
+        "name": "GPSImgDirectionRef",
+        "label": null,
+        "definition": "GPS reference for direction of image",
+        "section": null,
+        "type": "ASCII",
+        "count": 2,
+        "tagid": 16,
+        "default": null
+      },
+      "exif:GPSImgDirection": {
+        "name": "GPSImgDirection",
+        "label": null,
+        "definition": "GPS direction of image",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 17,
+        "default": null
+      },
+      "exif:GPSMapDatum": {
+        "name": "GPSMapDatum",
+        "label": null,
+        "definition": "GPS geodetic survey data used",
+        "section": null,
+        "type": "ASCII",
+        "count": -3,
+        "tagid": 18,
+        "default": null
+      },
+      "exif:GPSDestLatitudeRef": {
+        "name": "GPSDestLatitudeRef",
+        "label": null,
+        "definition": "GPS reference for latitude of destination",
+        "section": null,
+        "type": "ASCII",
+        "count": 2,
+        "tagid": 19,
+        "default": null
+      },
+      "exif:GPSDestLatitude": {
+        "name": "GPSDestLatitude",
+        "label": null,
+        "definition": "GPS latitude of destination",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 20,
+        "default": null
+      },
+      "exif:GPSDestLongitudeRef": {
+        "name": "GPSDestLongitudeRef",
+        "label": null,
+        "definition": "GPS reference for longitude of destination",
+        "section": null,
+        "type": "ASCII",
+        "count": 2,
+        "tagid": 21,
+        "default": null
+      },
+      "exif:GPSDestLongitude": {
+        "name": "GPSDestLongitude",
+        "label": null,
+        "definition": "GPS longitude of destination",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 22,
+        "default": null
+      },
+      "exif:GPSDestBearingRef": {
+        "name": "GPSDestBearingRef",
+        "label": null,
+        "definition": "GPS reference for bearing of destination",
+        "section": null,
+        "type": "ASCII",
+        "count": 2,
+        "tagid": 23,
+        "default": null
+      },
+      "exif:GPSDestBearing": {
+        "name": "GPSDestBearing",
+        "label": null,
+        "definition": "GPS bearing of destination",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 24,
+        "default": null
+      },
+      "exif:GPSDestDistanceRef": {
+        "name": "GPSDestDistanceRef",
+        "label": null,
+        "definition": "GPS reference for distance of destination",
+        "section": null,
+        "type": "ASCII",
+        "count": 2,
+        "tagid": 25,
+        "default": null
+      },
+      "exif:GPSDestDistance": {
+        "name": "GPSDestDistance",
+        "label": null,
+        "definition": "GPS distance of destination",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 26,
+        "default": null
+      },
+      "exif:GPSProcessingMethod": {
+        "name": "GPSProcessingMethod",
+        "label": null,
+        "definition": "Name of GPS processing method",
+        "section": null,
+        "type": "Undefined",
+        "count": -3,
+        "tagid": 27,
+        "default": null
+      },
+      "exif:GPSAreaInformation": {
+        "name": "GPSAreaInformation",
+        "label": null,
+        "definition": "Name of GPS area",
+        "section": null,
+        "type": "Undefined",
+        "count": -3,
+        "tagid": 28,
+        "default": null
+      },
+      "exif:GPSDateStamp": {
+        "name": "GPSDateStamp",
+        "label": null,
+        "definition": "GPS date",
+        "section": null,
+        "type": "ASCII",
+        "count": 11,
+        "tagid": 29,
+        "default": null
+      },
+      "exif:GPSDifferential": {
+        "name": "GPSDifferential",
+        "label": null,
+        "definition": "GPS differential correction",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 30,
+        "default": null
+      },
+      "exif:GPSHPositioningError": {
+        "name": "GPSHPositioningError",
+        "label": null,
+        "definition": "GPS horizontal positioning error",
+        "section": null,
+        "type": "Rational",
+        "count": 1,
+        "tagid": 31,
+        "default": null
+      }
+    }
+  }
+}

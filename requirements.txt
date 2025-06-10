@@ -1,0 +1,3 @@
+# EXIFData Library: Runtime Dependencies
+enumerific>=1.0.1
+maxml>=1.0.1

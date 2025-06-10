@@ -1,0 +1,2620 @@
+{
+  "@aliases": {
+    "copyright": "tiff:copyright"
+  },
+  "basic": {
+    "name": "basic",
+    "label": "Adobe XMP Basic namespace",
+    "definition": "The XMP basic namespace contains properties that provide basic descriptive information.",
+    "uri": "http://ns.adobe.com/xap/1.0/",
+    "prefix": "xmp",
+    "fields": {
+      "xmp:Label": {
+        "name": "Label",
+        "pseudonym": {
+          "exiftool": "xmp:Label"
+        },
+        "definition": "A word or short phrase that identifies a resource as a member of a userdefined collection. NOTE: One anticipated usage is to organize resources in a file browser.",
+        "type": "Text"
+      },
+      "xmp:CreateDate": {
+        "name": "CreateDate",
+        "alias": "CreationDate",
+        "pseudonym": {
+          "exiftool": "xmp:CreateDate"
+        },
+        "definition": "The date and time the resource was created. For a digital file, this need not match a file-system creation time. For a freshly created resource, it should be close to that time, modulo the time taken to write the file. Later file transfer, copying, and so on, can make the file-system time arbitrarily different.",
+        "type": "Date"
+      },
+      "xmp:CreatorTool": {
+        "name": "CreatorTool",
+        "pseudonym": {
+          "exiftool": "xmp:CreatorTool"
+        },
+        "definition": "The name of the first known tool used to create the resource.",
+        "type": "AgentName"
+      },
+      "xmp:Identifier": {
+        "name": "Identifier",
+        "pseudonym": {
+          "exiftool": "xmp:Identifier"
+        },
+        "definition": "An unordered array of text strings that unambiguously identify the resource within a given context. An array item may be qualified with xmpidq:Scheme to denote the formal identification system to which that identifier conforms. NOTE: The xmp:Identifier property was added because dc:identifier has been defined in the original XMP specification as a single identifier instead of as an array, and changing dc:identifier to an array would break compatibility with existing XMP processors.",
+        "type": "Text",
+        "multiple": true,
+        "ordered": false
+      },
+      "xmp:MetadataDate": {
+        "name": "MetadataDate",
+        "pseudonym": {
+          "exiftool": "xmp:MetadataDate"
+        },
+        "definition": "The date and time that any metadata for this resource was last changed. It should be the same as or more recent than xmp:ModifyDate.",
+        "type": "Date"
+      },
+      "xmp:ModifyDate": {
+        "name": "ModifyDate",
+        "alias": "ModificationDate",
+        "pseudonym": {
+          "exiftool": "xmp:ModifyDate"
+        },
+        "definition": "The date and time the resource was last modified. NOTE: The value of this property is not necessarily the same as the file’s system modification date because it is typically set before the file is saved.",
+        "type": "Date"
+      },
+      "xmp:Rating": {
+        "name": "Rating",
+        "pseudonym": {
+          "exiftool": "xmp:Rating"
+        },
+        "definition": "A user-assigned rating for this file. The value shall be -1 or in the range [0..5], where -1 indicates “rejected” and 0 indicates “unrated”. If xmp:Rating is not present, a value of 0 should be assumed. NOTE: Anticipated usage is for a typical “star rating” UI, with the addition of a notion of rejection.",
+        "type": "Real",
+        "options": [
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "xmp:BaseURL": {
+        "name": "BaseURL",
+        "pseudonym": {
+          "exiftool": "xmp:BaseURL"
+        },
+        "definition": "The base URL for relative URLs in the document content. If this document contains Internet links, and those links are relative, they are relative to this base URL. This property provides a standard way for embedded relative URLs to be interpreted by tools. Web authoring tools should set the value based on their notion of where URLs will be interpreted.",
+        "type": "URL"
+      },
+      "xmp:Nickname": {
+        "name": "Nickname",
+        "pseudonym": {
+          "exiftool": "xmp:Nickname"
+        },
+        "definition": "A short informal name for the resource.",
+        "type": "Text"
+      },
+      "xmp:Thumbnail": {
+        "name": "Thumbnail",
+        "pseudonym": {
+          "exiftool": "xmp:Thumbnail"
+        },
+        "definition": "An alternative array of thumbnail images for a file, which can differ in characteristics such as size or image encoding.",
+        "type": "Thumbnail",
+        "multiple": true
+      }
+    }
+  },
+  "media_management": {
+    "name": "media_management",
+    "label": "XMP Media Management namespace",
+    "definition": "This namespace is primarily for use by digital asset management (DAM) systems.",
+    "uri": "http://ns.adobe.com/xap/1.0/mm/",
+    "prefix": "xmpMM",
+    "fields": {
+      "xmpMM:DerivedFrom": {
+        "name": "derivedFrom",
+        "definition": "A reference to the original document from which this one is derived. It is a minimal reference; missing components can be assumed to be unchanged. For example, a new version might only need to specify the instance ID and version number of the previous version, or a rendition might only need to specify the instance ID and rendition class of the original.",
+        "type": "ResourceRef"
+      },
+      "xmpMM:DocumentID": {
+        "name": "documentID",
+        "definition": "The common identifier for all versions and renditions of a resource. It should be based on a UUID; Created once for new resources. Different renditions are expected to have different values for xmpMM:DocumentID.",
+        "type": "GUID"
+      },
+      "xmpMM:InstanceID": {
+        "name": "instanceID",
+        "definition": "An identifier for a specific incarnation of a resource, updated each time a file is saved. It should be based on a UUID.",
+        "type": "GUID"
+      },
+      "xmpMM:OriginalDocumentID": {
+        "name": "originalDocumentID",
+        "definition": "The common identifier for the original resource from which the current resource is derived. For example, if you save a resource to a different format, then save that one to another format, each save operation should generate a new xmpMM:DocumentID that uniquely identifies the resource in that format, but should retain the ID of the source file here. It links a resource to its original source.",
+        "type": "GUID"
+      },
+      "xmpMM:RenditionClass": {
+        "name": "renditionClass",
+        "definition": "The rendition class name for this resource. This property should be absent or set to default for a document version that is not a derived rendition.",
+        "type": "RenditionClass"
+      },
+      "xmpMM:RenditionParams": {
+        "name": "renditionParams",
+        "definition": "Can be used to provide additional rendition parameters that are too complex or verbose to encode in xmpMM: RenditionClass.",
+        "type": "Text"
+      },
+      "xmpMM:History": {
+        "name": "history",
+        "definition": "An ordered array of high-level user actions that resulted in this resource. It is intended to give human readers a description of the steps taken to make the changes from the previous version to this one. The list should be at an abstract level; it is not intended to be an exhaustive keystroke or other detailed history. The description should be sufficient for metadata management, as well as for workflow enhancement.",
+        "type": "ResourceEvent",
+        "multiple": true,
+        "ordered": true
+      },
+      "xmpMM:Ingredients": {
+        "name": "ingredients",
+        "definition": "References to resources that were incorporated, by inclusion or reference, into this resource.",
+        "type": "ResourceRef",
+        "multiple": true,
+        "ordered": false
+      },
+      "xmpMM:Pantry": {
+        "name": "pantry",
+        "definition": "Each array item has a structure value with a potentially unique set of fields, containing extracted XMP from a component. Each field is a property from the XMP of a contained resource component, with all substructure preserved. Each pantry entry shall contain an xmpMM:InstanceID. Only one copy of the pantry entry for any given xmpMM:InstanceID shall be retained in the pantry. Nested pantry items shall be removed from the individual pantry item and promoted to the top level of the pantry.",
+        "type": "Struct",
+        "multiple": true,
+        "ordered": false
+      },
+      "xmpMM:ManagedFrom": {
+        "name": "managedFrom",
+        "definition": "A reference to the document as it was prior to becoming managed. It is set when a managed document is introduced to an asset management system that does not currently own it. It may or may not include references to different management systems.",
+        "type": "ResourceRef"
+      },
+      "xmpMM:Manager": {
+        "name": "manager",
+        "definition": "The name of the asset management system that manages this resource. Along with xmpMM: ManagerVariant, it tells applications which asset management system to contact concerning this document.",
+        "type": "AgentName"
+      },
+      "xmpMM:ManageTo": {
+        "name": "manageTo",
+        "definition": "A URI identifying the managed resource to the asset management system; the presence of this property is the formal indication that this resource is managed. The form and content of this URI is private to the asset management system.",
+        "type": "URI"
+      },
+      "xmpMM:ManageUI": {
+        "name": "manageUI",
+        "definition": "A URI that can be used to access information about the managed resource through a web browser. It might require a custom browser plug-in.",
+        "type": "URI"
+      },
+      "xmpMM:ManagerVariant": {
+        "name": "managerVariant",
+        "definition": "Specifies a particular variant of the asset management system. The format of this property is private to the specific asset management system.",
+        "type": "Text"
+      },
+      "xmpMM:VersionID": {
+        "name": "versionID",
+        "definition": "The document version identifier for this resource. Each version of a document gets a new identifier, usually simply by incrementing integers 1, 2, 3 . . . and so on. Media management systems can have other conventions or support branching which requires a more complex scheme.",
+        "type": "Text"
+      },
+      "xmpMM:Versions": {
+        "name": "versions",
+        "definition": "The version history associated with this resource. Entry 1 is the oldest known version for this document, entry[last()] is the most recent version. Typically, a media management system would fill in the version information in the metadata on check-in. It is not guaranteed that a complete history of versions from the first to this one will be present in the xmpMM:Versions property. Interior version information can be compressed or eliminated and the version history can be truncated at some point.",
+        "type": "Version",
+        "multiple": true,
+        "ordered": true
+      }
+    }
+  },
+  "basic_job_ticket": {
+    "name": "basic_job_ticket",
+    "label": "Basic Job Ticket namespace",
+    "definition": "This namespace describes very simple workflow or job information.",
+    "uri": "http://ns.adobe.com/xap/1.0/bj/",
+    "prefix": "xmpBJ",
+    "fields": {
+      "xmpBJ:JobRef": {
+        "name": "jobRef",
+        "definition": "References an external job management file for a job process in which the document is being used. Use of job names is under user control. Typical use would be to identify all documents that are part of a particular job or contract. There are multiple values because there can be more than one job using a particular document at any time, and it can also be useful to keep historical information about what jobs a document was part of previously.",
+        "type": "Job",
+        "multiple": true,
+        "ordered": false
+      }
+    }
+  },
+  "paged_text": {
+    "name": "paged_text",
+    "label": "XMP Paged-Text namespace",
+    "definition": "The Paged-Text namespace is used for text appearing on a page in a document.",
+    "uri": "http://ns.adobe.com/xap/1.0/t/pg/",
+    "prefix": "xmpTPg",
+    "fields": {
+      "xmpTPg:Colorants": {
+        "name": "colorants",
+        "definition": "An ordered array of colorants (swatches) that are used in the document (including any in contained documents).",
+        "type": "Colorants",
+        "multiple": true,
+        "ordered": true
+      },
+      "xmpTPg:Fonts": {
+        "name": "fonts",
+        "definition": "An unordered array of fonts that are used in the document (including any in contained documents).",
+        "type": "Font",
+        "multiple": true,
+        "ordered": false
+      },
+      "xmpTPg:MaxPageSize": {
+        "name": "maxPageSize",
+        "definition": "The size of the largest page in the document (including any in contained documents).",
+        "type": "Dimensions"
+      },
+      "xmpTPg:NPages": {
+        "name": "nPages",
+        "definition": "The number of pages in the document (including any in contained documents).",
+        "type": "Integer"
+      },
+      "xmpTPg:PlateNames": {
+        "name": "plateNames",
+        "definition": "An ordered array of plate names that are needed to print the document (including any in contained documents).",
+        "type": "Text",
+        "multiple": true,
+        "ordered": true
+      }
+    }
+  },
+  "dynamic_media": {
+    "name": "dynamic_media",
+    "label": "XMP Dynamic Media namespace",
+    "definition": "This namespace specifies properties used by the Adobe dynamic media group.",
+    "uri": "http://ns.adobe.com/xmp/1.0/DynamicMedia/",
+    "prefix": "xmpDM",
+    "fields": {
+      "xmpDM:absPeakAudioFilePath": {
+        "name": "absPeakAudioFilePath",
+        "definition": "The absolute path to the file’s peak audio file. If empty, no peak file exists.",
+        "type": "URI"
+      },
+      "xmpDM:album": {
+        "name": "album",
+        "definition": "The name of the album.",
+        "type": "Text"
+      },
+      "xmpDM:altTapeName": {
+        "name": "altTapeName",
+        "definition": "An alternative tape name, set via the project window or timecode dialog in Premiere. If an alternative name has been set and has not been reverted, that name is displayed.",
+        "type": "Text"
+      },
+      "xmpDM:altTimecode": {
+        "name": "altTimecode",
+        "definition": "A timecode set by the user. When specified, it is used instead of the startTimecode.",
+        "type": "Timecode"
+      },
+      "xmpDM:artist": {
+        "name": "artist",
+        "definition": "The name of the artist or artists.",
+        "type": "Text"
+      },
+      "xmpDM:audioChannelType": {
+        "name": "audioChannelType",
+        "definition": "The audio channel type. One of: Mono, Stereo, 5.1, 7.1, 16 Channel, Other",
+        "type": "Text",
+        "options": [
+          "Mono",
+          "Stereo",
+          "5.1",
+          "7.1",
+          "16 Channel",
+          "Other"
+        ]
+      },
+      "xmpDM:audioCompressor": {
+        "name": "audioCompressor",
+        "definition": "The audio compression used. For example, MP3.",
+        "type": "Text"
+      },
+      "xmpDM:audioSampleRate": {
+        "name": "audioSampleRate",
+        "definition": "The audio sample rate. Can be any value, but commonly 32000, 44100, or 48000.",
+        "type": "Integer"
+      },
+      "xmpDM:audioSampleType": {
+        "name": "audioSampleType",
+        "definition": "The audio sample type. One of: 8Int, 16Int, 24Int, 32Int, 32Float, Compressed, Packed,Other",
+        "type": "Text",
+        "options": [
+          "8Int",
+          "16Int",
+          "24Int",
+          "32Int",
+          "32Float",
+          "Compressed",
+          "Packed",
+          "Other"
+        ]
+      },
+      "xmpDM:beatSpliceParams": {
+        "name": "beatSpliceParams",
+        "definition": "Additional parameters for Beat Splice stretch mode.",
+        "type": "BeatSpliceStretch"
+      },
+      "xmpDM:cameraAngle": {
+        "name": "cameraAngle",
+        "definition": "The orientation of the camera to the subject in a static shot, from a fixed set of industry standard terminology. Predefined values include: Low Angle, Eye Level, High Angle, Overhead Shot, Birds Eye Shot, Dutch Angle, POV, Over the Shoulder, Reaction Shot",
+        "type": "Text",
+        "options": [
+          "Low Angle",
+          "Eye Level",
+          "High Angle",
+          "Overhead Shot",
+          "Birds Eye Shot",
+          "Dutch Angle",
+          "POV",
+          "Over the Shoulder",
+          "Reaction Shot"
+        ],
+        "closed": false
+      },
+      "xmpDM:cameraLabel": {
+        "name": "cameraLabel",
+        "definition": "A description of the camera used for a shoot. Can be any string, but is usually simply a number, for example '1', '2', or more explicitly 'Camera 1'",
+        "type": "Text"
+      },
+      "xmpDM:cameraModel": {
+        "name": "cameraModel",
+        "definition": "The make and model of the camera used for a shoot.",
+        "type": "Text"
+      },
+      "xmpDM:cameraMove": {
+        "name": "cameraMove",
+        "definition": "The movement of the camera during the shot, from a fixed set of industry standard terminology. Predefined values include: Aerial, Boom Up, Boom Down, Crane Up, Crane Down, Dolly In, Dolly Out, Pan Left, Pan Right, Pedestal Up, Pedestal Down, Tilt Up, Tilt Down, Tracking, Truck Left, Truck Right, Zoom In, Zoom Out",
+        "type": "Text",
+        "options": [
+          "Aerial",
+          "Boom Up",
+          "Boom Down",
+          "Crane Up",
+          "Crane Down",
+          "Dolly In",
+          "Dolly Out",
+          "Pan Left",
+          "Pan Right",
+          "Pedestal Up",
+          "Pedestal Down",
+          "Tilt Up",
+          "Tilt Down",
+          "Tracking",
+          "Truck Left",
+          "Truck Right",
+          "Zoom In",
+          "Zoom Out"
+        ],
+        "closed": false
+      },
+      "xmpDM:client": {
+        "name": "client",
+        "definition": "The client for the job of which this shot or take is a part.",
+        "type": "Text"
+      },
+      "xmpDM:comment": {
+        "name": "comment",
+        "definition": "A user’s comments.",
+        "type": "Text"
+      },
+      "xmpDM:composer": {
+        "name": "composer",
+        "definition": "The composer’s name.",
+        "type": "Text"
+      },
+      "xmpDM:contributedMedia": {
+        "name": "contributedMedia",
+        "definition": "An unordered list of all media used to create this media.",
+        "type": "Media",
+        "multiple": true,
+        "ordered": false
+      },
+      "xmpDM:director": {
+        "name": "director",
+        "definition": "The director of the scene.",
+        "type": "Text"
+      },
+      "xmpDM:directorPhotography": {
+        "name": "directorPhotography",
+        "definition": "The director of photography for the scene.",
+        "type": "Text"
+      },
+      "xmpDM:duration": {
+        "name": "duration",
+        "definition": "The duration of the media file.",
+        "type": "Time"
+      },
+      "xmpDM:engineer": {
+        "name": "engineer",
+        "definition": "The engineer’s name.",
+        "type": "Text"
+      },
+      "xmpDM:fileDataRate": {
+        "name": "fileDataRate",
+        "definition": "The file data rate in megabytes per second. For example: '36/10' = 3.6 MB/sec",
+        "type": "Rational"
+      },
+      "xmpDM:genre": {
+        "name": "genre",
+        "definition": "The name of the genre.",
+        "type": "Text"
+      },
+      "xmpDM:good": {
+        "name": "good",
+        "definition": "A checkbox for tracking whether a shot is a keeper.",
+        "type": "Boolean"
+      },
+      "xmpDM:instrument": {
+        "name": "instrument",
+        "definition": "The musical instrument.",
+        "type": "Text"
+      },
+      "xmpDM:introTime": {
+        "name": "introTime",
+        "definition": "The duration of lead time for queuing music.",
+        "type": "Time"
+      },
+      "xmpDM:key": {
+        "name": "key",
+        "definition": "The audio’s musical key. One of: C, C#, D, D#, E, F, F#, G, G#, A, A#, B",
+        "type": "Text",
+        "options": [
+          "C",
+          "C#",
+          "D",
+          "D#",
+          "E",
+          "F",
+          "F#",
+          "G",
+          "G#",
+          "A",
+          "A#",
+          "B"
+        ]
+      },
+      "xmpDM:logComment": {
+        "name": "logComment",
+        "definition": "User’s log comments.",
+        "type": "Text"
+      },
+      "xmpDM:loop": {
+        "name": "loop",
+        "definition": "When true, the clip can be looped seamlessly.",
+        "type": "Boolean"
+      },
+      "xmpDM:numberOfBeats": {
+        "name": "numberOfBeats",
+        "definition": "The total number of musical beats in a clip; for example, the beats-per-second times the duration in seconds.",
+        "type": "Real"
+      },
+      "xmpDM:markers": {
+        "name": "markers",
+        "definition": "An ordered list of markers. See also xmpDM:Tracks.",
+        "type": "Marker",
+        "multiple": true,
+        "ordered": true
+      },
+      "xmpDM:outCue": {
+        "name": "outCue",
+        "definition": "The time at which to fade out.",
+        "type": "Time"
+      },
+      "xmpDM:projectName": {
+        "name": "projectName",
+        "definition": "The name of the project of which this file is a part.",
+        "type": "Text"
+      },
+      "xmpDM:projectRef": {
+        "name": "projectRef",
+        "definition": "A reference to the project of which this file is a part.",
+        "type": "ProjectLink"
+      },
+      "xmpDM:pullDown": {
+        "name": "pullDown",
+        "definition": "The sampling phase of film to be converted to video (pull-down). One of: WSSWW, SSWWW, SWWWS, WWWSS, WWSSW, WWWSW, WWSWW, WSWWW, SWWWW, WWWWS",
+        "type": "Text",
+        "options": [
+          "WSSWW",
+          "SSWWW",
+          "SWWWS",
+          "WWWSS",
+          "WWSSW",
+          "WWWSW",
+          "WWSWW",
+          "WSWWW",
+          "SWWWW",
+          "WWWWS"
+        ]
+      },
+      "xmpDM:relativePeakAudioFilePath": {
+        "name": "relativePeakAudioFilePath",
+        "definition": "The relative path to the file’s peak audio file. If empty, no peak file exists.",
+        "type": "URI"
+      },
+      "xmpDM:relativeTimestamp": {
+        "name": "relativeTimestamp",
+        "definition": "The start time of the media inside the audio project.",
+        "type": "Time"
+      },
+      "xmpDM:releaseDate": {
+        "name": "releaseDate",
+        "definition": "The date the title was released.",
+        "type": "Date"
+      },
+      "xmpDM:resampleParams": {
+        "name": "resampleParams",
+        "definition": "Additional parameters for Resample stretch mode.",
+        "type": "ResampleStretch"
+      },
+      "xmpDM:scaleType": {
+        "name": "scaleType",
+        "definition": "The musical scale used in the music. One of: Major, Minor, Both, Neither. Neither is most often used for instruments with no associated scale, such as drums.",
+        "type": "Text",
+        "options": [
+          "Major",
+          "Minor",
+          "Both",
+          "Neither"
+        ]
+      },
+      "xmpDM:scene": {
+        "name": "scene",
+        "definition": "The name of the scene.",
+        "type": "Text"
+      },
+      "xmpDM:shotDate": {
+        "name": "shotDate",
+        "definition": "The date and time when the video was shot.",
+        "type": "Date"
+      },
+      "xmpDM:shotDay": {
+        "name": "shotDay",
+        "definition": "The day in a multiday shoot. For example: Day 2, Friday.",
+        "type": "Text"
+      },
+      "xmpDM:shotLocation": {
+        "name": "shotLocation",
+        "definition": "The name of the location where the video was shot. For example: 'Oktoberfest, Munich Germany'. For more accurate positioning, use the EXIF GPS values.",
+        "type": "Text"
+      },
+      "xmpDM:shotName": {
+        "name": "shotName",
+        "definition": "The name of the shot or take.",
+        "type": "Text"
+      },
+      "xmpDM:shotNumber": {
+        "name": "shotNumber",
+        "definition": "The position of the shot in a script or production, relative to other shots. For example: 1, 2, 1a, 1b, 1.1, 1.2.",
+        "type": "Text"
+      },
+      "xmpDM:shotSize": {
+        "name": "shotSize",
+        "definition": "The size or scale of the shot framing, from a fixed set of industry standard terminology. Predefined values include: ECU (extreme close-up), MCU (medium close-up), CU (close-up), MS (medium shot), WS (wide shot), MWS (medium wide shot), EWS (extreme wide shot).",
+        "type": "Text",
+        "options": [
+          "ECU",
+          "MCU",
+          "CU",
+          "MS",
+          "WS",
+          "MWS",
+          "EWS"
+        ]
+      },
+      "xmpDM:speakerPlacement": {
+        "name": "speakerPlacement",
+        "definition": "A description of the speaker angles from centre front in degrees. For example: “Left = -30, Right = 30, Centre = 0, LFE = 45, Left Surround = -110, Right Surround = 110”",
+        "type": "Text"
+      },
+      "xmpDM:startTimecode": {
+        "name": "startTimecode",
+        "definition": "The timecode of the first frame of video in the file, as obtained from the device control.",
+        "type": "Timecode"
+      },
+      "xmpDM:stretchMode": {
+        "name": "stretchMode",
+        "definition": "The audio stretch mode. One of: Fixed length, Time-Scale, Resample, Beat Splice, Hybrid",
+        "type": "Text",
+        "options": [
+          "Fixed length",
+          "Time-Scale",
+          "Resample",
+          "Beat Splice",
+          "Hybrid"
+        ]
+      },
+      "xmpDM:takeNumber": {
+        "name": "takeNumber",
+        "definition": "A numeric value indicating the absolute number of a take.",
+        "type": "Integer"
+      },
+      "xmpDM:tapeName": {
+        "name": "tapeName",
+        "definition": "The name of the tape from which the clip was captured, as set during the capture process.",
+        "type": "Text"
+      },
+      "xmpDM:tempo": {
+        "name": "tempo",
+        "definition": "The audio’s tempo.",
+        "type": "Real"
+      },
+      "xmpDM:timeScaleParams": {
+        "name": "timeScaleParams",
+        "definition": "Additional parameters for Time-Scale stretch mode.",
+        "type": "TimeScaleStretch"
+      },
+      "xmpDM:timeSignature": {
+        "name": "timeSignature",
+        "definition": "The time signature of the music. One of: 2/4, 3/4, 4/4, 5/4, 7/4, 6/8, 9/8, 12/8, other",
+        "type": "Text",
+        "options": [
+          "2/4",
+          "3/4",
+          "4/4",
+          "5/4",
+          "7/4",
+          "6/8",
+          "9/8",
+          "12/8",
+          "other"
+        ]
+      },
+      "xmpDM:trackNumber": {
+        "name": "trackNumber",
+        "definition": "A numeric value indicating the order of the audio file within its original recording.",
+        "type": "Integer"
+      },
+      "xmpDM:Tracks": {
+        "name": "tracks",
+        "definition": "An unordered list of tracks. A track is a named set of markers, which can specify a frame rate for all markers in the set. See also xmpDM:markers.",
+        "type": "Track",
+        "multiple": true,
+        "ordered": false
+      },
+      "xmpDM:videoAlphaMode": {
+        "name": "videoAlphaMode",
+        "definition": "The alpha mode. One of: straight, pre-multiplied, or none.",
+        "type": "Text",
+        "options": [
+          "straight",
+          "pre-multiplied",
+          "none"
+        ]
+      },
+      "xmpDM:videoAlphaPremultipleColor": {
+        "name": "videoAlphaPremultipleColor",
+        "definition": "A colour in CMYK or RGB to be used as the premultiple colour when alpha mode is premultiplied.",
+        "type": "Colorants"
+      },
+      "xmpDM:videoAlphaUnityIsTransparent": {
+        "name": "videoAlphaUnityIsTransparent",
+        "definition": "When true, unity is clear, when false, it is opaque.",
+        "type": "Boolean"
+      },
+      "xmpDM:videoColorSpace": {
+        "name": "videoColorSpace",
+        "definition": "The colour space. One of: sRGB (used by Photoshop), CCIR-601 (used for NTSC), CCIR-709 (used for HD).",
+        "type": "Text",
+        "options": [
+          "sRGB",
+          "CCIR-601",
+          "CCIR-709"
+        ]
+      },
+      "xmpDM:videoCompressor": {
+        "name": "videoCompressor",
+        "definition": "Video compression used. For example, jpeg.",
+        "type": "Text"
+      },
+      "xmpDM:videoFieldOrder": {
+        "name": "videoFieldOrder",
+        "definition": "The field order for video. One of: Upper, Lower, Progressive",
+        "type": "Text",
+        "options": [
+          "Upper",
+          "Lower",
+          "Progressive"
+        ]
+      },
+      "xmpDM:videoFrameRate": {
+        "name": "videoFrameRate",
+        "definition": "The video frame rate. Predefined values include: 24, NTSC, PAL",
+        "type": "Text",
+        "options": [
+          "24",
+          "NTSC",
+          "PAL"
+        ],
+        "closed": false
+      },
+      "xmpDM:videoFrameSize": {
+        "name": "videoFrameSize",
+        "definition": "The frame size. For example: w:720, h: 480, unit:pixels",
+        "type": "Dimensions"
+      },
+      "xmpDM:videoPixelAspectRatio": {
+        "name": "videoPixelAspectRatio",
+        "definition": "The aspect ratio, expressed as wd/ht. For example: “648/720” = 0.9",
+        "type": "Rational"
+      },
+      "xmpDM:videoPixelDepth": {
+        "name": "videoPixelDepth",
+        "definition": "The size in bits of each colour component of a pixel. Standard Windows 32-bit pixels have 8 bits per component. One of: 8Int, 16Int, 24Int, 32Int, 32Float, Other",
+        "type": "Text",
+        "options": [
+          "8Int",
+          "16Int",
+          "24Int",
+          "32Int",
+          "32Float",
+          "Other"
+        ]
+      },
+      "xmpDM:partOfCompilation": {
+        "name": "partOfCompilation",
+        "definition": "Part of compilation.",
+        "type": "Boolean"
+      },
+      "xmpDM:lyrics": {
+        "name": "lyrics",
+        "definition": "Lyrics text. No association with timecode.",
+        "type": "Text"
+      },
+      "xmpDM:discNumber": {
+        "name": "discNumber",
+        "definition": "If in a multi-disc set, might contain total number of discs. For example: 2/3.",
+        "type": "Text"
+      }
+    }
+  },
+  "rights_management": {
+    "name": "rights_management",
+    "label": "XMP Rights Management namespace",
+    "definition": "The XMP Rights Management namespace contains properties that provide information regarding the legal restrictions associated with a resource.",
+    "uri": "http://ns.adobe.com/xap/1.0/rights/",
+    "prefix": "xmpRights",
+    "alias": "rights",
+    "fields": {
+      "xmpRights:Certificate": {
+        "name": "Certificate",
+        "pseudonym": {
+          "exiftool": "xmpRights:Certificate"
+        },
+        "definition": "A web URL for a rights management certificate. NOTE: This is a normal (non-URI) simple value because of historical usage.",
+        "type": "Text"
+      },
+      "xmpRights:Marked": {
+        "name": "Marked",
+        "pseudonym": {
+          "exiftool": "xmpRights:Marked"
+        },
+        "definition": "When true, indicates that this is a rights-managed resource. When false, indicates that this is a public-domain resource. Omit if the state is unknown.",
+        "type": "Boolean",
+        "nullable": false
+      },
+      "xmpRights:Owner": {
+        "name": "Owner",
+        "pseudonym": {
+          "exiftool": "xmpRights:Owner"
+        },
+        "definition": "A list of legal owners of the resource.",
+        "type": "ProperName",
+        "multiple": true,
+        "ordered": false
+      },
+      "xmpRights:UsageTerms": {
+        "name": "UsageTerms",
+        "pseudonym": {
+          "exiftool": "xmpRights:UsageTerms"
+        },
+        "definition": "A collection of text instructions on how a resource can be legally used, given in a variety of languages.",
+        "type": "LanguageAlternative",
+        "combine": true
+      },
+      "xmpRights:WebStatement": {
+        "name": "WebStatement",
+        "pseudonym": {
+          "exiftool": "xmpRights:WebStatement"
+        },
+        "definition": "A Web URL for a statement of the ownership and usage rights for this resource. NOTE: This is a normal (non-URI) simple value because of historical usage.",
+        "type": "Text"
+      }
+    }
+  },
+  "adobe_pdf": {
+    "name": "adobe_pdf",
+    "label": "Adobe PDF namespace",
+    "definition": "This namespace specifies properties used with Adobe PDF documents.",
+    "uri": "http://ns.adobe.com/pdf/1.3/",
+    "prefix": "pdf",
+    "fields": {
+      "pdf:Keywords": {
+        "name": "keywords",
+        "definition": "Keywords.",
+        "type": "Text"
+      },
+      "pdf:PDFVersion": {
+        "name": "PDFVersion",
+        "definition": "The PDF file version (for example: 1.0, 1.3, and so on).",
+        "type": "Text"
+      },
+      "pdf:Producer": {
+        "name": "producer",
+        "definition": "The name of the tool that created the PDF document.",
+        "type": "AgentName"
+      },
+      "pdf:Trapped": {
+        "name": "trapped",
+        "definition": "True when the document has been trapped.",
+        "type": "Boolean"
+      }
+    }
+  },
+  "photoshop": {
+    "name": "photoshop",
+    "label": "Photoshop namespace",
+    "definition": "This namespace specifies properties used by Adobe Photoshop.",
+    "uri": "http://ns.adobe.com/photoshop/1.0/",
+    "prefix": "photoshop",
+    "fields": {
+      "photoshop:ColorMode": {
+        "name": "colorMode",
+        "definition": "The colour mode. One of: 0 = Bitmap , 1 = Gray scale, 2 = Indexed colour, 3 = RGB colour, 4 = CMYK colour, 7 = Multi-channel, 8 = Duotone, 9 = LAB colour",
+        "type": "Integer",
+        "options": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          7,
+          8,
+          9
+        ]
+      },
+      "photoshop:DocumentAncestors": {
+        "name": "documentAncestors",
+        "definition": "If the source document for a copy-and-paste or place operation has a document ID, that ID is added to this list in the destination document's XMP.",
+        "type": "Ancestor",
+        "multiple": true,
+        "ordered": false
+      },
+      "photoshop:History": {
+        "name": "history",
+        "definition": "The history that appears in the FileInfo panel, if activated in the application preferences.",
+        "type": "Text"
+      },
+      "photoshop:ICCProfile": {
+        "name": "ICCProfile",
+        "definition": "The colour profile, such as AppleRGB, AdobeRGB1998.",
+        "type": "Text"
+      },
+      "photoshop:TextLayers": {
+        "name": "textLayers",
+        "definition": "If a document has text layers, this property caches the text for each layer.",
+        "type": "Layer",
+        "multiple": true,
+        "ordered": true
+      },
+      "photoshop:AuthorsPosition": {
+        "name": "authorsPosition",
+        "definition": "By-line title.",
+        "type": "Text"
+      },
+      "photoshop:CaptionWriter": {
+        "name": "captionWriter",
+        "definition": "Writer/editor.",
+        "type": "ProperName"
+      },
+      "photoshop:Category": {
+        "name": "category",
+        "definition": "Category. Limited to 3 7-bit ASCII characters.",
+        "type": "Text",
+        "count": 3,
+        "encoding": "ASCII"
+      },
+      "photoshop:City": {
+        "name": "city",
+        "definition": "City.",
+        "type": "Text"
+      },
+      "photoshop:Country": {
+        "name": "country",
+        "definition": "Country/primary location.",
+        "type": "Text"
+      },
+      "photoshop:Credit": {
+        "name": "credit",
+        "pseudonym": {
+          "exiftool": "photoshop:Credit"
+        },
+        "definition": "Credit.",
+        "type": "Text"
+      },
+      "photoshop:DateCreated": {
+        "name": "dateCreated",
+        "definition": "The date the intellectual content of the document was created, rather than the creation date of the physical representation.",
+        "type": "Date"
+      },
+      "photoshop:Headline": {
+        "name": "headline",
+        "definition": "Headline.",
+        "type": "Text"
+      },
+      "photoshop:Instructions": {
+        "name": "instructions",
+        "definition": "Special instructions.",
+        "type": "Text"
+      },
+      "photoshop:Source": {
+        "name": "source",
+        "pseudonym": {
+          "exiftool": "photoshop:Source"
+        },
+        "definition": "Source.",
+        "type": "Text"
+      },
+      "photoshop:State": {
+        "name": "state",
+        "definition": "Province/state.",
+        "type": "Text"
+      },
+      "photoshop:SupplementalCategories": {
+        "name": "supplementalCategories",
+        "definition": "Supplemental category.",
+        "type": "Text",
+        "multiple": true,
+        "ordered": false
+      },
+      "photoshop:TransmissionReference": {
+        "name": "transmissionReference",
+        "definition": "Original transmission reference.",
+        "type": "Text"
+      },
+      "photoshop:Urgency": {
+        "name": "urgency",
+        "definition": "Urgency. Valid range is 1-8.",
+        "type": "Integer",
+        "minimum": 1,
+        "maximum": 8
+      }
+    }
+  },
+  "camera_raw": {
+    "name": "camera_raw",
+    "label": "Camera Raw namespace",
+    "definition": "This namespace specifies settings associated with image files produced in camera raw mode.",
+    "uri": "http://ns.adobe.com/camera-raw-settings/1.0/",
+    "prefix": "crs",
+    "fields": {
+      "crs:AutoBrightness": {
+        "name": "autoBrightness",
+        "definition": "When true, brightness is automatically adjusted.",
+        "type": "Boolean"
+      },
+      "crs:AutoContrast": {
+        "name": "autoContrast",
+        "definition": "When true, contrast is automatically adjusted.",
+        "type": "Boolean"
+      },
+      "crs:AutoExposure": {
+        "name": "autoExposure",
+        "definition": "When true, exposure is automatically adjusted.",
+        "type": "Boolean"
+      },
+      "crs:AutoShadows": {
+        "name": "autoShadows",
+        "definition": "When true, shadows are automatically adjusted.",
+        "type": "Boolean"
+      },
+      "crs:BlueHue": {
+        "name": "blueHue",
+        "definition": "Blue Hue setting. Range -100 to +100.",
+        "type": "Integer",
+        "minimum": -100,
+        "maximum": 100
+      },
+      "crs:BlueSaturation": {
+        "name": "blueSaturation",
+        "definition": "Blue Saturation setting. Range -100 to +100.",
+        "type": "Integer",
+        "minimum": -100,
+        "maximum": 100
+      },
+      "crs:Brightness": {
+        "name": "brightness",
+        "definition": "Brightness setting. Range 0 to 150",
+        "type": "Integer",
+        "minimum": 0,
+        "maximum": 150
+      },
+      "crs:CameraProfile": {
+        "name": "cameraProfile",
+        "definition": "Camera Profile setting.",
+        "type": "Text"
+      },
+      "crs:ChromaticAberrationB": {
+        "name": "chromaticAberrationB",
+        "definition": "Chomatic Aberration, Fix Blue/Yellow Fringe setting. Range -100 to +100.",
+        "type": "Integer",
+        "minimum": -100,
+        "maximum": 100
+      },
+      "crs:ChromaticAberrationR": {
+        "name": "chromaticAberrationR",
+        "definition": "Chomatic Aberration, Fix Red/Cyan Fringe setting. Range -100 to +100.",
+        "type": "Integer",
+        "minimum": -100,
+        "maximum": 100
+      },
+      "crs:ColorNoiseReduction": {
+        "name": "colorNoiseReduction",
+        "definition": "Color Noise Reducton setting. Range 0 to 100.",
+        "type": "Integer",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "crs:Contrast": {
+        "name": "contrast",
+        "definition": "Contrast setting. Range -50 to 100.",
+        "type": "Integer",
+        "minimum": -50,
+        "maximum": 100
+      },
+      "crs:CropTop": {
+        "name": "cropTop",
+        "definition": "When Has Crop is true, top of crop rectangle.",
+        "type": "Real"
+      },
+      "crs:CropLeft": {
+        "name": "cropLeft",
+        "definition": "When Has Crop is true, left of crop rectangle.",
+        "type": "Real"
+      },
+      "crs:CropBottom": {
+        "name": "cropBottom",
+        "definition": "When Has Crop is true, bottom of crop rectangle.",
+        "type": "Real"
+      },
+      "crs:CropRight": {
+        "name": "cropRight",
+        "definition": "When Has Crop is true, right of crop rectangle.",
+        "type": "Real"
+      },
+      "crs:CropAngle": {
+        "name": "cropAngle",
+        "definition": "When Has Crop is true, angle of crop rectangle.",
+        "type": "Real"
+      },
+      "crs:CropWidth": {
+        "name": "cropWidth",
+        "definition": "Width of resulting cropped image in CropUnits units.",
+        "type": "Real"
+      },
+      "crs:CropHeight": {
+        "name": "cropHeight",
+        "definition": "Height of resulting cropped image in CropUnits units.",
+        "type": "Real"
+      },
+      "crs:CropUnits": {
+        "name": "cropUnits",
+        "definition": "Units for Crop Width and Crop Height. One of: 0=pixels 1=inches 2=cm.",
+        "type": "Integer",
+        "options": [
+          0,
+          1,
+          2
+        ]
+      },
+      "crs:Exposure": {
+        "name": "exposure",
+        "definition": "Exposure setting. Range -4.0 to +4.0.",
+        "type": "Real",
+        "minimum": -4.0,
+        "maximum": 4.0
+      },
+      "crs:GreenHue": {
+        "name": "greenHue",
+        "definition": "Green Hue setting. Range -100 to +100.",
+        "type": "Integer",
+        "minimum": -100,
+        "maximum": 100
+      },
+      "crs:GreenSaturation": {
+        "name": "greenSaturation",
+        "definition": "Green Saturation setting. Range -100 to +100.",
+        "type": "Integer",
+        "minimum": -100,
+        "maximum": 100
+      },
+      "crs:HasCrop": {
+        "name": "hasCrop",
+        "definition": "When true, image has a cropping rectangle.",
+        "type": "Boolean"
+      },
+      "crs:HasSettings": {
+        "name": "hasSettings",
+        "definition": "When true, non-default camera raw settings.",
+        "type": "Boolean"
+      },
+      "crs:LuminanceSmoothing": {
+        "name": "luminanceSmoothing",
+        "definition": "Luminance Smoothing setting. Range 0 to +100.",
+        "type": "Integer",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "crs:RawFileName": {
+        "name": "rawFileName",
+        "definition": "File name for raw file (not a complete path).",
+        "type": "Text"
+      },
+      "crs:RedHue": {
+        "name": "redHue",
+        "definition": "Red Hue setting. Range -100 to +100.",
+        "type": "Integer",
+        "minimum": -100,
+        "maximum": 100
+      },
+      "crs:RedSaturation": {
+        "name": "redSaturation",
+        "definition": "Red Saturation setting. Range -100 to +100.",
+        "type": "Integer",
+        "minimum": -100,
+        "maximum": 100
+      },
+      "crs:Saturation": {
+        "name": "saturation",
+        "definition": "Saturation setting. Range -100 to +100.",
+        "type": "Integer",
+        "minimum": -100,
+        "maximum": 100
+      },
+      "crs:Shadows": {
+        "name": "shadows",
+        "definition": "Shadows setting. Range 0 to +100.",
+        "type": "Integer",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "crs:ShadowTint": {
+        "name": "shadowTint",
+        "definition": "Shadow Tint setting. Range -100 to 100.",
+        "type": "Integer",
+        "minimum": -100,
+        "maximum": 100
+      },
+      "crs:Sharpness": {
+        "name": "sharpness",
+        "definition": "Sharpness setting. Range 0 to 100.",
+        "type": "Integer",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "crs:Temperature": {
+        "name": "temperature",
+        "definition": "Temperature setting. Range 2000 to 50000.",
+        "type": "Integer",
+        "minimum": 2000,
+        "maximum": 50000
+      },
+      "crs:Tint": {
+        "name": "tint",
+        "definition": "Tint setting. Range -150 to 150.",
+        "type": "Integer",
+        "minimum": -150,
+        "maximum": 150
+      },
+      "crs:ToneCurve": {
+        "name": "toneCurve",
+        "definition": "Array of points (Integer, Integer) defining a tone curve.",
+        "type": "Integer",
+        "multiple": true,
+        "ordered": true
+      },
+      "crs:ToneCurveName": {
+        "name": "toneCurveName",
+        "definition": "The name of the Tone Curve described by ToneCurve. One of: Linear , Medium Contrast , Strong Contrast, Custom, or a user-defined preset name.",
+        "type": "Text",
+        "options": [
+          "Linear",
+          "Medium Contrast",
+          "Strong Contrast",
+          "Custom"
+        ],
+        "closed": false
+      },
+      "crs:Version": {
+        "name": "version",
+        "definition": "Version of Camera Raw plugin.",
+        "type": "Text"
+      },
+      "crs:VignetteAmount": {
+        "name": "vignetteAmount",
+        "definition": "Vignetting Amount setting. Range -100 to 100.",
+        "type": "Integer",
+        "minimum": -100,
+        "maximum": 100
+      },
+      "crs:VignetteMidpoint": {
+        "name": "vignetteMidpoint",
+        "definition": "Vignetting Midpoint setting. Range 0 to 100.",
+        "type": "Integer",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "crs:WhiteBalance": {
+        "name": "whiteBalance",
+        "definition": "White Balance setting. One of: As Shot, Auto, Daylight, Cloudy, Shade, Tungsten, Fluorescent, Flash, Custom",
+        "type": "Text",
+        "options": [
+          "As Shot",
+          "Auto",
+          "Daylight",
+          "Cloudy",
+          "Shade",
+          "Tungsten",
+          "Fluorescent",
+          "Flash",
+          "Custom"
+        ]
+      }
+    }
+  },
+  "exif": {
+    "name": "exif",
+    "label": "EXIF namespace",
+    "definition": "EXIF Schema For EXIF-Specific Properties. These properties defined solely by EXIF.",
+    "uri": "http://ns.adobe.com/exif/1.0/",
+    "prefix": "exif",
+    "fields": {
+      "exif:ApertureValue": {
+        "name": "apertureValue",
+        "definition": "EXIF tag 37378, 0x9202. Lens aperture, unit is APEX.",
+        "tag": 37378,
+        "type": "Rational",
+        "unit": "APEX"
+      },
+      "exif:BrightnessValue": {
+        "name": "brightnessValue",
+        "definition": "EXIF tag 37379, 0x9203. Brightness, unit is APEX.",
+        "tag": 37379,
+        "type": "Rational",
+        "unit": "APEX"
+      },
+      "exif:CFAPattern": {
+        "name": "CFAPattern",
+        "definition": "EXIF tag 41730, 0xA302. Color filter array geometric pattern of the image sense.",
+        "tag": 41730,
+        "type": "CFAPattern"
+      },
+      "exif:ColorSpace": {
+        "name": "colorSpace",
+        "definition": "EXIF tag 40961, 0xA001. Color space information: 1 = sRGB, 65535 = uncalibrated",
+        "tag": 40961,
+        "type": "Integer",
+        "options": [
+          1,
+          65535
+        ]
+      },
+      "exif:CompressedBitsPerPixel": {
+        "name": "compressedBitsPerPixel",
+        "definition": "EXIF tag 37122, 0x9102. Compression mode used for a compressed image is indicated in unit bits per pixel.",
+        "tag": 37122,
+        "type": "Rational"
+      },
+      "exif:Contrast": {
+        "name": "contrast",
+        "definition": "EXIF tag 41992, 0xA408. Indicates the direction of contrast processing applied by the camera: 0 = Normal, 1 = Soft, 2 = Hard",
+        "tag": 41992,
+        "type": "Integer",
+        "options": [
+          0,
+          1,
+          2
+        ]
+      },
+      "exif:CustomRendered": {
+        "name": "customRendered",
+        "definition": "EXIF tag 41985, 0xA401. Indicates the use of special processing on image data: 0 = Normal process, 1 = Custom process",
+        "tag": 41985,
+        "type": "Integer",
+        "options": [
+          0,
+          1
+        ]
+      },
+      "exif:DateTimeDigitized": {
+        "name": "dateTimeDigitized",
+        "definition": "EXIF tag 36868, 0x9004 (primary) and 37522, 0x9292 (subseconds). Date and time when image was stored as digital data, can be the same as DateTimeOriginal if originally stored in digital form. Stored in ISO 8601 format. Includes the EXIF SubSecTimeDigitized data. This value is used in XMP as xmp:CreateDate",
+        "tag": 36868,
+        "type": "Date",
+        "related": "exif:SubSecTimeDigitized"
+      },
+      "exif:DateTimeOriginal": {
+        "name": "dateTimeOriginal",
+        "definition": "EXIF tags 36867, 0x9003 (primary) and 37521, 0x9291 (subseconds). Date and time when original image was generated, in ISO 8601 format. Includes the EXIF SubSecTimeOriginal data. Note that Exif date-time values have no time zone information.",
+        "tag": 36867,
+        "type": "Date",
+        "related": "exif:SubSecTimeOriginal"
+      },
+      "exif:DeviceSettingDescription": {
+        "name": "deviceSettingDescription",
+        "definition": "EXIF tag 41995, 0xA40B. Indicates information on the picture-taking conditions of a particular camera model.",
+        "tag": 41995,
+        "type": "DeviceSettings"
+      },
+      "exif:DigitalZoomRatio": {
+        "name": "digitalZoomRatio",
+        "definition": "EXIF tag 41988, 0xA404. Indicates the digital zoom ratio when the image was shot.",
+        "tag": 41988,
+        "type": "Rational"
+      },
+      "exif:ExifVersion": {
+        "name": "exifVersion",
+        "definition": "EXIF tag 36864, 0x9000. EXIF version number.",
+        "tag": 36864,
+        "type": "Text"
+      },
+      "exif:ExposureBiasValue": {
+        "name": "exposureBiasValue",
+        "definition": "EXIF tag 37380, 0x9204. Exposure bias, unit is APEX.",
+        "tag": 37380,
+        "type": "Rational",
+        "unit": "APEX"
+      },
+      "exif:ExposureIndex": {
+        "name": "exposureIndex",
+        "definition": "EXIF tag 41493, 0xA215. Exposure index of input device.",
+        "tag": 41493,
+        "type": "Rational"
+      },
+      "exif:ExposureMode": {
+        "name": "exposureMode",
+        "definition": "EXIF tag 41986, 0xA402. Indicates the exposure mode set when the image was shot: 0 = Auto exposure, 1 = Manual exposure, 2 = Auto bracket",
+        "tag": 41986,
+        "type": "Integer",
+        "options": [
+          0,
+          1,
+          2
+        ]
+      },
+      "exif:ExposureProgram": {
+        "name": "exposureProgram",
+        "definition": "EXIF tag 34850, 0x8822. Class of program used for exposure: 0 = not defined, 1 = Manual, 2 = Normal program, 3 = Aperture priority, 4 = Shutter priority, 5 = Creative program, 6 = Action program, 7 = Portrait mode, 8 = Landscape mode",
+        "tag": 34850,
+        "type": "Integer",
+        "options": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      "exif:ExposureTime": {
+        "name": "exposureTime",
+        "definition": "EXIF tag 33434, 0x829A. Exposure time in seconds.",
+        "tag": 33434,
+        "type": "Rational"
+      },
+      "exif:FileSource": {
+        "name": "fileSource",
+        "definition": "EXIF tag 41728, 0xA300. Indicates image source: 3 (DSC) is the only choice.",
+        "tag": 41728,
+        "type": "Integer",
+        "options": [
+          3
+        ]
+      },
+      "exif:Flash": {
+        "name": "flash",
+        "definition": "EXIF tag 37385, 0x9209. Strobe light (flash) source data.",
+        "tag": 37385,
+        "type": "Flash"
+      },
+      "exif:FlashEnergy": {
+        "name": "flashEnergy",
+        "definition": "EXIF tag 41483, 0xA20B. Strobe energy during image capture.",
+        "tag": 41483,
+        "type": "Rational"
+      },
+      "exif:FlashpixVersion": {
+        "name": "flashpixVersion",
+        "definition": "EXIF tag 40960, 0xA000. Version of FlashPix.",
+        "tag": 40960,
+        "type": "Text"
+      },
+      "exif:FNumber": {
+        "name": "FNumber",
+        "definition": "EXIF tag 33437, 0x829D. F number.",
+        "tag": 33437,
+        "type": "Rational"
+      },
+      "exif:FocalLength": {
+        "name": "focalLength",
+        "definition": "EXIF tag 37386, 0x920A. Focal length of the lens, in millimeters.",
+        "tag": 37386,
+        "type": "Rational",
+        "unit": "mm"
+      },
+      "exif:FocalLengthIn35mmFilm": {
+        "name": "FocalLengthIn35mmFilm",
+        "definition": "EXIF tag 41989, 0xA405. Indicates the equivalent focal length assuming a 35mm film camera, in mm. A value of 0 means the focal length is unknown. Note that this tag differs from the FocalLength tag.",
+        "tag": 41989,
+        "type": "Integer",
+        "unit": "mm"
+      },
+      "exif:FocalPlaneResolutionUnit": {
+        "name": "focalPlaneResolutionUnit",
+        "definition": "EXIF tag 41488, 0xA210. Unit used for FocalPlaneXResolution and FocalPlaneYResolution. 2 = inches, 3 = centimeters",
+        "tag": 41488,
+        "type": "Integer",
+        "options": [
+          2,
+          3
+        ]
+      },
+      "exif:FocalPlaneXResolution": {
+        "name": "focalPlaneXResolution",
+        "definition": "EXIF tag 41486, 0xA20E. Horizontal focal resolution, measured pixels per unit.",
+        "tag": 41486,
+        "type": "Rational",
+        "unit": "pixels"
+      },
+      "exif:FocalPlaneYResolution": {
+        "name": "focalPlaneYResolution",
+        "definition": "EXIF tag 41487, 0xA20F. Vertical focal resolution, measured in pixels per unit.",
+        "tag": 41487,
+        "type": "Rational",
+        "unit": "pixels"
+      },
+      "exif:GainControl": {
+        "name": "gainControl",
+        "definition": "EXIF tag 41991, 0xA407. Indicates the degree of overall image gain adjustment: 0 = None, 1 = Low gain up, 2 = High gain up, 3 = Low gain down, 4 = High gain down",
+        "tag": 41991,
+        "type": "Integer",
+        "options": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "exif:ImageUniqueID": {
+        "name": "imageUniqueID",
+        "definition": "EXIF tag 42016, 0xA420. An identifier assigned uniquely to each image. It is recorded as a 32 character ASCII string, equivalent to hexadecimal notation and 128-bit fixed length.",
+        "tag": 42016,
+        "type": "Text"
+      },
+      "exif:ISOSpeedRatings": {
+        "name": "ISOSpeedRatings",
+        "definition": "EXIF tag 34855, 0x8827. ISO Speed and ISO Latitude of the input device as specified in ISO 12232. A native Exif ISO value of exactly 65535 indicates an ISO value of above 64K, which cannot be stored in the native Exif Tag 34855. The real value should be stored in the XMP.",
+        "tag": 34855,
+        "type": "Integer",
+        "multiple": true,
+        "ordered": true
+      },
+      "exif:LightSource": {
+        "name": "lightSource",
+        "definition": "EXIF tag 37384, 0x9208. Light source: 0 = unknown, 1 = Daylight, 2 = Fluorescent, 3 = Tungsten, 4 = Flash, 9 = Fine weather, 10 = Cloudy weather, 11 = Shade, 12 = Daylight fluorescent (D 5700 – 7100K), 13 = Day white fluorescent (N 4600 – 5400K), 14 = Cool white fluorescent (W 3900 – 4500K), 15 = White fluorescent (WW 3200 – 3700K), 17 = Standard light A, 18 = Standard light B, 19 = Standard light C, 20 = D55, 21 = D65, 22 = D75, 23 = D50, 24 = ISO studio tungsten, 255 = other",
+        "tag": 37384,
+        "type": "Integer",
+        "options": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          255
+        ]
+      },
+      "exif:MaxApertureValue": {
+        "name": "maxApertureValue",
+        "definition": "EXIF tag 37381, 0x9205. Smallest F number of lens, in APEX.",
+        "tag": 37381,
+        "type": "Rational",
+        "unit": "APEX"
+      },
+      "exif:MeteringMode": {
+        "name": "meteringMode",
+        "definition": "EXIF tag 37383, 0x9207. Metering mode: 0 = unknown, 1 = Average, 2 = CenterWeightedAverage, 3 = Spot, 4 = MultiSpot, 5 = Pattern, 6 = Partial, 255 = other",
+        "tag": 37383,
+        "type": "Integer",
+        "options": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          255
+        ]
+      },
+      "exif:OECF": {
+        "name": "OECF",
+        "definition": "EXIF tag 34856, 0x8828. Opto-Electoric Conversion Function as specified in ISO 14524.",
+        "tag": 34856,
+        "type": "OECFSFR"
+      },
+      "exif:PixelXDimension": {
+        "name": "pixelXDimension",
+        "definition": "EXIF tag 40962, 0xA002. Valid image width, in pixels.",
+        "tag": 40962,
+        "type": "Integer",
+        "unit": "pixels"
+      },
+      "exif:PixelYDimension": {
+        "name": "pixelYDimension",
+        "definition": "EXIF tag 40963, 0xA003. Valid image height, in pixels.",
+        "tag": 40963,
+        "type": "Integer",
+        "unit": "pixels"
+      },
+      "exif:RelatedSoundFile": {
+        "name": "relatedSoundFile",
+        "definition": "EXIF tag 40964, 0xA004. An 8.3 file name for the related sound file.",
+        "tag": 40964,
+        "type": "Text"
+      },
+      "exif:Saturation": {
+        "name": "saturation",
+        "definition": "EXIF tag 41993, 0xA409. Indicates the direction of saturation processing applied by the camera: 0 = Normal, 1 = Low saturation, 2 = High saturation",
+        "tag": 40964,
+        "type": "Integer",
+        "options": [
+          0,
+          1,
+          2
+        ]
+      },
+      "exif:SceneCaptureType": {
+        "name": "sceneCaptureType",
+        "definition": "EXIF tag 41990, 0xA406. Indicates the type of scene that was shot: 0 = Standard, 1 = Landscape, 2 = Portrait, 3 = Night scene",
+        "tag": 41990,
+        "type": "Integer",
+        "options": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "exif:SceneType": {
+        "name": "sceneType",
+        "definition": "EXIF tag 41729, 0xA301. Indicates the type of scene: 1 (directly photographed image) is the only choice.",
+        "tag": 41729,
+        "type": "Integer",
+        "options": [
+          1
+        ]
+      },
+      "exif:SensingMethod": {
+        "name": "sensingMethod",
+        "definition": "EXIF tag 41495, 0xA217. Image sensor type on input device: 1 = Not defined, 2 = One-chip colour area sensor, 3 = Two-chip colour area sensor, 4 = Three-chip colour area sensor, 5 = Colour sequential area sensor, 7 = Trilinear sensor, 8 = Colour sequential linear sensor",
+        "tag": 41495,
+        "type": "Integer",
+        "options": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          8
+        ]
+      },
+      "exif:Sharpness": {
+        "name": "sharpness",
+        "definition": "EXIF tag 41994, 0xA40A. Indicates the direction of sharpness processing applied by the camera: 0 = Normal, 1 = Soft, 2 = Hard",
+        "tag": 41994,
+        "type": "Integer",
+        "options": [
+          0,
+          1,
+          2
+        ]
+      },
+      "exif:ShutterSpeedValue": {
+        "name": "shutterSpeedValue",
+        "definition": "EXIF tag 37377, 0x9201. Shutter speed, unit is APEX. See Annex C of the EXIF specification.",
+        "tag": 37377,
+        "type": "Rational"
+      },
+      "exif:SpatialFrequencyResponse": {
+        "name": "spatialFrequencyResponse",
+        "definition": "EXIF tag 41484, 0xA20C. Input device spatial frequency table and SFR values as specified in ISO 12233.",
+        "tag": 41484,
+        "type": "OECFSFR"
+      },
+      "exif:SpectralSensitivity": {
+        "name": "spectralSensitivity",
+        "definition": "EXIF tag 34852, 0x8824. Spectral sensitivity of each channel.",
+        "tag": 34852,
+        "type": "Text"
+      },
+      "exif:SubjectArea": {
+        "name": "subjectArea",
+        "definition": "EXIF tag 37396, 0x9214. The location and area of the main subject in the overall scene.",
+        "tag": 37396,
+        "type": "Integer",
+        "multiple": true,
+        "ordered": true
+      },
+      "exif:SubjectDistance": {
+        "name": "subjectDistance",
+        "definition": "EXIF tag 37382, 0x9206. Distance to subject, in meters.",
+        "tag": 37382,
+        "type": "Rational",
+        "unit": "meters"
+      },
+      "exif:SubjectDistanceRange": {
+        "name": "subjectDistanceRange",
+        "definition": "EXIF tag 41996, 0xA40C. Indicates the distance to the subject: 0 = Unknown, 1 = Macro, 2 = Close view, 3 = Distant view",
+        "tag": 41996,
+        "type": "Integer",
+        "options": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "exif:SubjectLocation": {
+        "name": "subjectLocation",
+        "definition": "EXIF tag 41492, 0xA214. Location of the main subject of the scene. The first value is the horizontal pixel and the second value is the vertical pixel at which the main subject appears.",
+        "tag": 41492,
+        "type": "Integer",
+        "multiple": true,
+        "ordered": true
+      },
+      "exif:UserComment": {
+        "name": "userComment",
+        "definition": "EXIF tag 37510, 0x9286. Comments from user.",
+        "tag": 37510,
+        "type": "LanguageAlternative",
+        "combine": true
+      },
+      "exif:WhiteBalance": {
+        "name": "whiteBalance",
+        "definition": "EXIF tag 41987, 0xA403. Indicates the white balance mode set when the image was shot: 0 = Auto white balance, 1 = Manual white balance.",
+        "tag": 41987,
+        "type": "Integer",
+        "options": [
+          0,
+          1
+        ]
+      },
+      "exif:GPSAltitude": {
+        "name": "GPSAltitude",
+        "definition": "GPS tag 6, 0x06. Indicates altitude in meters.",
+        "tag": 6,
+        "type": "Rational",
+        "unit": "meters"
+      },
+      "exif:GPSAltitudeRef": {
+        "name": "GPSAltitudeRef",
+        "definition": "GPS tag 5, 0x5. Indicates whether the altitude is above or below sea level: 0 = Above sea level, 1 = Below sea level",
+        "tag": 5,
+        "type": "Integer",
+        "options": [
+          0,
+          1
+        ]
+      },
+      "exif:GPSAreaInformation": {
+        "name": "GPSAreaInformation",
+        "definition": "GPS tag 28, 0x1C. A character string recording the name of the GPS area.",
+        "tag": 28,
+        "type": "Text"
+      },
+      "exif:GPSDestBearing": {
+        "name": "GPSDestBearing",
+        "definition": "GPS tag 24, 0x18. Destination bearing, values from 0 to 359.99.",
+        "tag": 24,
+        "type": "Rational",
+        "minimum": 0,
+        "maximum": 359.99
+      },
+      "exif:GPSDestBearingRef": {
+        "name": "GPSDestBearingRef",
+        "definition": "GPS tag 23, 0x17. Reference for movement direction: T = true direction, M = magnetic direction",
+        "tag": 23,
+        "type": "Text",
+        "options": [
+          "T",
+          "M"
+        ]
+      },
+      "exif:GPSDestDistance": {
+        "name": "GPSDestDistance",
+        "definition": "GPS tag 26, 0x1A. Distance to destination.",
+        "tag": 26,
+        "type": "Rational"
+      },
+      "exif:GPSDestDistanceRef": {
+        "name": "GPSDestDistanceRef",
+        "definition": "GPS tag 25, 0x19. Units used for speed measurement: \"K\" = kilometers, \"M\" = miles, \"N\" = knots",
+        "tag": 25,
+        "type": "Text",
+        "options": [
+          "K",
+          "MN"
+        ]
+      },
+      "exif:GPSDestLatitude": {
+        "name": "GPSDestLatitude",
+        "definition": "GPS tag 20, 0x14 (position) and 19, 0x13 (North/South). Indicates destination latitude.",
+        "tag": 20,
+        "type": "Text"
+      },
+      "exif:GPSDestLongitude": {
+        "name": "GPSDestLongitude",
+        "definition": "GPS tag 22, 0x16 (position) and 21, 0x15 (East/West). Indicates destination longitude.",
+        "tag": 22,
+        "type": "Text"
+      },
+      "exif:GPSDifferential": {
+        "name": "GPSDifferential",
+        "definition": "GPS tag 30, 0x1E. Indicates whether differential correction is applied to the GPS receiver: 0 = Without correction, 1 = Correction applied",
+        "tag": 30,
+        "type": "Integer",
+        "options": [
+          0,
+          1
+        ]
+      },
+      "exif:GPSDOP": {
+        "name": "GPSDOP",
+        "definition": "GPS tag 11, 0x0B. Degree of precision for GPS data.",
+        "tag": 11,
+        "type": "Rational"
+      },
+      "exif:GPSImgDirection": {
+        "name": "GPSImgDirection",
+        "definition": "GPS tag 17, 0x11. Direction of image when captured, values range from 0 to 359.99.",
+        "tag": 17,
+        "type": "Rational",
+        "minimum": 0,
+        "maximum": 359.99
+      },
+      "exif:GPSImgDirectionRef": {
+        "name": "GPSImgDirectionRef",
+        "definition": "GPS tag 16, 0x10. Reference for movement direction: \"T\" = true direction, \"M\" = magnetic direction",
+        "tag": 16,
+        "type": "Text",
+        "options": [
+          "T",
+          "M"
+        ]
+      },
+      "exif:GPSLatitude": {
+        "name": "GPSLatitude",
+        "definition": "GPS tag 2, 0x02 (position) and 1, 0x01 (North/South). Indicates latitude.",
+        "tag": 2,
+        "type": "Text"
+      },
+      "exif:GPSLongitude": {
+        "name": "GPSLongitude",
+        "definition": "GPS tag 4, 0x04 (position) and 3, 0x03 (East/West). Indicates longitude.",
+        "tag": 4,
+        "type": "Text"
+      },
+      "exif:GPSMapDatum": {
+        "name": "GPSMapDatum",
+        "definition": "GPS tag 18, 0x12. Geodetic survey data.",
+        "tag": 18,
+        "type": "Text"
+      },
+      "exif:GPSMeasureMode": {
+        "name": "GPSMeasureMode",
+        "definition": "GPS tag 10, 0x0A. GPS measurement mode, Text type: \"2\" = two-dimensional measurement, \"3\" = three-dimensional measurement.",
+        "tag": 10,
+        "type": "Text",
+        "options": [
+          "2",
+          "3"
+        ]
+      },
+      "exif:GPSProcessingMethod": {
+        "name": "GPSProcessingMethod",
+        "definition": "GPS tag 27, 0x1B. A character string recording the name of the method used for location finding.",
+        "tag": 27,
+        "type": "Text"
+      },
+      "exif:GPSSatellites": {
+        "name": "GPSSatellites",
+        "definition": "GPS tag 8, 0x08. Satellite information, format is unspecified.",
+        "tag": 8,
+        "type": "Text"
+      },
+      "exif:GPSSpeed": {
+        "name": "GPSSpeed",
+        "definition": "GPS tag 13, 0x0D. Speed of GPS receiver movement.",
+        "tag": 13,
+        "type": "Rational"
+      },
+      "exif:GPSSpeedRef": {
+        "name": "GPSSpeedRef",
+        "definition": "GPS tag 12, 0x0C. Units used for speed measurement: \"K\" = kilometers per hour, \"M\" = miles per hour, \"N\" = knots",
+        "tag": 12,
+        "type": "Text",
+        "options": [
+          "K",
+          "M",
+          "N"
+        ]
+      },
+      "exif:GPSStatus": {
+        "name": "GPSStatus",
+        "definition": "GPS tag 9, 0x09. Status of GPS receiver at image creation time: \"A\" = measurement in progress, \"V\" = measurement is interoperability",
+        "tag": 9,
+        "type": "Text",
+        "options": [
+          "A",
+          "V"
+        ]
+      },
+      "exif:GPSTimeStamp": {
+        "name": "GPSTimeStamp",
+        "definition": "GPS tag 29 (date), 0x1D, and, and GPS tag 7 (time), 0x07. Time stamp of GPS data, in Coordinated Universal Time. NOTE: The GPSDateStamp tag is new in EXIF 2.2. The GPS timestamp in EXIF 2.1 does not include a date. If not present, the date component for the XMP should be taken from exif:DateTimeOriginal, or if that is also lacking from exif:DateTimeDigitized. If no date is available, do not write exif:GPSTimeStamp to XMP.",
+        "tag": 29,
+        "type": "Date"
+      },
+      "exif:GPSTrack": {
+        "name": "GPSTrack",
+        "definition": "GPS tag 15, 0x0F. Direction of GPS movement, values range from 0 to 359.99.",
+        "tag": 15,
+        "type": "Rational",
+        "minimum": 0,
+        "maximum": 359.99
+      },
+      "exif:GPSTrackRef": {
+        "name": "GPSTrackRef",
+        "definition": "GPS tag 14, 0x0E. Reference for movement direction: \"T\" = true direction, \"M\" = magnetic direction",
+        "tag": 14,
+        "type": "Text",
+        "options": [
+          "T",
+          "M"
+        ]
+      },
+      "exif:GPSVersionID": {
+        "name": "GPSVersionID",
+        "definition": "GPS tag 0, 0x00. A decimal encoding of each of the four EXIF bytes with period separators. The current value is \"2.3.0.0\".",
+        "tag": 0,
+        "type": "Text"
+      }
+    }
+  },
+  "tiff": {
+    "name": "tiff",
+    "label": "TIFF namespace",
+    "definition": "EXIF properties for TIFF-derived data.",
+    "uri": "http://ns.adobe.com/tiff/1.0/",
+    "prefix": "tiff",
+    "fields": {
+      "tiff:Artist": {
+        "name": "artist",
+        "definition": "Camera owner, photographer or image creator. NOTE: This property is stored in XMP as the first item in the dc:creator array.",
+        "type": "ProperName"
+      },
+      "tiff:BitsPerSample": {
+        "name": "bitsPerSample",
+        "definition": "Number of bits per component in each channel.",
+        "type": "Integer",
+        "multiple": true,
+        "ordered": true
+      },
+      "tiff:Compression": {
+        "name": "compression",
+        "definition": "Compression scheme. 1 = Uncompressed , 6 = JPEG.",
+        "type": "Integer",
+        "options": [
+          1,
+          6
+        ]
+      },
+      "tiff:Copyright": {
+        "name": "Copyright",
+        "pseudonym": {
+          "exiftool": "Copyright"
+        },
+        "definition": "Copyright information as an ASCII string. NOTE: This property is stored in XMP as dc:rights.",
+        "type": "LanguageAlternative",
+        "combine": true
+      },
+      "tiff:DateTime": {
+        "name": "DateTime",
+        "definition": "Date and time when the file was last modified (no time zone in EXIF), stored in ISO 8601 format, not the original EXIF format. This property includes the value for the EXIF SubSecTime(37520, 0x9290) attribute. NOTE: This property is stored in XMP as xmp:ModifyDate.",
+        "type": "Date"
+      },
+      "tiff:ImageDescription": {
+        "name": "ImageDescription",
+        "definition": "The title of the image as an ASCII string. NOTE: This property is stored in XMP as dc:description.",
+        "type": "LanguageAlternative",
+        "combine": true
+      },
+      "tiff:ImageLength": {
+        "name": "ImageLength",
+        "alias": "ImageHeight",
+        "definition": "Image height in pixels.",
+        "type": "Integer",
+        "unit": "pixels"
+      },
+      "tiff:ImageWidth": {
+        "name": "ImageWidth",
+        "definition": "Image width in pixels.",
+        "type": "Integer",
+        "unit": "pixels"
+      },
+      "tiff:Make": {
+        "name": "Make",
+        "definition": "Manufacturer of recording equipment as an ASCII string.",
+        "type": "ProperName",
+        "encoding": "ASCII"
+      },
+      "tiff:Model": {
+        "name": "Model",
+        "definition": "Model name or number of equipment as an ASCII string.",
+        "type": "ProperName",
+        "encoding": "ASCII"
+      },
+      "tiff:Orientation": {
+        "name": "Orientation",
+        "definition": "Orientation: 1 = 0th row at the top, 0th column at left, 2 = 0th row at the top, 0th column at right, 3 = 0th row at the bottom, 0th column at right, 4 = 0th row at the bottom, 0th column at left, 5 = 0th row at the left, 0th column at top, 6 = 0th row at the right, 0th column at top, 7 = 0th row at the right, 0th column at bottom, 8 = 0th row at the left, 0th column at bottom.",
+        "type": "Integer",
+        "options": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      "tiff:PhotometricInterpretation": {
+        "name": "photometricInterpretation",
+        "definition": "Pixel Composition: 2 = RGB, 6 = YCbCr.",
+        "type": "Integer",
+        "options": [
+          2,
+          6
+        ]
+      },
+      "tiff:PlanarConfiguration": {
+        "name": "planarConfiguration",
+        "definition": "Data layout: 1 = chunky, 2 = planar",
+        "type": "Integer",
+        "options": [
+          1,
+          2
+        ]
+      },
+      "tiff:PrimaryChromaticities": {
+        "name": "primaryChromaticities",
+        "definition": "Chromaticity of the three primary colors.",
+        "type": "Rational",
+        "multiple": true,
+        "ordered": true
+      },
+      "tiff:ReferenceBlackWhite": {
+        "name": "referenceBlackWhite",
+        "definition": "Reference black and white point values.",
+        "type": "Rational",
+        "multiple": true,
+        "ordered": true
+      },
+      "tiff:ResolutionUnit": {
+        "name": "resolutionUnit",
+        "definition": "Unit used for XResolution and YResolution. Value is one of 2 = Inches, 3 = Centimeters.",
+        "type": "Integer",
+        "options": [
+          2,
+          3
+        ]
+      },
+      "tiff:SamplesPerPixel": {
+        "name": "samplesPerPixel",
+        "definition": "Number of components per pixel.",
+        "type": "Integer"
+      },
+      "tiff:Software": {
+        "name": "software",
+        "definition": "Software or firmware used to generate image. NOTE: This property is stored in XMP as xmp:CreatorTool.",
+        "type": "AgentName"
+      },
+      "tiff:TransferFunction": {
+        "name": "transferFunction",
+        "definition": "Transfer function for image described in tabular style with 3 * 256 entries.",
+        "type": "Integer",
+        "multiple": true,
+        "ordered": true,
+        "count": 768
+      },
+      "tiff:WhitePoint": {
+        "name": "whitePoint",
+        "definition": "Chromaticity of white point.",
+        "type": "Rational",
+        "multiple": true,
+        "ordered": true
+      },
+      "tiff:XResolution": {
+        "name": "XResolution",
+        "definition": "Horizontal resolution in pixels per unit.",
+        "type": "Rational"
+      },
+      "tiff:YResolution": {
+        "name": "YResolution",
+        "definition": "Vertical resolution in pixels per unit.",
+        "type": "Rational"
+      },
+      "tiff:YCbCrCoefficients": {
+        "name": "YCbCrCoefficients",
+        "definition": "Matrix coefficients for RGB to YCbCr transformation.",
+        "type": "Rational",
+        "multiple": true,
+        "ordered": true
+      },
+      "tiff:YCbCrPositioning": {
+        "name": "YCbCrPositioning",
+        "definition": "Position of chrominance vs. luminance components: 1 = centered, 2 = co-sited.",
+        "type": "Integer",
+        "options": [
+          1,
+          2
+        ]
+      },
+      "tiff:YCbCrSubSampling": {
+        "name": "YCbCrSubSampling",
+        "definition": "Sampling ratio of chrominance components: [2,1] = YCbCr4:2:2, [2,2] = YCbCr4:2:0.",
+        "type": "Integer",
+        "multiple": true,
+        "ordered": true
+      }
+    }
+  },
+  "dc": {
+    "name": "dc",
+    "label": "Dublin Core namespace",
+    "definition": "The Dublin Core namespace provides a set of commonly used properties. The names and usage shall be as defined in the Dublin Core Metadata Element Set, created by the Dublin Core Metadata Initiative (DCMI).",
+    "uri": "http://purl.org/dc/elements/1.1/",
+    "prefix": "dc",
+    "fields": {
+      "dc:contributor": {
+        "name": "Contributor",
+        "pseudonym": {
+          "exiftool": "-XMP-dc:Contributor"
+        },
+        "definition": "DCMI definition: An entity responsible for making contributions to the resource. DCMI comment: Examples of a contributor include a person, an organization, or a service. Typically, the name of a contributor should be used to indicate the entity. XMP addition: XMP usage is a list of contributors. These contributors should not include those listed in dc:creator.",
+        "type": "ProperName",
+        "multiple": true,
+        "ordered": false
+      },
+      "dc:coverage": {
+        "name": "Coverage",
+        "pseudonym": {
+          "exiftool": "-XMP-dc:Coverage"
+        },
+        "definition": "DCMI definition: The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant. XMP addition: XMP usage is the extent or scope of the resource.",
+        "type": "Text"
+      },
+      "dc:creator": {
+        "name": "Creator",
+        "pseudonym": {
+          "exiftool": "-XMP-dc:Creator"
+        },
+        "definition": "DCMI definition: An entity primarily responsible for making the resource. DCMI comment: Examples of a creator include a person, an organization, or a service. Typically, the name of a creator should be used to indicate the entity. XMP addition: XMP usage is a list of creators. Entities should be listed in order of decreasing precedence, if such order is significant.",
+        "type": "ProperName",
+        "multiple": true,
+        "ordered": true
+      },
+      "dc:date": {
+        "name": "date",
+        "pseudonym": {
+          "exiftool": "-XMP-dc:Date"
+        },
+        "definition": "DCMI definition: A point or period of time associated with an event in the life cycle of the resource.",
+        "type": "Date",
+        "multiple": true,
+        "ordered": true
+      },
+      "dc:description": {
+        "name": "Description",
+        "pseudonym": {
+          "exiftool": "-XMP-dc:Description"
+        },
+        "definition": "DCMI definition: An account of the resource. XMP addition: XMP usage is a list of textual descriptions of the content of the resource, given in various languages.",
+        "type": "LanguageAlternative",
+        "combine": true
+      },
+      "dc:format": {
+        "name": "Format",
+        "pseudonym": {
+          "exiftool": "-XMP-dc:Format"
+        },
+        "definition": "DCMI definition: The file format, physical medium, or dimensions of the resource. DCMI comment: Examples of dimensions include size and duration. Recommended best practice is to use a controlled vocabulary such as the list of Internet Media Types [MIME]. XMP addition: XMP usage is a MIME type. Dimensions would be stored using a media-specific property, beyond the scope of this document.",
+        "type": "MIMEType"
+      },
+      "dc:identifier": {
+        "name": "Identifier",
+        "pseudonym": {
+          "exiftool": "-XMP-dc:Identifier"
+        },
+        "definition": "DCMI definition: An unambiguous reference to the resource within a given context. DCMI comment: Recommended best practice is to identify the resource by means of a string conforming to a formal identification system.",
+        "type": "Text"
+      },
+      "dc:language": {
+        "name": "Language",
+        "pseudonym": {
+          "exiftool": "-XMP-dc:Language"
+        },
+        "definition": "DCMI definition: A language of the resource. XMP addition: XMP usage is a list of languages used in the content of the resource.",
+        "type": "Locale",
+        "multiple": true,
+        "ordered": false
+      },
+      "dc:publisher": {
+        "name": "Publisher",
+        "pseudonym": {
+          "exiftool": "-XMP-dc:Publisher"
+        },
+        "definition": "DCMI definition: An entity responsible for making the resource available. DCMI comment: Examples of a publisher include a person, an organization, or a service. Typically, the name of a publisher should be used to indicate the entity. XMP addition: XMP usage is a list of publishers.",
+        "type": "ProperName",
+        "multiple": true,
+        "ordered": false
+      },
+      "dc:relation": {
+        "name": "Relation",
+        "pseudonym": {
+          "exiftool": "-XMP-dc:Relation"
+        },
+        "definition": "DCMI definition: A related resource.DCMI comment: Recommended best practice is to identify the related resource by means of a string conforming to a formal identification system. XMP addition: XMP usage is a list of related resources.",
+        "type": "Text",
+        "multiple": true,
+        "ordered": false
+      },
+      "dc:rights": {
+        "name": "Rights",
+        "pseudonym": {
+          "exiftool": "-XMP-dc:Rights"
+        },
+        "definition": "DCMI definition: Information about rights held in and over the resource. DCMI comment: Typically, rights information includes a statement about various property rights associated with the resource, including intellectual property rights. XMP addition: XMP usage is a list of informal rights statements, given in various languages.",
+        "type": "LanguageAlternative",
+        "combine": true
+      },
+      "dc:source": {
+        "name": "Source",
+        "pseudonym": {
+          "exiftool": "-XMP-dc:Source"
+        },
+        "definition": "DCMI definition: A related resource from which the described resource is derived. DCMI comment: The described resource may be derived from the related resource in whole or in part. Recommended best practice is to identify the related resource by means of a string conforming to a formal identification system.",
+        "type": "Text"
+      },
+      "dc:subject": {
+        "name": "Subject",
+        "pseudonym": {
+          "exiftool": "-XMP-dc:Subject"
+        },
+        "definition": "DCMI definition: The topic of the resource.DCMI comment: Typically, the subject will be represented using keywords, key phrases, or classification codes. Recommended best practice is to use a controlled vocabulary. To describe the spatial or temporal topic of the resource, use the dc:coverage element. XMP addition: XMP usage is a list of descriptive phrases or keywords that specify the content of the resource.",
+        "type": "Text",
+        "multiple": true,
+        "ordered": false
+      },
+      "dc:title": {
+        "name": "Title",
+        "pseudonym": {
+          "exiftool": "-XMP-dc:Title"
+        },
+        "definition": "DCMI definition: A name given to the resource. DCMI comment: Typically, a title will be a name by which the resource is formally known. XMP addition: XMP usage is a title or name, given in various languages.",
+        "type": "LanguageAlternative",
+        "combine": true
+      },
+      "dc:type": {
+        "name": "Type",
+        "pseudonym": {
+          "exiftool": "-XMP-dc:Type"
+        },
+        "definition": "DCMI definition: The nature or genre of the resource. DCMI comment: Recommended best practice is to use a controlled vocabulary such as the DCMI Type Vocabulary [DCMITYPE]. To describe the file format, physical medium, or dimensions of the resource, use the dc:format element. XMP addition: See the dc:format entry for clarification of the XMP usage of that element.",
+        "type": "Text",
+        "multiple": true,
+        "ordered": false
+      }
+    }
+  },
+  "iptc_core": {
+    "name": "iptc_core",
+    "label": "IPTC Core namespace",
+    "definition": "IPTC Photo Metadata provides data about photographs and the values can be processed by software. Each individual metadata entity is called a property and they are grouped into Administrative, Descriptive and Rights Related properties.",
+    "uri": "http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/",
+    "prefix": "Iptc4xmpCore",
+    "alias": "iptc",
+    "fields": {
+      "Iptc4xmpCore:CreatorContactInfo": {
+        "name": "creatorContactInfo",
+        "pseudonym": {
+          "exiftool": "XMP-iptcCore:CreatorContactInfo"
+        },
+        "definition": "The creator contact information provides all necessary information to get in contact with the creator of this news object and comprises a set of sub-properties for proper addressing.",
+        "type": "ContactInfo",
+        "structure": "Iptc4xmpCore:CreatorContactInfo"
+      },
+      "Iptc4xmpCore:CiAdrExtadr": {
+        "name": "CreatorContactAddress",
+        "pseudonym": {
+          "exiftool": "CreatorAddress"
+        },
+        "definition": null,
+        "type": "Text",
+        "structure": "Iptc4xmpCore:CreatorContactInfo"
+      },
+      "Iptc4xmpCore:CiAdrCity": {
+        "name": "CreatorContactCity",
+        "pseudonym": {
+          "exiftool": "CreatorCity"
+        },
+        "definition": null,
+        "type": "Text",
+        "structure": "Iptc4xmpCore:CreatorContactInfo"
+      },
+      "Iptc4xmpCore:CiAdrCtry": {
+        "name": "CreatorContactCountry",
+        "pseudonym": {
+          "exiftool": "CreatorCountry"
+        },
+        "definition": null,
+        "type": "Text",
+        "structure": "Iptc4xmpCore:CreatorContactInfo"
+      },
+      "Iptc4xmpCore:CiAdrPcode": {
+        "name": "CreatorContactPostalCode",
+        "pseudonym": {
+          "exiftool": "CreatorPostalCode"
+        },
+        "definition": null,
+        "type": "Text",
+        "structure": "Iptc4xmpCore:CreatorContactInfo"
+      },
+      "Iptc4xmpCore:CiAdrRegion": {
+        "name": "CreatorContactRegion",
+        "pseudonym": {
+          "exiftool": "CreatorRegion"
+        },
+        "definition": null,
+        "type": "Text",
+        "structure": "Iptc4xmpCore:CreatorContactInfo"
+      },
+      "Iptc4xmpCore:CiEmailWork": {
+        "name": "CreatorContactWorkEmail",
+        "pseudonym": {
+          "exiftool": "CreatorWorkEmail"
+        },
+        "definition": null,
+        "type": "Text",
+        "structure": "Iptc4xmpCore:CreatorContactInfo"
+      },
+      "Iptc4xmpCore:CiUrlWork": {
+        "name": "CreatorContactWorkURL",
+        "pseudonym": {
+          "exiftool": "CreatorWorkURL"
+        },
+        "definition": null,
+        "type": "URL",
+        "structure": "Iptc4xmpCore:CreatorContactInfo"
+      },
+      "Iptc4xmpCore:IntellectualGenre": {
+        "name": "intellectualGenre",
+        "definition": "Describes the nature, intellectual or journalistic characteristic of a news object, not specifically its content.",
+        "type": "Text"
+      },
+      "Iptc4xmpCore:Scene": {
+        "name": "scene",
+        "definition": "Describes the scene of a photo content. Specifies one ore more terms from the IPTC Scene-NewsCodes. Each Scene is represented as a string of 6 digits in an unordered list.",
+        "type": "Text",
+        "multiple": true,
+        "ordered": false
+      },
+      "Iptc4xmpCore:Location": {
+        "name": "location",
+        "definition": "Name of a location the content is focussing on -- either the location shown in visual media or referenced by text or audio media. This location name could either be the name of a sublocation to a city or the name of a well known location or (natural) monument outside a city. In the sense of a sublocation to a city this element is at the fourth level of a top-down geographical hierarchy.",
+        "type": "Text"
+      },
+      "Iptc4xmpCore:CountryCode": {
+        "name": "countryCode",
+        "definition": "Code of the country the content is focussing on -- either the country shown in visual media or referenced in text or audio media. This element is at the top/first level of a top-down geographical hierarchy. The code should be taken from ISO 3166 two or three letter code. The full name of a country should go to the \"Country\" element.",
+        "type": "Locale"
+      },
+      "Iptc4xmpCore:SubjectCode": {
+        "name": "subjectCode",
+        "definition": "Specifies one or more Subjects from the IPTC Subject-NewsCodes taxonomy to categorize the content. Each Subject is represented as a string of 8 digits in an unordered list.",
+        "type": "Text",
+        "multiple": true,
+        "ordered": false
+      }
+    },
+    "structures": {
+      "Iptc4xmpCore:CreatorContactInfo": {
+        "name": "CreatorContactInfo",
+        "type": "Bag",
+        "kind": "List"
+      }
+    }
+  },
+  "iptc_extended": {
+    "name": "iptc_extended",
+    "label": "IPTC Extended namespace",
+    "definition": "IPTC Photo Metadata provides data about photographs and the values can be processed by software. Each individual metadata entity is called a property and they are grouped into Administrative, Descriptive and Rights Related properties.",
+    "uri": "http://iptc.org/std/Iptc4xmpExt/2008-02-29/",
+    "prefix": "Iptc4xmpExt",
+    "alias": "iptc",
+    "fields": {
+      "Iptc4xmpExt:AOCircaDateCreated": {
+        "name": "AOCircaDateCreated",
+        "alias": [
+          "ArtworkOrObjectCircaDateCreated",
+          "ArtworkCircaDateCreated",
+          "ObjectCircaDateCreated"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkCircaDateCreated"
+        },
+        "definition": "Approximate date or range of dates associated with the creation and production of an artwork or object or its components.",
+        "type": "Text",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AOContentDescription": {
+        "name": "AOContentDescription",
+        "alias": [
+          "ArtworkOrObjectContentDescription",
+          "ArtworkContentDescription",
+          "ObjectContentDescription"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkContentDescription"
+        },
+        "definition": "A textual description of the content depicted in the artwork or object.",
+        "type": "Text",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AOContributionDescription": {
+        "name": "AOContributionDescription",
+        "alias": [
+          "ArtworkOrObjectContributionDescription",
+          "ArtworkContributionDescription",
+          "ObjectContributionDescription"
+        ],
+        "definition": "A textual description about a contribution made to an artwork or an object.",
+        "type": "Text",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AOCopyrightNotice": {
+        "name": "AOCopyrightNotice",
+        "alias": [
+          "ArtworkOrObjectCopyrightNotice",
+          "ArtworkCopyrightNotice",
+          "ObjectCopyrightNotice"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkCopyrightNotice"
+        },
+        "definition": "Contains any necessary copyright notice for claiming the intellectual property for artwork or an object in the image and should identify the current owner of the copyright of this work with associated intellectual property rights.",
+        "type": "Text",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AOCreator": {
+        "name": "AOCreator",
+        "alias": [
+          "ArtworkOrObjectCreator",
+          "ArtworkCreator",
+          "ObjectCreator"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkCreator"
+        },
+        "definition": "Contains the name of the artist who has created artwork or an object in the image. In cases where the artist could or should not be identified the name of a company or organisation may be appropriate.",
+        "type": "Text",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AOCreatorID": {
+        "name": "AOCreatorID",
+        "alias": [
+          "ArtworkOrObjectCreatorID",
+          "ArtworkCreatorID",
+          "ObjectCreatorID"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkCreatorID"
+        },
+        "definition": "Globally unique identifier for the creator of artwork or object.",
+        "type": "Text",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AOCurrentCopyrightOwnerID": {
+        "name": "AOCurrentCopyrightOwnerID",
+        "alias": [
+          "ArtworkOrObjectCopyrightOwnerID",
+          "ArtworkCopyrightOwnerID",
+          "ObjectCopyrightOwnerID"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkCopyrightOwnerID"
+        },
+        "definition": "Globally unique identifier for the current owner of the copyright of the artwork or object.",
+        "type": "Text",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AOCurrentCopyrightOwnerName": {
+        "name": "AOCurrentCopyrightOwnerName",
+        "alias": [
+          "ArtworkOrObjectCopyrightOwnerName",
+          "ArtworkCopyrightOwnerName",
+          "ObjectCopyrightOwnerName"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkCopyrightOwnerName"
+        },
+        "definition": "Name of the current owner of the copyright of the artwork or object.",
+        "type": "Text",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AOCurrentLicensorID": {
+        "name": "AOCurrentLicensorID",
+        "alias": [
+          "ArtworkOrObjectCurrentLicensorID",
+          "ArtworkCurrentLicensorID",
+          "ObjectCurrentLicensorID"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkCurrentLicensorID"
+        },
+        "definition": "Globally unique identifier for the current licensor of the artwork or object.",
+        "type": "Text",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AOCurrentLicensorName": {
+        "name": "AOCurrentLicensorName",
+        "alias": [
+          "ArtworkOrObjectCurrentLicensorName",
+          "ArtworkCurrentLicensorName",
+          "ObjectCurrentLicensorName"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkCurrentLicensorName"
+        },
+        "definition": "Name of the current licensor of the artwork or object.",
+        "type": "Text",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AODateCreated": {
+        "name": "AODateCreated",
+        "alias": [
+          "ArtworkOrObjectDateCreated",
+          "ArtworkDateCreated",
+          "ObjectDateCreated"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkDateCreated"
+        },
+        "definition": "Designates the date and optionally the time the artwork or object in the image was created. This relates to artwork or objects with associated intellectual property rights.",
+        "type": "DateTime",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AOPhysicalDescription": {
+        "name": "AOPhysicalDescription",
+        "alias": [
+          "ArtworkOrObjectPhysicalDescription",
+          "ArtworkPhysicalDescription",
+          "ObjectPhysicalDescription"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkPhysicalDescription"
+        },
+        "definition": "A textual description of the physical characteristics of the artwork or object, without reference to the content depicted.",
+        "type": "Text",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AOSource": {
+        "name": "AOSource",
+        "alias": [
+          "ArtworkOrObjectSource",
+          "ArtworkSource",
+          "ObjectSource"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkSource"
+        },
+        "definition": "The organisation or body holding and registering the artwork or object in the image for inventory purposes.",
+        "type": "Text",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AOSourceInvNo": {
+        "name": "AOSourceInvNo",
+        "alias": [
+          "ArtworkOrObjectSourceInventoryNo",
+          "ArtworkSourceInventoryNo",
+          "ObjectSourceInventoryNo"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkSourceInventoryNo"
+        },
+        "definition": "The inventory number issued by the organisation or body holding and registering the artwork or object in the image.",
+        "type": "Text",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AOSourceInvURL": {
+        "name": "AOSourceInvURL",
+        "alias": [
+          "ArtworkOrObjectSourceInventoryURL",
+          "ArtworkSourceInventoryURL",
+          "ObjectSourceInventoryURL"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkSourceInvURL"
+        },
+        "definition": "URL reference to the metadata record of the inventory maintained by the Source.",
+        "type": "URL",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AOStylePeriod": {
+        "name": "AOStylePeriod",
+        "alias": [
+          "ArtworkOrObjectStylePeriod",
+          "ArtworkStylePeriod",
+          "ObjectStylePeriod"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkStylePeriod"
+        },
+        "definition": "The style, historical or artistic period, movement, group, or school whose characteristics are represented in the artwork or object.",
+        "type": "Text",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      },
+      "Iptc4xmpExt:AOTitle": {
+        "name": "AOTitle",
+        "alias": [
+          "ArtworkOrObjectTitle",
+          "ArtworkTitle",
+          "ObjectTitle"
+        ],
+        "pseudonym": {
+          "exiftool": "ArtworkTitle"
+        },
+        "definition": "A reference for the artwork or object in the image.",
+        "type": "Text",
+        "structure": "Iptc4xmpExt:ArtworkOrObject"
+      }
+    },
+    "structures": {
+      "Iptc4xmpExt:ArtworkOrObject": {
+        "name": "ArtworkOrObject",
+        "type": "Bag",
+        "kind": "List"
+      }
+    }
+  }
+}
