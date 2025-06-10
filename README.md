@@ -110,11 +110,11 @@ documentation, detailing each model's available namespaces and fields:
 | XMP            | [XMP Namespaces & Fields](./documentation/models/xmp.md)   |
 
 The EXIFData library also offers some convenience methods to make it easy to read and
-write the supported embedded metadata with supported image file formats; currently the
+write the supported embedded metadata in supported image file formats; currently the
 library relies on the PyVIPS library to read and write the image files, and perform the
-extraction and insertion of the raw metadata payloads from the image files, handing off
-responsibility to this library to decode and encode the raw metadata payloads and their
-nested namespaces, fields and values.
+extraction and insertion of the raw metadata payloads, before handing off responsibility
+to the EXIFData library to decode and encode the raw metadata payloads and their nested
+namespaces, fields and values.
 
 See the [Classes & Methods](#classes-and-methods) section below for more information on
 the available interfaces and their use; and see the [Supported File Formats](#file-formats)
