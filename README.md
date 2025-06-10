@@ -350,7 +350,7 @@ binary encoded metadata payload obtained from the associated image and attemptin
 parse the fields and values from the payload, and if successful, assigning those fields
 and corresponding values to the current metadata model class instance for later use.
 
-* `dump(all: bool = False)` (`caselessdict[str, object]``) – The `dump()` method is used
+* `dump(all: bool = False)` (`caselessdict[str, object]`) – The `dump()` method is used
 for development and can be used to obtain a dictionary of the metadata model's assigned
 values with each value being associated against the model's field name. A dictionary is
 returned that supports case-less matching of its keys so values can be retrieved if a
