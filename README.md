@@ -5,8 +5,8 @@ embedded image metadata in the EXIF, IPTC and XMP formats. The library can be us
 parse and create metadata in these formats which can be read from or embedded into image
 files such as TIFF and JPEG images.
 
-The EXIFData provides support for parsing and creating raw metadata payloads of these
-metadata formats while delegating responsibility to PyVIPS to perform the extraction and
+The EXIFData library provides support for parsing and creating raw metadata payloads of
+these formats while delegating responsibility to PyVIPS to perform the extraction of and
 embedding of the raw metadata payloads. Future versions of the library may offer support
 for reading and writing a number of image file formats directly.
 
@@ -23,6 +23,14 @@ name, `exifdata`, or the library may be installed directly onto your local devel
 system using `pip install` by entering the following command:
 
 	$ pip install exifdata
+
+If you would like to install the optional `pyvips` dependency with the library, use:
+
+	$ pip install "exifdata[pyvips]"
+
+PyVIPS is needed if you wish to use open images from disk or to work with in-memory
+images opened previously by PyVIPS. If you do not already have PyVIPS installed, it is
+best to install it along with the library to ensure all functionality is available.
 
 ### Conceptual Model
 
