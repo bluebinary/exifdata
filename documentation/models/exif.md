@@ -45,22 +45,22 @@ values. The structure typical of EXIF-compatible image file formats is as follow
 
 ```
 Image File (e.g., JPEG, TIFF, HEIF, etc)
-└── APP1 Marker (EXIF Header)
-    └── TIFF Header (Byte Alignment Information)
-        ├── 0th IFD (Main Image Tags)
-        │   ├── EXIF IFD Pointer → EXIF SubIFD (Camera Settings)
-        |   ├──── Tag: Camera Make
-        |   ├──── Tag: Camera Model
-        |   ├──── Tag: Lens Make
-        |   ├──── Tag: Lens Model
-        |   ├──── ...
-        │   ├── GPS IFD Pointer → GPS SubIFD (Location Data; Optional)
-        |   ├──── GPS Latitude
-        |   ├──── GPS Longitude
-        |   ├──── GPS Altitude
-        |   ├──── ...
-        │   └── Interoperability IFD Pointer (Optional)
-        └── 1st IFD (Thumbnail Image)
+    └── APP1 Marker (EXIF Header)
+        └── TIFF Header (Byte Alignment Information)
+            ├── 0th IFD (Main Image Tags)
+            │   ├── EXIF IFD Pointer → EXIF SubIFD (Camera Settings)
+            |   ├──── Tag: Camera Make
+            |   ├──── Tag: Camera Model
+            |   ├──── Tag: Lens Make
+            |   ├──── Tag: Lens Model
+            |   ├──── ...
+            │   ├── GPS IFD Pointer → GPS SubIFD (Location Data; Optional)
+            |   ├──── GPS Latitude
+            |   ├──── GPS Longitude
+            |   ├──── GPS Altitude
+            |   ├──── ...
+            │   └── Interoperability IFD Pointer (Optional)
+            └── 1st IFD (Thumbnail Image)
 ```
 
 All IFDs comprise the following components:
@@ -2136,3 +2136,16 @@ The EXIF metadata model's 'exif' namespace offers 135 fields which are detailed 
 | Citaton | – |
 | Type | Rational |
 
+
+#### Credits & References
+
+The EXIF field information was researched from various sources including from the EXIF
+specification and EXIFTool documentation. Please visit these valuable online resources
+to learn more about the EXIF metadata model specification and to support these world
+class organizations and their products:
+
+ * https://www.cipa.jp/e/index.html
+ * https://www.loc.gov/preservation/digital/formats/fdd/fdd000146.shtml
+ * https://exiftool.org/TagNames/EXIF.html
+ * https://www.media.mit.edu/pia/Research/deepview/exif.html
+ * https://exiv2.org/tags.html

@@ -4028,3 +4028,13 @@ The XMP metadata model's 'iptc_extended' namespace offers seventeen fields which
 | Structure | Iptc4xmpExt:ArtworkOrObject |
 | Type | Text |
 
+
+### Credits & References
+
+The XMP field information was researched from various sources including the Adobe® XMP
+specification and EXIFTool documentation. Please visit these valuable online resources
+to learn more about the XMP metadata model specification and to support these world
+class organizations and their products:
+
+ * https://www.adobe.com/products/xmp.html
+ * https://exiftool.org/TagNames/XMP.html

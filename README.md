@@ -122,7 +122,7 @@ The code sample below illustrates the use of the EXIFData library to read metada
 ```python
 import exifdata
 
-models = exifdata.Models.load("/path/to/image-file.jpg")
+models = exifdata.Models.open("/path/to/image-file.jpg")
 
 for model in models:
 	print(model.name)
@@ -139,7 +139,7 @@ The code sample below illustrates the use of the EXIFData library to write metad
 ```python
 import exifdata
 
-models = exifdata.Models.load("/path/to/image-file.jpg")
+models = exifdata.Models.open("/path/to/image-file.jpg")
 
 models.xmp.basic.title = "test title"
 models.iptc.credit = "test credit"
@@ -160,10 +160,10 @@ import pyvips
 image = pyvips.Image.new_from_file("/path/to/image-file.tiff")
 
 # Attempt to decode the metadata models from the provided image using EXIFData
-models = exifdata.Models.decode(image)
+models = exifdata.Models.load(image)
 
 for model in models:
-	print(model.__class__.__name__)
+	print(model.name)
 	for field, value in model.items(all=False):
 		print(" -> %s => %s" % (field, value))
 
@@ -684,19 +684,19 @@ sources. Please visit these valuable online resources to learn more about the me
 model specifications and to support these world class organizations and their products:
 
  * EXIF Metadata Model & Fields
-  * https://www.cipa.jp/e/index.html
-  * https://www.loc.gov/preservation/digital/formats/fdd/fdd000146.shtml
-  * https://exiftool.org/TagNames/EXIF.html
-  * https://www.media.mit.edu/pia/Research/deepview/exif.html
-  * https://exiv2.org/tags.html
+   * https://www.cipa.jp/e/index.html
+   * https://www.loc.gov/preservation/digital/formats/fdd/fdd000146.shtml
+   * https://exiftool.org/TagNames/EXIF.html
+   * https://www.media.mit.edu/pia/Research/deepview/exif.html
+   * https://exiv2.org/tags.html
 
  * IPTC Metadata Model & Fields
-  * https://www.iptc.org/std/photometadata/specification/IPTC-PhotoMetadata
-  * https://exiftool.org/TagNames/IPTC.html
+   * https://www.iptc.org/std/photometadata/specification/IPTC-PhotoMetadata
+   * https://exiftool.org/TagNames/IPTC.html
 
  * XMP Metadata Model & Fields
-  * https://www.adobe.com/products/xmp.html
-  * https://exiftool.org/TagNames/XMP.html
+   * https://www.adobe.com/products/xmp.html
+   * https://exiftool.org/TagNames/XMP.html
 
 ### Copyright & License Information
 

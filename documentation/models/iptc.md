@@ -2002,3 +2002,13 @@ The IPTC metadata model's 'Post Object Data Tags' namespace offers one field whi
 
 The IPTC metadata model's 'FotoStation Tags' namespace offers zero fields which are detailed below:
 
+
+### Credits & References
+
+The IPTC field information was researched from various sources including from the IPTC
+specification and EXIFTool documentation. Please visit these valuable online resources
+to learn more about the IPTC metadata model specification and to support these world
+class organizations and their products:
+
+ * https://www.iptc.org/std/photometadata/specification/IPTC-PhotoMetadata
+ * https://exiftool.org/TagNames/IPTC.html
