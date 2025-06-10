@@ -125,9 +125,9 @@ import exifdata
 models = exifdata.Models.open("/path/to/image-file.jpg")
 
 for model in models:
-	print(model.name)
-	for field, value in model.items(all=False):
-		print(" -> %s => %s" % (field, value))
+    print(model.name)
+    for field, value in model.items(all=False):
+      print(" -> %s => %s" % (field, value))
 ```
 
 ### Example Use: Writing Metadata
@@ -163,9 +163,9 @@ image = pyvips.Image.new_from_file("/path/to/image-file.tiff")
 models = exifdata.Models.load(image)
 
 for model in models:
-	print(model.name)
-	for field, value in model.items(all=False):
-		print(" -> %s => %s" % (field, value))
+    print(model.name)
+    for field, value in model.items(all=False):
+        print(" -> %s => %s" % (field, value))
 
 # Set or update the desired metadata fields
 models.xmp.basic.title = "test title"
