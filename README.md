@@ -196,6 +196,7 @@ metadata into the in-memory image buffer. While the in-memory image buffer will 
 contain the metadata, if one needs to save the image back to disk, that must be handled
 as a separate call to PyVIPS.
 
+<a id="classes-and-methods"></a>
 ### Classes & Methods
 
 #### Models Class Methods & Properties
@@ -668,6 +669,7 @@ registered field value types supported by each metadata model. The field value t
 registered by the metadata model classes dynamically when they are parsed with the types
 being determined from the metadata model class' schema configuration.
 
+<a id="file-formats"></a>
 ### Supported File Formats
 
 The EXIFData library has been tested with a range of image file formats to determine the
