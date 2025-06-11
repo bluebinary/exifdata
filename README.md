@@ -203,6 +203,10 @@ as a separate call to PyVIPS.
 
 The `Models` class offers the following methods:
 
+* `adapt(adapter: Adapter)` – The `adapt()` method provides support for associating the
+specified `Adapter` class type with the `Models` class to allow the specified adapter to
+be used to assist in reading and writing image files.
+
 * `load(filepath: str)` – The `load()` method provides support for loading the specified
 image file from the `filepath` which must exist and reference an image in a usable image
 file format. If the referenced image file does not exist or cannot be loaded an error is
@@ -684,13 +688,13 @@ the most common, these standards are not supported by every image file format.
 
 | File Format | EXIF Read | EXIF Write | IPTC Read | IPTC Write | XMP Read | XMP Write |
 | ----------- | :-------: | :--------: | :-------: | :--------: | :------: | :-------: |
-| JPEG        | Yes       | Yes        | Yes       | Yes        | No*      | Yes       |
-| TIFF        | Yes       | Yes        | Yes       | Yes        | No*      | Yes       |
-| PyramidTIFF | Yes       | Yes        | Yes       | Yes        | No*      | Yes       |
+| JPEG        | No*       | Yes        | Yes       | Yes        | No*      | Yes       |
+| TIFF        | No*       | Yes        | Yes       | Yes        | No*      | Yes       |
+| PyramidTIFF | No*       | Yes        | Yes       | Yes        | No*      | Yes       |
 | PNG         | *         | *          | *         | *          | *        | *         |
 | HEIF        | *         | *          | *         | *          | *        | *         |
 
-* XMP read capability is currently in development and will be added in a future release.
+* EXIF and XMP read capability is in development and will be added in a future release.
 * Support for other image file formats is currently in development.
 
 ### Disclaimer

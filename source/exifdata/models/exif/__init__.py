@@ -35,6 +35,7 @@ from exifdata.models.exif.structures import (
 
 from exifdata.types import (
     ByteOrder,
+    Encoding,
 )
 
 
@@ -139,6 +140,9 @@ class EXIF(Metadata):
                             _aliases[alias] = f"{namespace.id}:{field.name}"
 
     def encode(self, order: ByteOrder = ByteOrder.MSB) -> bytes | None:
+        """Provides support for encoding the assigned EXIF metadata field values into
+        the binary representation needed for embedding into an image file."""
+
         encoded: list[bytes] = []
 
         if not isinstance(order, ByteOrder):
@@ -151,10 +155,7 @@ class EXIF(Metadata):
         for namespace in self._namespaces.values():
             for identifier, field in namespace._fields.items():
                 if isinstance(value := self._values.get(field.identifier), Value):
-                    if isinstance(value, list):
-                        count = len(value)
-                    else:
-                        count = 1
+                    count: int = (len(value) if isinstance(value, list) else 1)
 
                     if field.multiple is True and not count in field.count:
                         raise ValueError(
@@ -176,7 +177,7 @@ class EXIF(Metadata):
 
                     # logger.debug(data)
 
-                    data = b"".join(data)
+                    data: bytes = b"".join(data)
 
                     # logger.debug(type(value), data)
 
@@ -190,6 +191,34 @@ class EXIF(Metadata):
         encoded.append(ifd.encode(order=order))
 
         return b"".join(encoded) if len(encoded) > 0 else None
+
+    @classmethod
+    def decode(
+        cls,
+        value: bytes | io.BytesIO,
+        order: ByteOrder = ByteOrder.MSB,
+    ) -> EXIF:
+        """Provides support for decoding the provided EXIF metadata payload into its
+        corresponding EXIF metadata fields which can then be accessed for use."""
+
+        logger.debug(
+            "%s.decode(value: %d, format: %s, order: %s)",
+            cls.__name__,
+            len(value),
+            format,
+            order,
+        )
+
+        if not isinstance(value, bytes):
+            value = io.BytesIO(value)
+        elif isinstance(value, io.BytesIO):
+            pass
+        else:
+            raise TypeError("The 'value' argument must have a bytes or BytesIO value!")
+
+        # TODO: Complete implementation of EXIF metadata parsing
+
+        return None
 
 
 EXIF.register_types(

@@ -27,7 +27,6 @@ from exifdata.models.iptc.structures import (
 )
 
 from exifdata.models.iptc.types import (
-    ByteOrder,
     # Undefined,
     # ASCII,
     Long,
@@ -39,6 +38,8 @@ from exifdata.models.iptc.types import (
 )
 
 from exifdata.types import (
+    ByteOrder,
+    Encoding,
     UInt8,
     UInt16,
     UInt32,
@@ -254,6 +255,9 @@ class IPTC(Metadata):
         order: ByteOrder = ByteOrder.MSB,
         format: IPTCFormat = IPTCFormat.APP13,
     ) -> bytes:
+        """Provides support for encoding the assigned IPTC metadata field values into
+        the binary representation needed for embedding into an image file."""
+
         encoded: list[bytes] = []
 
         if not isinstance(order, ByteOrder):
@@ -273,8 +277,8 @@ class IPTC(Metadata):
             return None
 
         if format is IPTCFormat.APP13:
-            # Include the standard APP13 Photoshop 3.0 prefix
-            encoded.extend(self.__class__._app13prefix)  # "Photoshop 3.0"
+            # Include the standard APP13 "Photoshop 3.0" prefix
+            encoded.extend(self.__class__._app13prefix)
 
             # Include the 8BIM marker, noting a binary structure within the APP13 block
             encoded.append(b"8")
@@ -344,6 +348,9 @@ class IPTC(Metadata):
         format: IPTCFormat = IPTCFormat.APP13,
         order: ByteOrder = ByteOrder.MSB,
     ) -> IPTC:
+        """Provides support for decoding the provided IPTC metadata payload into its
+        corresponding IPTC metadata fields which can then be accessed for use."""
+
         logger.debug(
             "%s.decode(value: %d, format: %s, order: %s)",
             cls.__name__,
@@ -352,7 +359,11 @@ class IPTC(Metadata):
             order,
         )
 
-        if not isinstance(value, (bytes, io.BytesIO)):
+        if not isinstance(value, bytes):
+            value = io.BytesIO(value)
+        elif isinstance(value, io.BytesIO):
+            pass
+        else:
             raise TypeError("The 'value' argument must have a bytes or BytesIO value!")
 
         if not isinstance(format, IPTCFormat):
@@ -360,12 +371,10 @@ class IPTC(Metadata):
                 "The 'format' argument must have an IPTCFormat enumeration value!"
             )
 
-        value: io.BytesIO = io.BytesIO(value)
-
         if format is IPTCFormat.APP13:
             iptc_found: bool = False
 
-            # Ensure the 'Photoshop 3.0' prefix is present to mark the APP13 EXIF tag
+            # Ensure the "Photoshop 3.0" prefix is present to mark the APP13 EXIF tag
             while byte := value.read(1):
                 index = value.tell()
 
@@ -408,6 +417,7 @@ class IPTC(Metadata):
                                 )
 
                                 index += 1
+
                             break
 
             # There could be other metadata in APP13 before and after the IPTC tags
@@ -446,7 +456,7 @@ class IPTC(Metadata):
 
                 if index == 0 and not byte == 0x1C:
                     raise ValueError(
-                        "The 'value' does not begin with the expected 0x1c IPTC record marker!"
+                        "The 'value' does not begin with the expected '0x1C' IPTC record marker!"
                     )
 
         records: list[Record] = []

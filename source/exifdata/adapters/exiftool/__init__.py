@@ -1,6 +1,6 @@
 from exifdata.logging import logger
 from exifdata.configuration import secrets
-from exifdata.adapters import Adapter
+from exifdata.framework.adapter import Adapter
 from exifdata.models import Metadata
 from exifdata.models.exif import EXIF
 from exifdata.models.iptc import IPTC

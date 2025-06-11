@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from exifdata.logging import logger
-from exifdata.adapters import Adapter
+from exifdata.framework.adapter import Adapter
 from exifdata.models import Metadata
 from exifdata.models.exif import EXIF
 from exifdata.models.iptc import IPTC
@@ -231,14 +231,6 @@ class VIPS(Adapter):
             )
 
         for model in self.models:
-            if model.name == "XMP":
-                import datetime, os
-
-                filename = os.path.expanduser(
-                    f"~/Downloads/00094701.{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.xml"
-                )
-                with open(filename, "wb+") as file:
-                    file.write(model.encode(pretty=True, order=order))
 
             if isinstance(encoded := model.encode(order=order), bytes):
                 for fieldname, cläss in self.mapping.items():

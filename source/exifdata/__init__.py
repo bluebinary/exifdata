@@ -8,9 +8,11 @@ from exifdata.models.iptc import IPTC
 from exifdata.models.xmp import XMP
 from exifdata.types import ByteOrder
 
-from exifdata.adapters import Adapter
-from exifdata.adapters.vips import VIPS
-from exifdata.adapters.exiftool import EXIFTool
+from exifdata.adapters import (
+    Adapter,
+    VIPS,
+    EXIFTool,
+)
 
 
 class Models(object):
@@ -25,7 +27,7 @@ class Models(object):
     ]
 
     @classmethod
-    def adapter(cls, adapter: Adapter):
+    def adapt(cls, adapter: Adapter) -> Adapter:
         """Support setting the Models' adapter class that interfaces with the image."""
 
         logger.debug("%s.adapter(adapter: %s)", cls.__name__, adapter)
@@ -40,6 +42,8 @@ class Models(object):
             )
 
         cls._adapter = adapter
+
+        return cls
 
     @classmethod
     def open(cls, filepath: str, **kwargs) -> Models:

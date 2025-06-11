@@ -1,27 +1,28 @@
 from __future__ import annotations
 
-from exifdata.logging import logger
-from exifdata.configuration import secrets
-
-from exifdata.models import (
-    Metadata,
-    Type,
-    Namespace,
-    Field,
-    Value,
-    # BaseString,
-    # BaseFloat,
-    # BaseInteger,
-    # BaseBytes,
-    Encoding,
-)
-
 import re
 import datetime
 import enumerific
 import base64
 import abc
 import maxml
+
+from exifdata.configuration import secrets
+from exifdata.logging import logger
+
+from exifdata.models import (
+    Type,
+    Field,
+    Value,
+)
+
+from exifdata.types import (
+    ByteOrder,
+    Encoding,
+)
+
+
+logger = logger.getChild(__name__)
 
 
 class Value(Value):

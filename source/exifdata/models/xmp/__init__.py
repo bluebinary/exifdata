@@ -15,7 +15,6 @@ from exifdata.models import (
     Structure,
     Field,
     Value,
-    Encoding,
 )
 
 from exifdata.models.xmp.types import (
@@ -62,7 +61,10 @@ from exifdata.models.xmp.types import (
     Locale,
 )
 
-from exifdata.types import ByteOrder
+from exifdata.types import (
+    ByteOrder,
+    Encoding,
+)
 
 
 logger = logger.getChild(__name__)
@@ -205,9 +207,14 @@ class XMP(Metadata):
         if not isinstance(wrap, bool):
             raise TypeError("The 'wrap' argument must have a boolean value!")
 
-        root: maxml.Element = maxml.Element("x:xmpmeta", namespace="adobe:ns:meta/")
+        if order is None:
+            pass
+        elif not isinstance(order, ByteOrder):
+            raise TypeError(
+                "The 'order' argument must have a ByteOrder enumeration value!"
+            )
 
-        # root.set("xmlns:x", "adobe:ns:meta/")
+        root: maxml.Element = maxml.Element("x:xmpmeta", namespace="adobe:ns:meta/")
 
         # TODO: Customize this
         root.set("x:xmptk", "Adobe XMP Core 9.1-c002 79.f354efc70, 2023/11/09-12:05:53")
@@ -322,6 +329,9 @@ class XMP(Metadata):
         encoding: str = "UTF-8",
         order: ByteOrder = ByteOrder.MSB,
     ) -> XMP:
+        """Provides support for decoding the provided XMP metadata payload into its
+        corresponding XMP metadata fields which can then be accessed for use."""
+
         logger.debug(
             "%s.decode(value: %s, encoding: %s, order: %s)",
             cls.__name__,
@@ -336,8 +346,12 @@ class XMP(Metadata):
         if not isinstance(encoding, str):
             raise TypeError("The 'encoding' argument must have a string value!")
 
-        if not isinstance(order, ByteOrder):
-            raise TypeError("The 'order' argument must have a ByteOrder value!")
+        if order is None:
+            pass
+        elif not isinstance(order, ByteOrder):
+            raise TypeError(
+                "The 'order' argument, if specified, must have a ByteOrder value!"
+            )
 
         if isinstance(value, bytes):
             value = value.decode(encoding)
@@ -348,6 +362,8 @@ class XMP(Metadata):
         # logger.debug("*" * 100)
 
         # document = maxml.Document.from_string(value)
+
+        # TODO: Complete implementation of XMP metadata parsing
 
         return None
 

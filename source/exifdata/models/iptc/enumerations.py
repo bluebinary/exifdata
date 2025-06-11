@@ -6,11 +6,17 @@ from exifdata.types import UInt8
 
 
 class IPTCFormat(enumerific.Enumeration):
+    """The IPTCFormat enumeration class provides a controlled vocabulary of supported
+    IPTC encoding formats which are used when encoding and decoding IPTC payloads."""
+
     APP13 = 1
     RAW = 2
 
 
 class RecordInfo(object):
+    """The RecordInfo class holds information about an IPTC Record, including its record
+    ID, data set ID, and data type; this is used when encoding and decoding records."""
+
     _record_id: UInt8 = None
     _dataset_id: UInt8 = None
     _type: object = None
@@ -56,6 +62,8 @@ class RecordInfo(object):
 
 
 class RecordID(enumerific.extensible.Enumeration):
+    """The RecordID class provides a controlled vocabulary of IPTC Record IDs."""
+
     # Caption = "2#120"
     # Copyright = "2#116"
 

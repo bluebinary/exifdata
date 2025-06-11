@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import re
+import datetime
+
 from exifdata.logging import logger
 
 from exifdata.models import (
@@ -15,9 +18,6 @@ from exifdata.types import (
     String,
     Int,
 )
-
-import re
-import datetime
 
 
 logger = logger.getChild(__name__)

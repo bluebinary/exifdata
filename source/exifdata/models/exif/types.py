@@ -8,12 +8,8 @@ import fractions
 from exifdata.logging import logger
 
 from exifdata.models import (
-    Metadata,
     Type,
-    Namespace,
-    Field,
     Value,
-    Encoding,
 )
 
 from exifdata import types
