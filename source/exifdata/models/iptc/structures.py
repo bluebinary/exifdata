@@ -8,7 +8,7 @@ from exifdata.models import (
     Value,
 )
 
-from exifdata.types import (
+from deliciousbytes import (
     ByteOrder,
     Int,
     Int8,

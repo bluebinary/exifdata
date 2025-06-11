@@ -2,7 +2,7 @@
 name = "exifdata"
 description = "Streamlined EXIF, IPTC and XMP image metadata creation and parsing."
 readme = {file = "README.md", content-type = "text/markdown"}
-keywords = ["image", "metadata", "exif", "iptc", "xmp"]
+keywords = ["image", "metadata", "embedded", "exif", "iptc", "xmp"]
 authors = [{name = "Daniel Sissman"}]
 license = "MIT"
 classifiers = [

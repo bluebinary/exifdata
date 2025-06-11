@@ -6,7 +6,7 @@ from exifdata.models import Metadata
 from exifdata.models.exif import EXIF
 from exifdata.models.iptc import IPTC
 from exifdata.models.xmp import XMP
-from exifdata.types import ByteOrder
+from deliciousbytes import ByteOrder
 
 from exifdata.adapters import (
     Adapter,

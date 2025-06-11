@@ -6,7 +6,7 @@ __type__ = type
 import enumerific
 
 
-from exifdata.types import (
+from deliciousbytes import (
     ByteOrder,
     Int,
     Int8,

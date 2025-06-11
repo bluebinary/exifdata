@@ -6,7 +6,7 @@ from exifdata.models import Metadata
 from exifdata.models.exif import EXIF
 from exifdata.models.iptc import IPTC
 from exifdata.models.xmp import XMP
-from exifdata.types import ByteOrder
+from deliciousbytes import ByteOrder
 
 
 # pyvips is imported (just once) when any instances of the VIPS class are created
@@ -231,6 +231,15 @@ class VIPS(Adapter):
             )
 
         for model in self.models:
+            # TODO: REMOVE THIS
+            # if model.name == "XMP":
+            #     import datetime, os
+            #
+            #     filename = os.path.expanduser(
+            #         f"~/Downloads/00094701.{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.xml"
+            #     )
+            #     with open(filename, "wb+") as file:
+            #         file.write(model.encode(pretty=True, order=order))
 
             if isinstance(encoded := model.encode(order=order), bytes):
                 for fieldname, cläss in self.mapping.items():

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import enumerific
 
-from exifdata.types import UInt8
+from deliciousbytes import UInt8
 
 
 class IPTCFormat(enumerific.Enumeration):

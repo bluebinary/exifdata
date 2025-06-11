@@ -1,3 +1,5 @@
 # EXIFData Library: Runtime Dependencies
 enumerific>=1.0.1
+caselessly>=1.0.0
+deliciousbytes>=1.0.0
 maxml>=1.0.1

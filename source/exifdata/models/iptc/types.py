@@ -9,7 +9,7 @@ from exifdata.models import (
     Value,
 )
 
-from exifdata.types import (
+from deliciousbytes import (
     Encoding,
     ByteOrder,
     Long,
@@ -43,7 +43,7 @@ class Long(Long, Value):
 
 class String(String, Value):
     def __new__(cls, value: str, **kwargs):
-        # As the String class from exifdata.types subclasses 'str', we can only pass the
+        # As the String class from deliciousbytes subclasses 'str' we can only pass the
         # string value to the superclass' __new__ method; however, the kwargs are passed
         # automatically to all of the superclass' __init__ methods, including Value.
         return super().__new__(cls, value)

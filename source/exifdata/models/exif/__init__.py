@@ -33,7 +33,7 @@ from exifdata.models.exif.structures import (
     IFDTag,
 )
 
-from exifdata.types import (
+from deliciousbytes import (
     ByteOrder,
     Encoding,
 )
@@ -155,7 +155,7 @@ class EXIF(Metadata):
         for namespace in self._namespaces.values():
             for identifier, field in namespace._fields.items():
                 if isinstance(value := self._values.get(field.identifier), Value):
-                    count: int = (len(value) if isinstance(value, list) else 1)
+                    count: int = len(value) if isinstance(value, list) else 1
 
                     if field.multiple is True and not count in field.count:
                         raise ValueError(

@@ -37,7 +37,7 @@ from exifdata.models.iptc.types import (
     String,
 )
 
-from exifdata.types import (
+from deliciousbytes import (
     ByteOrder,
     Encoding,
     UInt8,

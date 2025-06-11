@@ -12,9 +12,7 @@ from exifdata.models import (
     Value,
 )
 
-from exifdata import types
-
-from exifdata.types import (
+from deliciousbytes import (
     ByteOrder,
     Encoding,
     Int,
@@ -134,24 +132,24 @@ class Rational(Value):
         super().__init__(value=f"{numerator}/{denominator}", **kwargs)
 
     @property
-    def numerator(self) -> types.Long:
+    def numerator(self) -> deliciousbytes.Long:
         return self._numerator
 
     @numerator.setter
     def numerator(self, numerator: int):
         if not isinstance(numerator, int):
             raise TypeError("The 'numerator' argument must have an integer value!")
-        self._numerator = types.Long(numerator)
+        self._numerator = deliciousbytes.Long(numerator)
 
     @property
-    def denominator(self) -> types.Long:
+    def denominator(self) -> deliciousbytes.Long:
         return self._denominator
 
     @denominator.setter
     def denominator(self, denominator: int):
         if not isinstance(denominator, int):
             raise TypeError("The 'denominator' argument must have an integer value!")
-        self._denominator = types.Long(denominator)
+        self._denominator = deliciousbytes.Long(denominator)
 
     def encode(self, order: ByteOrder = ByteOrder.MSB) -> bytes:
         encoded: list[bytes] = []

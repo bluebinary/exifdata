@@ -61,7 +61,7 @@ from exifdata.models.xmp.types import (
     Locale,
 )
 
-from exifdata.types import (
+from deliciousbytes import (
     ByteOrder,
     Encoding,
 )
