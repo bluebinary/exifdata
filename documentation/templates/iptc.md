@@ -53,7 +53,7 @@ encoded IPTC-IIM format; relaxes most field length limits of the legacy format; 
 Unicode compliant.
 
 The EXIFData library provides support for reading and writing IPTC fields as IPTC-IIM as
-well as via the XMP. To work with IPTC metadata using the IPTC-IIM model, use the `IPTC`
+well as via XMP. To work with IPTC metadata using the IPTC-IIM model, use the `IPTC`
 metadata model class, and to work with IPTC metadata using the XMP model, use the `XMP`
 metadata model class and its `iptc_core` and `iptc_extended` namespaces, which for ease
 of use have both been aliased under the `iptc` namespace of the `XMP` metadata model.

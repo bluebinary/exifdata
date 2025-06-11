@@ -85,16 +85,16 @@ class EXIF(Metadata):
             if not isinstance(identifier, str):
                 raise TypeError("All namespace dictionary keys must be strings!")
 
-            if not isinstance(properties, dict):
-                raise TypeError(
-                    "All namespace dictionary top-level values must be dictionaries!"
-                )
-
             if identifier.startswith("@"):
                 # If any top-level aliases have been specified, capture those now
-                if identifier == "@aliases":
+                if identifier == "@aliases" and isinstance(properties, dict):
                     _aliases = properties
                 continue
+
+            if not isinstance(properties, dict):
+                raise TypeError(
+                    "All model schema top-level values must be dictionaries!"
+                )
 
             if structures := properties.get("structures"):
                 for _structure_id, _structure in structures.items():
