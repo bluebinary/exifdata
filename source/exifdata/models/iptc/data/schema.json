@@ -1,4 +1,6 @@
 {
+  "@read": true,
+  "@write": true,
   "envelope": {
     "name": "Envelope",
     "label": "Envelope Record Tags",

@@ -97,9 +97,6 @@ value when parsing and normalizing the provided XMP XML.
 <a id="namespaces-and-fields"></a>
 ### XMP Metadata Model Namespaces & Fields
 
-The EXIFData library provides support for reading and writing from the following XMP
-fields within unless marked otherwise:
-
 {{fields}}
 
 ### Credits & References

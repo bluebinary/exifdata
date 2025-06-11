@@ -1,4 +1,6 @@
 {
+  "@read": false,
+  "@write": true,
   "@aliases": {
     "copyright": "tiff:copyright"
   },

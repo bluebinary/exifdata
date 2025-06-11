@@ -1,5 +1,6 @@
 x-volumes: &volumes
   - ./README.md:/README.md
+  - ./documentation:/documentation
   - ./source/exifdata:/source/exifdata
   - ./source/exifdata:/usr/local/lib/python/site-packages/exifdata
   - ./tests:/tests

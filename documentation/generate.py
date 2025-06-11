@@ -30,6 +30,7 @@ class Field(object):
         name: str,
         identifier: str,
         label: str = None,
+        required: bool = False,
         **kwargs,
     ):
         if not isinstance(name, str):
@@ -48,6 +49,8 @@ class Field(object):
             raise TypeError("The 'label' argument must have a string value!")
 
         self.label = label
+
+        self.required = required or False
 
         for key, value in kwargs.items():
             setattr(self, key, value)
@@ -70,7 +73,22 @@ class Field(object):
                 # Standard sorting for others + alphabetical for others
                 return (0, key)
 
-        return dict(sorted(value.items(), key=priority_sort))
+        sort = dict(sorted(value.items(), key=priority_sort))
+
+        if priority:
+            temp: dict[str, object] = {}
+
+            for key in priority:
+                if key in sort:
+                    temp[key] = sort[key]
+                    del sort[key]
+
+            for key in sort:
+                temp[key] = sort[key]
+
+            sort = temp
+
+        return sort
 
     @property
     def info(self) -> dict[str, object]:
@@ -79,11 +97,21 @@ class Field(object):
         info: dict[str, object] = {}
 
         for attribute in dir(self):
-            if attribute.startswith("_") or attribute in ["info", "assemble", "format", "sort", "path", "namespace"]:
+            if attribute.startswith("_") or attribute in [
+                "info",
+                "assemble",
+                "format",
+                "sort",
+                "path",
+                "namespace",
+            ]:
                 continue
             info[attribute] = getattr(self, attribute)
 
-        return self.sort(info, priority=["identifier", "name", "label", "tagid", "bytes_min", "bytes_max"])
+        return self.sort(
+            info,
+            priority=["identifier", "name", "label", "tagid", "bytes_min", "bytes_max"],
+        )
 
     def __getattr__(self, name: str) -> object | None:
         if name.startswith("_") or name in ["name", "identifier", "label", "path"]:
@@ -92,7 +120,7 @@ class Field(object):
             return getattr(self, name, None)
 
     @staticmethod
-    def format(value: object, attribute: str) -> str:
+    def format(value: object, attribute: str, monospaced: bool = False) -> str:
         """Provide support for formatting schema configuration values for use within the
         field configuration documentation sections."""
 
@@ -103,16 +131,19 @@ class Field(object):
         elif value is False:
             return "No"
         elif isinstance(value, list):
-            return ", ".join([str(val) for val in value])
+            return "; ".join([str(val) for val in value])
         elif isinstance(value, dict):
-            return ", ".join([f"{key}: {val}" for key, val in value.items()])
+            return "; ".join([f"{key}: {val}" for key, val in value.items()])
         elif isinstance(value, str):
             value = value.strip()
 
             if attribute in ["definition"] and len(value) and not value.endswith("."):
-                return value + "."
-            else:
-                return value
+                value = value + "."
+
+            if monospaced is True:
+                value = "`" + value + "`"
+
+            return value
         else:
             return str(value)
 
@@ -168,29 +199,41 @@ class Field(object):
             "encoding": "Encoding",
         }
 
+        monospaced: list[str] = [
+            "identifier",
+            "path",
+            "tagid",
+        ]
+
         yield "### The `{identifier}` field has the following configuration:".format(
             identifier=self.identifier,
         )
 
         yield ""
 
-        yield "| Attribute | Value  |"
-        yield "|-----------|--------|"
-        yield "| Path      | {path} |".format(path=self.path)
+        yield "| Attribute | Value    |"
+        yield "|-----------|----------|"
+        yield "| Path      | `{path}` |".format(path=self.path)
 
         missing: set[str] = set()
 
         for attribute, value in self.info.items():
             yield "| {attribute} | {value} |".format(
                 attribute=labels[attribute] if attribute in labels else attribute,
-                value=self.format(value=value, attribute=attribute),
+                value=self.format(
+                    value=value,
+                    attribute=attribute,
+                    monospaced=(attribute in monospaced),
+                ),
             )
 
             if not attribute in labels:
                 missing.add(attribute)
 
         if len(missing) > 0:
-            logger.error(f"The following schema fields are missing from the labels lookup list: {[m for m in missing]}!")
+            logger.error(
+                f"The following schema fields are missing from the labels lookup list: {[m for m in missing]}!"
+            )
 
 
 class Namespace(object):
@@ -219,7 +262,9 @@ class Namespace(object):
             if isinstance(field, Field):
                 self.fields[identifier] = field
             elif isinstance(field, dict):
-                self.fields[identifier] = Field(identifier=identifier, namespace=self, **field)
+                self.fields[identifier] = Field(
+                    identifier=identifier, namespace=self, **field
+                )
 
     def __str__(self) -> str:
         return f"<{self.__class__.__name__}({self.name})>"
@@ -232,7 +277,14 @@ class Namespace(object):
 class Model(object):
     """The documentation Model class represents the documentation about a model."""
 
-    def __init__(self, name: str, documentation: str, template: str):
+    def __init__(
+        self,
+        name: str,
+        documentation: str,
+        template: str,
+        readable: bool = False,
+        writable: bool = False,
+    ):
         self.namespaces: list[Namespace] = []
 
         if not isinstance(name, str):
@@ -249,6 +301,16 @@ class Model(object):
             raise TypeError("The 'template' argument must have a string value!")
 
         self.template: str = template
+
+        if not isinstance(readable, bool):
+            raise TypeError("The 'readable' argument must have a boolean value!")
+
+        self.readable: bool = readable
+
+        if not isinstance(writable, bool):
+            raise TypeError("The 'writable' argument must have a boolean value!")
+
+        self.writable: bool = writable
 
     @property
     def namespace(self):
@@ -291,9 +353,27 @@ class Model(object):
             raise TypeError("The 'count' argument must have an integer value!")
 
         numbers: list[str] = [
-            "zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
-            "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
-            "sixteen", "seventeen", "eighteen", "nineteen", "twenty",
+            "zero",
+            "one",
+            "two",
+            "three",
+            "four",
+            "five",
+            "six",
+            "seven",
+            "eight",
+            "nine",
+            "ten",
+            "eleven",
+            "twelve",
+            "thirteen",
+            "fourteen",
+            "fifteen",
+            "sixteen",
+            "seventeen",
+            "eighteen",
+            "nineteen",
+            "twenty",
         ]
 
         if 0 <= count < len(numbers):
@@ -314,7 +394,7 @@ class Model(object):
         if not isinstance(count, int):
             raise TypeError("The 'count' argument must have an integer value!")
 
-        return (plural if count == 0 or count > 1 else singular)
+        return plural if count == 0 or count > 1 else singular
 
     @property
     def path(self) -> str:
@@ -323,7 +403,16 @@ class Model(object):
     def assemble(self) -> Generator[str, None, None]:
         count: int = len(self.namespaces)
 
-        yield "The {model} metadata model has {count} {namespaces} which {are} documented below.".format(
+        actions: list[str] = []
+
+        if self.readable is True:
+            actions.append("reading")
+
+        if self.writable is True:
+            actions.append("writing")
+
+        yield "The EXIFData library provides support for {actions} {model} metadata model fields. The model provides {count} {namespaces}.".format(
+            actions=" and ".join(actions),
             model=self.name.upper(),
             count=self.spoken(count),
             namespaces=self.pluralise("namespaces", "namespace", count),
@@ -335,19 +424,50 @@ class Model(object):
         for namespace in self.namespaces:
             count: int = len(namespace.fields)
 
-            yield "The {model} metadata model's '{namespace}' namespace offers {count} {fields} which are detailed below:".format(
-                model=self.name.upper(),
-                namespace=namespace.name,
-                count=self.spoken(count),
-                fields=self.pluralise("fields", "field", count),
-            )
+            if count == 0:
+                yield "The {model} metadata model's `{namespace}` namespace does not currently offer any known fields.".format(
+                    model=self.name.upper(),
+                    namespace=namespace.name,
+                )
+            else:
+                yield "The {model} metadata model's `{namespace}` namespace offers {count} {fields} which {are} listed below along with a link to each field's technical information:".format(
+                    model=self.name.upper(),
+                    namespace=namespace.name,
+                    count=self.spoken(count),
+                    fields=self.pluralise("fields", "field", count),
+                    are=self.pluralise("are", "is", count),
+                )
+
+                yield ""
+                yield "| Namespace  | Field Path | Field Name | Required? | Info |"
+                yield "|------------|------------|------------|:---------:|------|"
+
+                for identifier, field in namespace.fields.items():
+                    yield "| `{namespace}` | `{path}` | {name} | {required} | {info} |".format(
+                        namespace=namespace.name,
+                        path=field.path,
+                        name=field.name,
+                        required="Yes" if field.required else "No",
+                        info=f"[🔗](#{model.name}-{namespace.name}-{field.name})".lower(),
+                    )
+
+                yield ""
+
+                yield "The technical details of each field may be found below:"
+
+                yield ""
+
+                for identifier, field in namespace.fields.items():
+                    yield """<a id="{link}"></a>""".format(
+                        link=f"{model.name}-{namespace.name}-{field.name}".lower(),
+                    )
+
+                    for line in field.assemble():
+                        yield line
+
+                    yield ""
 
             yield ""
-
-            for identifier, field in namespace.fields.items():
-                for line in field.assemble():
-                    yield line
-                yield ""
 
 
 class Models(object):
@@ -382,10 +502,17 @@ class Models(object):
         for model in self._models:
             yield model
 
-    def search(self, filepath: str, filenames: list[str] = None) -> Generator[str, None, None]:
+    def search(
+        self, filepath: str, filenames: list[str] = None
+    ) -> Generator[str, None, None]:
         """Search for the metadata model schema configuration files under the specified path."""
 
-        logger.debug("%s.search(filepath: %s, filenames: %s)", self.__class__.__name__, filepath, filenames)
+        logger.debug(
+            "%s.search(filepath: %s, filenames: %s)",
+            self.__class__.__name__,
+            filepath,
+            filenames,
+        )
 
         if filenames is None:
             filenames = ["schema.json"]
@@ -423,25 +550,35 @@ class Models(object):
                     )
 
                     for key in keys:
-                        aliases: dict[str, str] = None
-
                         if key.startswith("@"):
                             if key == "@aliases":
-                                aliases = data[key]
+                                model.aliases = data[key]
+                            elif key == "@read":
+                                model.readable = data[key]
+                            elif key == "@write":
+                                model.writable = data[key]
                             continue
 
                         # Create a documentation Namespace instance and associate it
                         # with the documentation Model instance
-                        model.namespace = namespace = Namespace(
-                            aliases=aliases, **data[key],
+                        model.namespace = namespace = Namespace(**data[key])
+
+                        logger.debug(
+                            " - Key: %s, Name: %s, Label: %s, Unwrap: %s",
+                            key,
+                            namespace.name,
+                            namespace.label,
+                            namespace.unwrap,
                         )
 
-                        logger.debug(" - Key: %s, Name: %s, Label: %s, Unwrap: %s", key, namespace.name, namespace.label, namespace.unwrap)
-
                         if (count := len(namespace.fields)) > 0:
-                            logger.info(f"The '{namespace}' namespace has no {count} fields")
+                            logger.info(
+                                f"The '{namespace}' namespace has no {count} fields"
+                            )
                         else:
-                            logger.warning(f"The '{namespace}' namespace has no configured fields!")
+                            logger.warning(
+                                f"The '{namespace}' namespace has no configured fields!"
+                            )
 
 
 # Find the metadata models, and generate documentation for each:

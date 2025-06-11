@@ -102,9 +102,6 @@ The IFD Tag data types are as follows:
 
 ### EXIF Metadata Model Namespaces & Fields
 
-The EXIFData library provides support for reading and writing from the following EXIF
-fields unless marked otherwise:
-
 {{fields}}
 
 #### Credits & References

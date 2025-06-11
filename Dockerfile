@@ -60,11 +60,11 @@ echo -e "entrypoint.sh called with arguments: ${ARGS[@]} (service: ${SERVICE})";
 
 if [[ "${SERVICE}" == "black" ]]; then
 	if [[ "${ARGS[0]}" == "--reformat" ]]; then
-		echo -e "black --verbose ${ARGS[@]:1} /source /tests";
-		black --verbose ${ARGS[@]:1} /source /tests;
+		echo -e "black --verbose ${ARGS[@]:1} /source /tests /documentation";
+		black --verbose ${ARGS[@]:1} /source /tests /documentation;
 	else
-		echo -e "black --check ${ARGS[@]:1} /source /tests";
-		black --check ${ARGS[@]:1} /source /tests;
+		echo -e "black --check ${ARGS[@]:1} /source /tests /documentation";
+		black --check ${ARGS[@]:1} /source /tests /documentation;
 	fi
 elif [[ "${SERVICE}" == "tests" ]]; then
 	echo -e "pytest /tests ${ARGS[@]}";

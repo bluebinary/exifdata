@@ -1,4 +1,6 @@
 {
+  "@read": false,
+  "@write": true,
   "exif": {
     "name": "exif",
     "label": "EXIF namespace",

@@ -101,9 +101,6 @@ that the encoded length ultimately consists of six bytes.
 <a id="namespaces-and-fields"></a>
 ### IPTC Metadata Model Namespaces & Fields
 
-The EXIFData library provides support for reading and writing from the following IPTC
-fields within the IPTC-IIM model unless marked otherwise:
-
 {{fields}}
 
 ### Credits & References
