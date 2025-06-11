@@ -502,8 +502,8 @@ internally by the library and likely does not need to be used directly unless de
 an update for the EXIFData library.
 
 The `Groupspace` class provides its own implementations of the standard library getter
-and setter methods, `__getattr__` and `__setattr__` to support assigning field values to
-the relevant `Namespace` class instance held by the `Groupspace` class instance.
+and setter methods to support assigning field values to the relevant `Namespace` class
+instance held by the `Groupspace` class instance.
 
 The `Groupspace` class provides the following properties:
 
@@ -683,7 +683,7 @@ As the library currently relies upon PyVIPS for loading and saving image files, 
 be the case that additional file formats are found to work with the library, or support
 may be added for additional file formats over time. The EXIFData library's ability to
 support an image file format depends on the file format itself as there are myriad image
-file formats and embedded metadata standards, and although EXIF, IPTC and XMP are deemed
+file formats and embedded metadata standards. Although EXIF, IPTC and XMP are considered
 the most common, these standards are not supported by every image file format.
 
 | File Format | EXIF Read | EXIF Write | IPTC Read | IPTC Write | XMP Read | XMP Write |
