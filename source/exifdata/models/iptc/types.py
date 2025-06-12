@@ -5,7 +5,7 @@ import datetime
 
 from exifdata.logging import logger
 
-from exifdata.models import (
+from exifdata.framework import (
     Value,
 )
 
@@ -23,22 +23,28 @@ from deliciousbytes import (
 logger = logger.getChild(__name__)
 
 
+class Value(Value):
+    @property
+    def value(self) -> object:
+        return self
+
+
 class Short(Short, Value):
     @classmethod
-    def decode(cls, value: bytes) -> Short:
+    def decode(cls, value: bytes, **kwargs) -> Short:
         if not isinstance(value, bytes):
             raise TypeError("The 'value' argument must have a 'bytes' value!")
 
-        return Short(Int.decode(value))
+        return Short(Int.decode(value, **kwargs))
 
 
 class Long(Long, Value):
     @classmethod
-    def decode(cls, value: bytes) -> Long:
+    def decode(cls, value: bytes, **kwargs) -> Long:
         if not isinstance(value, bytes):
             raise TypeError("The 'value' argument must have a 'bytes' value!")
 
-        return Long(Int.decode(value))
+        return Long(Int.decode(value, **kwargs))
 
 
 class String(String, Value):
@@ -49,7 +55,12 @@ class String(String, Value):
         return super().__new__(cls, value)
 
     @classmethod
-    def decode(cls, value: bytes, encoding: Encoding = Encoding.Unicode) -> String:
+    def decode(
+        cls,
+        value: bytes,
+        order: ByteOrder = ByteOrder.MSB,
+        encoding: Encoding = Encoding.Unicode,
+    ) -> String:
         if not isinstance(value, bytes):
             raise TypeError("The 'value' argument must have a 'bytes' value!")
 

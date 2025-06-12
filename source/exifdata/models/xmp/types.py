@@ -10,7 +10,7 @@ import maxml
 from exifdata.configuration import secrets
 from exifdata.logging import logger
 
-from exifdata.models import (
+from exifdata.framework import (
     Type,
     Field,
     Value,

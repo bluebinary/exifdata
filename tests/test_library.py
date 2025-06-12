@@ -1,7 +1,7 @@
 import pytest
 
 from exifdata.logging import logger
-from exifdata.models import *
+from exifdata.framework import *
 from exifdata.models.xmp import XMP
 
 

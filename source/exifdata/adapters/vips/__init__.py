@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from exifdata.logging import logger
 from exifdata.framework.adapter import Adapter
-from exifdata.models import Metadata
+from exifdata.framework import Metadata
 from exifdata.models.exif import EXIF
 from exifdata.models.iptc import IPTC
 from exifdata.models.xmp import XMP

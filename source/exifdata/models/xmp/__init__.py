@@ -8,7 +8,7 @@ import maxml
 from exifdata.logging import logger
 from exifdata.configuration import secrets
 
-from exifdata.models import (
+from exifdata.framework import (
     Metadata,
     Type,
     Namespace,
@@ -148,35 +148,6 @@ class XMP(Metadata):
         # Register the required document schema namespaces, sourced from configuration
         for namespace in _namespaces.values():
             maxml.Element.register_namespace(namespace.prefix, namespace.uri)
-
-    @classmethod
-    def from_exiftool_fields(cls, fields: dict[str, object]) -> XMP | None:
-        """This method provides support for mapping metadata field values specified with
-        the field names that EXIFTool uses to the matching fields supported by XMP."""
-
-        if not isinstance(fields, dict):
-            raise TypeError("The 'fields' argument must have a dictionary value!")
-
-        xmp = XMP()
-
-        for name, value in fields.items():
-            if match := XMP.field_by_property(property="names", value=name):
-                (namespace, field) = match
-
-                try:
-                    xmp.set(namespace=namespace, field=field, value=value)
-                except ValueError as exception:
-                    logger.error(
-                        "%s.from_exiftool_fields() The '%s' field failed validation: %s"
-                        % (cls.__name__, name, str(exception))
-                    )
-            else:
-                logger.warning(
-                    "%s.from_exiftool_fields() The '%s' field could not be found!"
-                    % (cls.__name__, name)
-                )
-
-        return xmp or None
 
     def encode(
         self,

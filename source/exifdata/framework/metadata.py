@@ -91,10 +91,6 @@ class Metadata(object):
                     elif isinstance(attr, list) and value in attr:
                         return (namespace, field)
 
-    @classmethod
-    def from_exiftool_fields(cls, fields: dict[str, object]) -> Metadata:
-        pass
-
     def __init__(self, namespaces: dict[str, Namespace] = None):
         logger.debug(
             "%s.__init__(namespaces: %s)" % (self.__class__.__name__, namespaces)

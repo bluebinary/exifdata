@@ -1,7 +1,7 @@
 from exifdata.logging import logger
 from exifdata.configuration import secrets
 from exifdata.framework.adapter import Adapter
-from exifdata.models import Metadata
+from exifdata.framework import Metadata
 from exifdata.models.exif import EXIF
 from exifdata.models.iptc import IPTC
 from exifdata.models.xmp import XMP
@@ -119,14 +119,9 @@ class EXIFTool(Adapter):
                 "The 'metadata' argument, if specified, must have a dictionary value!"
             )
 
-        if isinstance(exif := EXIF.from_exiftool_fields(metadata), Metadata):
-            self.models.update(exif)
-
-        if isinstance(iptc := IPTC.from_exiftool_fields(metadata), Metadata):
-            self.models.update(iptc)
-
-        if isinstance(xmp := XMP.from_exiftool_fields(metadata), Metadata):
-            self.models.update(xmp)
+        if isinstance(metadata, dict):
+            for name, value in metadata.items():
+                self.models.assign(name=name, value=value)
 
     def erase(self, payloads: list[str] = None) -> None:
         """Supports erasing the raw metadata payloads with the specified names."""

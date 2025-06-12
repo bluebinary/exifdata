@@ -7,7 +7,7 @@ import fractions
 
 from exifdata.logging import logger
 
-from exifdata.models import (
+from exifdata.framework import (
     Type,
     Value,
 )

@@ -492,7 +492,7 @@ to the relevant `Metadata` model class instance and `Field` class instance so th
 value can be assigned to the correct field under the correct metadata model. The field
 is used internally by the library and should not need to be used directly unless
 developing an update for the EXIFData library.
-``
+
 #### Groupspace
 
 The `Groupspace` class provides a structured method for grouping one or more namespaces
@@ -701,11 +701,12 @@ the most common, these standards are not supported by every image file format.
 
 While every effort has been made to ensure that the library works reliably with embedded
 image metadata, you must ensure that all files are backed up before using the EXIFData
-library with such files especially as the library is still in early development.
+library with any files especially as the library is still in early development.
 
 Furthermore, the library may not be able to read nor preserve all metadata field values
 from an image file, especially if manufacturer specific or custom metadata model values
-are present, so it is possible that some loss of embedded metadata could occur.
+are present, so it is possible that loss of embedded metadata could occur if an image is
+loaded into the library and is then overwritten if the file is saved to the same path.
 
 Use of the library is entirely at your own risk and the authors bear no responsibility
 for losses of any kind. By using the software you assume all such risk and liability.
