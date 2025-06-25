@@ -30,8 +30,8 @@ from exifdata.models.iptc.structures import (
 from exifdata.models.iptc.types import (
     # Undefined,
     # ASCII,
-    Long,
     Short,
+    Long,
     # Rational,
     # RationalSigned,
     # Byte,

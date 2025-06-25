@@ -12,8 +12,10 @@ from exifdata.framework import (
 from deliciousbytes import (
     Encoding,
     ByteOrder,
-    Long,
     Short,
+    UnsignedShort,
+    Long,
+    UnsignedLong,
     Bytes,
     String,
     Int,
@@ -29,7 +31,7 @@ class Value(Value):
         return self
 
 
-class Short(Short, Value):
+class Short(UnsignedShort, Value):
     @classmethod
     def decode(cls, value: bytes, **kwargs) -> Short:
         if not isinstance(value, bytes):
@@ -38,7 +40,7 @@ class Short(Short, Value):
         return Short(Int.decode(value, **kwargs))
 
 
-class Long(Long, Value):
+class Long(UnsignedLong, Value):
     @classmethod
     def decode(cls, value: bytes, **kwargs) -> Long:
         if not isinstance(value, bytes):

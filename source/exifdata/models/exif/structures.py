@@ -1,10 +1,7 @@
 from __future__ import annotations
 
-__type__ = type
-
-
 import enumerific
-
+import builtins
 
 from deliciousbytes import (
     ByteOrder,
@@ -189,7 +186,7 @@ class IFDTag(object):
         if not isinstance(type, int):
             raise TypeError(
                 "The 'type' argument must have an integer value, not %s!"
-                % (__type__(type))
+                % (builtins.type(type))
             )
         elif not 1 <= type <= UInt16.MAX:
             raise TypeError(
@@ -202,7 +199,7 @@ class IFDTag(object):
         if not isinstance(count, int):
             raise TypeError(
                 "The 'count' argument must have an integer value, not %s!"
-                % (__type__(count))
+                % (builtins.type(count))
             )
         elif not 1 <= count <= UInt32.MAX:
             raise TypeError(

@@ -3,7 +3,7 @@
 ################################# [Base Python Image] ##################################
 
 # Allow the Python version to be specified as a build argument, with a preferred default
-ARG VERSION=3.12
+ARG VERSION=3.13
 
 FROM python:${VERSION} AS base
 

@@ -20,30 +20,57 @@ from deliciousbytes import (
     UInt16,
     UInt32,
     Short,
+    UnsignedShort,
+    SignedShort,
     Long,
+    UnsignedLong,
+    SignedLong,
 )
 
 
 logger = logger.getChild(__name__)
 
 
+# The EXIF metadata standard defines the following data types:
+
+# | ID | Type                   |  Format    | Size             |
+# |----|------------------------|------------|------------------|
+# | 0  | Empty                  |            | 0 bytes          |
+# | 1  | Unsigned Byte          | byte       | 1-byte, 8-bits   |
+# | 2  | ASCII String           | const char | 1-byte, 8-bits   |
+# | 3  | Unsigned Short         | short      | 2-bytes, 16-bits |
+# | 4  | Unsigned Long          | long       | 4-bytes, 32-bits |
+# | 5  | Unsigned Rational      | two longs  | 8 bytes, 64-bits |
+# | 6  | Signed Byte            | byte       | 1-byte, 8-bits   |
+# | 7  | Undefined              |            | 1-byte, 8-bits   |
+# | 8  | Signed Short           | short      | 2-bytes, 16-bits |
+# | 9  | Signed Long            | long       | 4-bytes, 32-bits |
+# | 10 | Signed Rational        | two longs  | 8 bytes, 64-bits |
+# | 11 | Single-Precision Float | float      | 4-bytes, 32-bits |
+# | 12 | Double-Precision Float | double     | 8-bytes, 64-bits |
+
+
 class Empty(Value):
     """An empty value."""
 
     _tagid: int = 0
+    _length: int = 1
 
 
-class Byte(Value):
+class Byte(Int, Value):
     """An 8-bit unsigned integer."""
 
     _tagid: int = 1
+    _length: int = 1
+    _signed: bool = False
 
 
 class ASCII(Value):
     """An 8-bit byte containing one 7-bit ASCII code. The final byte is terminated with
-    NULL[00.H]. The ASCII count shall include NULL."""
+    NULL[00.H]. The ASCII count shall include the terminating NULL."""
 
     _tagid: int = 2
+    _length: int = 1
 
     def encode(self, order: ByteOrder = ByteOrder.MSB) -> bytes:
         if not isinstance(self.value, str):
@@ -71,10 +98,12 @@ class ASCII(Value):
         return ASCII(value=decoded)
 
 
-class Short(Short, Value):
+class Short(UnsignedShort, Value):
     """A 16-bit (2-byte) unsigned integer."""
 
     _tagid: int = 3
+    _length: int = 2
+    _signed: bool = False
 
     @classmethod
     def decode(cls, value: bytes) -> Short:
@@ -84,17 +113,21 @@ class Short(Short, Value):
         return Short(Int.decode(value))
 
 
-class Long(Value):
+class Long(UnsignedLong, Value):
     """A 32-bit (4-byte) unsigned integer."""
 
     _tagid: int = 4
+    _length: int = 4
+    _signed: bool = False
 
 
 class Rational(Value):
-    """Two long integers used to hold a rational number. The first long is the numerator
-    and the second long expresses the denominator."""
+    """Two unsigned long integers used to hold a rational number. The first long is the
+    numerator and the second long expresses the denominator. Occupies 8-bytes, 64-bits."""
 
     _tagid: int = 5
+    _length: int = 8
+    _signed: bool = False
 
     def __init__(
         self,
@@ -132,24 +165,32 @@ class Rational(Value):
         super().__init__(value=f"{numerator}/{denominator}", **kwargs)
 
     @property
-    def numerator(self) -> deliciousbytes.Long:
+    def numerator(self) -> Long:
         return self._numerator
 
     @numerator.setter
     def numerator(self, numerator: int):
         if not isinstance(numerator, int):
             raise TypeError("The 'numerator' argument must have an integer value!")
-        self._numerator = deliciousbytes.Long(numerator)
+
+        if self._signed is True:
+            self._numerator = SignedLong(numerator)
+        elif self._signed is False:
+            self._numerator = UnsignedLong(numerator)
 
     @property
-    def denominator(self) -> deliciousbytes.Long:
+    def denominator(self) -> Long:
         return self._denominator
 
     @denominator.setter
     def denominator(self, denominator: int):
         if not isinstance(denominator, int):
             raise TypeError("The 'denominator' argument must have an integer value!")
-        self._denominator = deliciousbytes.Long(denominator)
+
+        if self._signed is True:
+            self._denominator = SignedLong(denominator)
+        elif self._signed is False:
+            self._denominator = UnsignedLong(denominator)
 
     def encode(self, order: ByteOrder = ByteOrder.MSB) -> bytes:
         encoded: list[bytes] = []
@@ -165,35 +206,52 @@ class Rational(Value):
         if not isinstance(value, bytes):
             raise TypeError("The 'value' argument must have a bytes value!")
 
-        if not len(value) == 4:  # 4 bytes * 8 bits = 32 bits (two UInt16s)
+        # Expect value to be 8 bytes, 64 bits in length for two long (32-bit) integers
+        if not (length := len(value)) == 8:
             raise ValueError(
-                "The provided bytes 'value' is not the expected length of 4 bytes (32 bits)!"
+                "The provided bytes 'value' does not have the expected length of 8 bytes (64 bits), but rather: %d!" % (length)
             )
 
-        numerator: UInt16 = UInt16.decode(value[0:2], order=order)
-
-        denominator: UInt16 = UInt16.decode(value[2:4], order=order)
+        if self._signed is True:
+            numerator: SignedLong = SignedLong.decode(value[0:4], order=order)
+            denominator: SignedLong = SignedLong.decode(value[4:8], order=order)
+        elif self._signed is False:
+            numerator: UnsignedLong = UnsignedLong.decode(value[0:4], order=order)
+            denominator: UnsignedLong = UnsignedLong.decode(value[4:8], order=order)
 
         return Rational(numerator=numerator, denominator=denominator)
+
+
+class SignedByte(Byte, Value):
+    """An 8-bit signed integer."""
+
+    _tagid: int = 6
+    _length: int = 1
+    _signed: bool = True
 
 
 class Undefined(Value):
     """An 8-bit byte that may take any value depending on the field definition."""
 
     _tagid: int = 7
+    _length: int = 1
 
 
-class LongSigned(Value):
+class LongSigned(SignedLong, Value):
     """A 32-bit (4-byte) signed integer (2's complement notation)."""
 
     _tagid: int = 9
+    _length: int = 4
+    _signed: bool = True
 
 
-class RationalSigned(Value):
+class RationalSigned(Rational):
     """Two signed long integers. The first signed long is the numerator and the second
-    signed long is the denominator."""
+    signed long is the denominator. Occupies 8-bytes, 64-bits."""
 
     _tagid: int = 10
+    _length: int = 8
+    _signed: bool = True
 
 
 class UTF8(Value):
@@ -203,6 +261,7 @@ class UTF8(Value):
     than in TIFF 6.0."""
 
     _tagid: int = 129
+    _length: int = 1
 
 
 class DateTime(Value):
