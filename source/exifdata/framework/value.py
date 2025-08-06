@@ -129,6 +129,5 @@ class Value(object):
     @abc.abstractmethod
     def decode(cls, value: bytes) -> Value:
         raise NotImplementedError(
-            "The '%s.decode()' method has not been implemented!"
-            % (cls.__name__)
+            "The '%s.decode()' method has not been implemented!" % (cls.__name__)
         )
