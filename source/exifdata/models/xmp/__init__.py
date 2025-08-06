@@ -161,6 +161,12 @@ class XMP(Metadata):
         whitespace characters to minimise space requirements. For readability the output
         can be pretty printed to include whitespace by setting pretty to True."""
 
+        if len(self._values) == 0:
+            logger.info(
+                "No XMP metadata fields were assigned values, so there is nothing to encode."
+            )
+            return None
+
         if not isinstance(encoding, str):
             raise TypeError("The 'encoding' argument must have a string value!")
 

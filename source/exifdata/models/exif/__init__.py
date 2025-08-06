@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import json
+import io
 
 from exifdata.logging import logger
 
@@ -127,6 +128,12 @@ class EXIF(Metadata):
             raise TypeError(
                 "The 'order' argument must have a ByteOrder enumeration value!"
             )
+
+        if len(self._values) == 0:
+            logger.info(
+                "No EXIF metadata fields were assigned values, so there is nothing to encode."
+            )
+            return None
 
         ifd = IFD()
 

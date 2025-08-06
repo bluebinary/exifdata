@@ -18,6 +18,17 @@ services:
     volumes:
       *volumes
 
+  flakes:
+    container_name: exifdata-flakes
+    build:
+      dockerfile: ./Dockerfile
+      context: ./
+    image: exifdata-flakes
+    environment:
+      - SERVICE=flakes
+    volumes:
+      *volumes
+
   tests:
     container_name: exifdata-tests
     build:

@@ -156,7 +156,7 @@ class Namespace(object):
                 value = self._metadata._values[field.id].value
         else:
             raise AttributeError(
-                f"The '%s' namespace does not have a '%s' attribute!"
+                "The '%s' namespace does not have a '%s' attribute!"
                 % (
                     self.id,
                     name,

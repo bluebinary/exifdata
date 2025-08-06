@@ -3,16 +3,21 @@ from __future__ import annotations
 from exifdata.logging import logger
 
 from exifdata.framework import Metadata
+
 from exifdata.models.exif import EXIF
-from exifdata.models.iptc import IPTC
+from exifdata.models.iptc import IPTC, IPTCFormat
 from exifdata.models.xmp import XMP
-from deliciousbytes import ByteOrder
 
 from exifdata.adapters import (
     Adapter,
-    VIPS,
     EXIFTool,
+    TIFFData,
+    VIPS,
 )
+
+from deliciousbytes import ByteOrder
+
+import os
 
 
 class Models(object):
@@ -46,13 +51,17 @@ class Models(object):
         return cls
 
     @classmethod
-    def open(cls, filepath: str, **kwargs) -> Models:
+    def open(cls, filepath: str, decode: bool = True, **kwargs) -> Models:
         """Supports extracting image metadata from an image file and creating the
         corresponding instances of the EXIFData library image metadata model classes
         for each of the metadata payloads that are present in the provided image."""
 
         logger.debug(
-            "%s.open(filepath: %s, kwargs: %s)", cls.__name__, filepath, kwargs
+            "%s.open(filepath: %s, decode: %s, kwargs: %s)",
+            cls.__name__,
+            filepath,
+            decode,
+            kwargs,
         )
 
         if not isinstance(filepath, str):
@@ -65,36 +74,31 @@ class Models(object):
         if isinstance(
             adapter := cls._adapter.open(filepath=filepath, **kwargs), Adapter
         ):
-            return cls(adapter=adapter, **kwargs)
+            return cls(adapter=adapter, decode=decode, **kwargs)
         else:
             raise RuntimeError(
                 f"Unable to load the specified image file, '{filepath}', using the '{adapter.name}' adapter!"
             )
 
     @classmethod
-    def associate(cls, image: object, order: ByteOrder = None, **kwargs) -> Models:
-        return cls.load(image=image, order=order, decode=False, **kwargs)
+    def associate(cls, image: object, **kwargs) -> Models:
+        return cls.load(image=image, decode=False, **kwargs)
 
     @classmethod
-    def load(
-        cls, image: object, order: ByteOrder = None, decode: bool = True, **kwargs
-    ) -> Models:
+    def load(cls, image: object, decode: bool = True, **kwargs) -> Models:
         """Supports extracting image metadata from an image object and creating the
         corresponding instances of the EXIFData library image metadata model classes
         for each of the metadata payloads that are present in the provided image."""
 
         logger.debug(
-            "%s.load(image: %s, order: %s, decode: %s, kwargs: %s)",
+            "%s.load(image: %s, decode: %s, kwargs: %s)",
             cls.__name__,
             image,
-            order,
             decode,
             kwargs,
         )
 
-        if isinstance(
-            adapter := cls._adapter.load(image=image, order=order, **kwargs), Adapter
-        ):
+        if isinstance(adapter := cls._adapter.load(image=image, **kwargs), Adapter):
             return cls(adapter=adapter, decode=decode, **kwargs)
         else:
             raise RuntimeError(
@@ -206,7 +210,8 @@ class Models(object):
 
     @property
     def exif(self) -> EXIF:
-        """Return the EXIF metadata model instance if it is present in the models."""
+        """Return the EXIF metadata model instance if it is present in the models, or
+        create and assign the instance if it did not previously exist."""
 
         logger.debug("%s.exif()", self.__class__.__name__)
 
@@ -214,11 +219,16 @@ class Models(object):
             if isinstance(model, EXIF):
                 return model
 
-        return EXIF()
+        model = EXIF()
+
+        self._models.append(model)
+
+        return model
 
     @property
     def iptc(self) -> IPTC:
-        """Return the IPTC metadata model instance if it is present in the models."""
+        """Return the IPTC metadata model instance if it is present in the models, or
+        create and assign the instance if it did not previously exist."""
 
         logger.debug("%s.iptc()", self.__class__.__name__)
 
@@ -226,11 +236,16 @@ class Models(object):
             if isinstance(model, IPTC):
                 return model
 
-        return IPTC()
+        model = IPTC()
+
+        self._models.append(model)
+
+        return model
 
     @property
     def xmp(self) -> XMP:
-        """Return the XMP metadata model instance if it is present in the models."""
+        """Return the XMP metadata model instance if it is present in the models, or
+        create and assign the instance if it did not previously exist."""
 
         logger.debug("%s.xmp()", self.__class__.__name__)
 
@@ -238,9 +253,13 @@ class Models(object):
             if isinstance(model, XMP):
                 return model
 
-        return XMP()
+        model = XMP()
 
-    def assign(self, name: str, value: object):
+        self._models.append(model)
+
+        return model
+
+    def assign(self, name: str, value: object, models: list[str] = None):
         """Support assigning a value to any metadata model that has a field with a matching fully-qualified name or registered fully-qualified alias name."""
 
         logger.debug(
@@ -252,7 +271,17 @@ class Models(object):
 
         found: bool = False
 
+        prefix: str = None
+
+        if len(parts := name.split(":", maxsplit=1)) == 2:
+            (prefix, name) = parts
+
         for model in self._models:
+            if models and not model.name in models:
+                continue
+            elif prefix and not model.name.lower() == prefix.lower():
+                continue
+
             if match := model.field_by_property(property="names", value=name):
                 (namespace, field) = match
 
@@ -320,3 +349,23 @@ class Models(object):
         self.adapter.encode(order=order, **kwargs)
 
         return self
+
+    def save(self, **kwargs):
+        """Support saving the current metadata to the image."""
+
+        return self.adapter.save(**kwargs)
+
+
+__all__ = [
+    "Metadata",
+    "EXIF",
+    "IPTC",
+    "IPTCFormat",
+    "XMP",
+    "Adapter",
+    "EXIFTool",
+    "TIFFData",
+    "VIPS",
+    "Models",
+    "ByteOrder",
+]

@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-import re
 import datetime
-import enumerific
 import fractions
 
 from exifdata.logging import logger
@@ -123,7 +121,8 @@ class Long(UnsignedLong, Value):
 
 class Rational(Value):
     """Two unsigned long integers used to hold a rational number. The first long is the
-    numerator and the second long expresses the denominator. Occupies 8-bytes, 64-bits."""
+    numerator and the second long expresses the denominator. Occupies 8-bytes, 64-bits.
+    """
 
     _tagid: int = 5
     _length: int = 8
@@ -209,13 +208,14 @@ class Rational(Value):
         # Expect value to be 8 bytes, 64 bits in length for two long (32-bit) integers
         if not (length := len(value)) == 8:
             raise ValueError(
-                "The provided bytes 'value' does not have the expected length of 8 bytes (64 bits), but rather: %d!" % (length)
+                "The provided bytes 'value' does not have the expected length of 8 bytes (64 bits), but rather: %d!"
+                % (length)
             )
 
-        if self._signed is True:
+        if cls._signed is True:
             numerator: SignedLong = SignedLong.decode(value[0:4], order=order)
             denominator: SignedLong = SignedLong.decode(value[4:8], order=order)
-        elif self._signed is False:
+        elif cls._signed is False:
             numerator: UnsignedLong = UnsignedLong.decode(value[0:4], order=order)
             denominator: UnsignedLong = UnsignedLong.decode(value[4:8], order=order)
 

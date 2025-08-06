@@ -1,6 +1,7 @@
-<x:xmpmeta x:xmptk="Adobe XMP Core 9.1-c002 79.f354efc70, 2023/11/09-12:05:53" xmlns:x="adobe:ns:meta/">
+<x:xmpmeta x:xmptk="Adobe XMP Core 9.1-c002 79.f354efc70, 2023/11/09-12:05:53" xmlns:x="http://ns.adobe.com/x/1.0">
   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-    <rdf:Description rdf:about="" xmlns:xmp="http://ns.adobe.com/xap/1.0/">
+    <rdf:Description rdf:about="" xmlns:Iptc4xmpExt="http://iptc.org/std/Iptc4xmpExt/2008-02-29/"
+         xmlns:xmp="http://ns.adobe.com/xap/1.0/">
       <xmp:Label>testing</xmp:Label>
       <xmp:CreateDate>2025-03-21 00:00:00</xmp:CreateDate>
       <xmp:CreatorTool>exifdata</xmp:CreatorTool>
@@ -10,6 +11,11 @@
       <xmp:Rating>5.0</xmp:Rating>
       <xmp:BaseURL>https://www.example.com</xmp:BaseURL>
       <xmp:Nickname>nickname</xmp:Nickname>
+      <Iptc4xmpExt:ArtworkOrObject>
+        <rdf:Bag>
+          <rdf:li rdf:parseType="Resource"/>
+        </rdf:Bag>
+      </Iptc4xmpExt:ArtworkOrObject>
     </rdf:Description>
   </rdf:RDF>
 </x:xmpmeta>

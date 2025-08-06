@@ -11,8 +11,6 @@ path = os.path.join(os.path.dirname(__file__), "..", "source")
 
 sys.path.insert(0, path)  # add 'exifdata' library path for importing into the tests
 
-import exifdata
-
 
 @pytest.fixture(scope="session", name="data")
 def data() -> callable:

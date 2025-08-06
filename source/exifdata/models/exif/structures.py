@@ -249,7 +249,7 @@ class IFDTag(object):
         encoded_data = self.data.encode(order=order, raises=False)
 
         # If encoded data requires more than 4 bytes, the offset to the data is recorded
-        # rather than the data; the data is stored following the IFDTag (TODO: Confirm)
+        # rather than the data; the data is stored following the IFD
         if len(encoded_data) > 4:
             # TODO: Patch the location of the data later when we know the offset
             encoded.append(UInt32(0xFFFFFFFF).encode(order=order))

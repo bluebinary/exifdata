@@ -131,5 +131,5 @@ class Value(object):
     def decode(cls, value: bytes) -> Value:
         raise NotImplementedError(
             "The '%s.decode()' method has not been implemented!"
-            % (self.__class__.__name__)
+            % (cls.__name__)
         )

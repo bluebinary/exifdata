@@ -1,5 +1,9 @@
 # EXIFData Change Log
 
+## [0.5.7] - 2025-08-04
+### Added
+- Added support for the `TIFFData` adapter.
+
 ## [0.5.6] - 2025-06-25
 ### Added
 - Added support for the `SignedRational` data type in the EXIF metadata model.
