@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import enumerific
-
 from exifdata.logging import logger
 from exifdata import framework
 

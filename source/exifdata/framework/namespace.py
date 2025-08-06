@@ -224,7 +224,7 @@ class Namespace(object):
             self._utilized = True
         else:
             raise AttributeError(
-                f"The '%s' namespace does not have a '%s' attribute!"
+                "The '%s' namespace does not have a '%s' attribute!"
                 % (
                     self.id,
                     name,

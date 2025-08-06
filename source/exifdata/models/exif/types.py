@@ -314,13 +314,17 @@ class DateTime(Value):
         return DateTime(value=decoded)
 
 
-# class Type(Type, aliased=True):
-#     Byte = Byte
-#     ASCII = ASCII
-#     Short = Short
-#     Long = Long
-#     Rational = Rational
-#     Undefined = Undefined
-#     LongSigned = LongSigned
-#     RationalSigned = RationalSigned
-#     UTF8 = UTF8
+__all__ = [
+    "Empty",
+    "Byte",
+    "ASCII",
+    "Short",
+    "Long",
+    "Rational",
+    "SignedByte",
+    "Undefined",
+    "LongSigned",
+    "RationalSigned",
+    "UTF8",
+    "DateTime",
+]

@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import os
 import json
-import enumerific
 import maxml
 
 from exifdata.logging import logger

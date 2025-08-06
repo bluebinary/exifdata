@@ -394,22 +394,12 @@ class Metadata(object):
 
     @abc.abstractmethod
     def encode(
-        self, encoding: str = None, order: ByteOrder = ByteOrder.LSB, **kwargs
+        self,
+        encoding: str = None,
+        order: ByteOrder = ByteOrder.LSB,
+        **kwargs,
     ) -> bytes:
-        encoded: list[bytes] = []
-
-        for namespace in self._namespaces.values():
-            if namespace.utilized is False and all is False:
-                continue
-
-            for field in namespace._fields.values():
-                if not namespace.name in values:
-                    values[namespace.name] = caselessdict()
-
-                if not (value := self._values.get(field.id)) is None:
-                    encoded.append(value.encode(order=order))
-
-        return b"".join(encoded)
+        raise NotImplementedError
 
     @abc.abstractmethod
     def decode(self, value: bytes) -> Metadata:

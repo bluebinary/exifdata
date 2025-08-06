@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import abc
 import typing
-import enumerific
 
 from exifdata.logging import logger
 from exifdata import framework
