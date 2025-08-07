@@ -119,7 +119,7 @@ class XMP(Metadata):
                 # Then add the name-spaced fields under the model, first creating the namespace
                 if fieldsdata := namespacedata.pop("fields"):
                     # logger.debug(namespacedata)
- 
+
                     # Each assignment to metadata.namespace adds to the array/list of namespaces
                     cls._namespaces[namespacedata.get("name")] = namespace = Namespace(
                         identifier=namespaceid,

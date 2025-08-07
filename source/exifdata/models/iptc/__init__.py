@@ -88,14 +88,14 @@ class IPTC(Metadata):
             # Ensure the model configuration file is valid
             if not isinstance(namespacesdata := json.load(handle), dict):
                 raise TypeError("The 'namespaces' dictionary isn't valid!")
-    
+
             # Dynamically create the model namespaces based on the provided configuration
             for namespaceid, namespacedata in namespacesdata.items():
                 # logger.debug(" - Namespace: %s" % (identifier))
-    
+
                 if not isinstance(namespaceid, str):
                     raise TypeError("All namespace dictionary keys must be strings!")
-    
+
                 if namespaceid.startswith("@"):
                     # If any top-level aliases have been specified, capture those now
                     if namespaceid == "@aliases" and isinstance(namespacedata, dict):
@@ -114,7 +114,7 @@ class IPTC(Metadata):
                             identifier=structureid,
                             **structuredata,
                         )
-    
+
                 # Add the namespaced fields under the model, first creating the namespace
                 if fieldsdata := namespacedata.pop("fields"):
                     # Assign the new Namespace to the top-level _namespaces dictionary
@@ -123,17 +123,17 @@ class IPTC(Metadata):
                         # metadata=self,  # Set later via Metadata.__getattr__()
                         **namespacedata,  # pass the properties via dictionary expansion
                     )
-    
+
                     # Now iterate over the fields and add them to the relevant namespace
                     for fieldid, fielddata in fieldsdata.items():
                         # logger.debug("  - Field: %s (%s)" % (fieldid, fielddata.get("name")))
-    
+
                         namespace.field = field = Field(
                             namespace=namespace,
                             identifier=fieldid,
                             **fielddata,  # pass the properties via dictionary expansion
                         )
-    
+
                         field.record_id = RecordID.register(
                             name=field.name,
                             value=RecordInfo(
@@ -241,16 +241,16 @@ class IPTC(Metadata):
         # # Iterate through the namespaces and fields to emit the metadata in a fixed
         # # order based on when the field name is encountered during iteration:
         # for namespace in self._namespaces.values():
-            # if namespace.utilized is False:
-            #     continue
-            # for identifier, field in namespace._fields.items():
-            #     if not (value := self._values.get(field.identifier)) is None:
-            #         if record := Record(
-            #             id=field.record_id,
-            #             value=value,
-            #         ):
-            #             logger.debug("0x%02x, 0x%02x, %s, %s" % (field.record_id.record_id, field.record_id.dataset_id, field.identifier, field.record_id.type))
-            #             encoded.append(record.encode(order=order))
+        # if namespace.utilized is False:
+        #     continue
+        # for identifier, field in namespace._fields.items():
+        #     if not (value := self._values.get(field.identifier)) is None:
+        #         if record := Record(
+        #             id=field.record_id,
+        #             value=value,
+        #         ):
+        #             logger.debug("0x%02x, 0x%02x, %s, %s" % (field.record_id.record_id, field.record_id.dataset_id, field.identifier, field.record_id.type))
+        #             encoded.append(record.encode(order=order))
 
         # Determine if the Record Version has been set
         found_record_version: bool = False
@@ -276,13 +276,16 @@ class IPTC(Metadata):
                     id=field.record_id,
                     value=value,
                 ):
-                    logger.debug("0x%02x, 0x%02x, %s, %s, %r" % (
-                        record.id.record_id,
-                        record.id.dataset_id,
-                        field.identifier,
-                        record.id.type,
-                        value,
-                    ))
+                    logger.debug(
+                        "0x%02x, 0x%02x, %s, %s, %r"
+                        % (
+                            record.id.record_id,
+                            record.id.dataset_id,
+                            field.identifier,
+                            record.id.type,
+                            value,
+                        )
+                    )
 
                     encoded.append(record.encode(order=order))
 
@@ -410,7 +413,12 @@ class IPTC(Metadata):
             while isinstance(byte := value.read(1), bytes) and byte:
                 index = value.tell()
 
-                logger.debug("%02d ~> 0x%02x, %r", index, (int(byte.hex(), 16) if byte else 0), byte)
+                logger.debug(
+                    "%02d ~> 0x%02x, %r",
+                    index,
+                    (int(byte.hex(), 16) if byte else 0),
+                    byte,
+                )
 
                 if index == 0 and not byte == 0x1C:
                     raise ValueError(

@@ -120,14 +120,16 @@ class TIFFData(Adapter):
             if isinstance(value, Value):
                 logger.warning(
                     "The value for '%s' should have a bytes or bytearray value, but was %s!",
-                    field, type(value),
+                    field,
+                    type(value),
                 )
 
                 value = value.encode(order=self.image.order)
             else:
                 logger.warning(
                     "The value for '%s' should have a bytes or bytearray value, not %s!",
-                    field, type(value),
+                    field,
+                    type(value),
                 )
 
                 return self
