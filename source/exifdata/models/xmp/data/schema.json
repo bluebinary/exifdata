@@ -1266,7 +1266,7 @@
   "exif": {
     "name": "exif",
     "label": "EXIF namespace",
-    "definition": "EXIF Schema For EXIF-Specific Properties. These properties defined solely by EXIF.",
+    "definition": "EXIF schema for EXIF-specific properties. These properties are defined solely by EXIF.",
     "uri": "http://ns.adobe.com/exif/1.0/",
     "prefix": "exif",
     "fields": {
@@ -2343,12 +2343,12 @@
       },
       "Iptc4xmpCore:Location": {
         "name": "location",
-        "definition": "Name of a location the content is focussing on -- either the location shown in visual media or referenced by text or audio media. This location name could either be the name of a sublocation to a city or the name of a well known location or (natural) monument outside a city. In the sense of a sublocation to a city this element is at the fourth level of a top-down geographical hierarchy.",
+        "definition": "Name of a location the content is focussing on – either the location shown in visual media or referenced by text or audio media. This location name could either be the name of a sublocation to a city or the name of a well known location or (natural) monument outside a city. In the sense of a sublocation to a city this element is at the fourth level of a top-down geographical hierarchy.",
         "type": "Text"
       },
       "Iptc4xmpCore:CountryCode": {
         "name": "countryCode",
-        "definition": "Code of the country the content is focussing on -- either the country shown in visual media or referenced in text or audio media. This element is at the top/first level of a top-down geographical hierarchy. The code should be taken from ISO 3166 two or three letter code. The full name of a country should go to the \"Country\" element.",
+        "definition": "Code of the country the content is focussing on – either the country shown in visual media or referenced in text or audio media. This element is at the top/first level of a top-down geographical hierarchy. The code should be taken from ISO 3166 two or three letter code. The full name of a country should go to the \"Country\" element.",
         "type": "Locale"
       },
       "Iptc4xmpCore:SubjectCode": {

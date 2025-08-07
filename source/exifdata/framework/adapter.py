@@ -67,30 +67,31 @@ class Adapter(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def get(self, name: str) -> bytes | None:
+    def get(self, name: str, **kwargs) -> bytes | None:
         """Supports getting a raw metadata payload of the specified name."""
 
         pass
 
     @abc.abstractmethod
-    def set(self, name: str, value: bytes) -> Adapter:
+    def set(self, name: str, value: bytes, **kwargs) -> Adapter:
         """Supports setting a raw metadata payload of the specified name and value."""
 
         return self
 
     @abc.abstractmethod
-    def erase(self, payloads: list[str] = None) -> None:
+    def erase(self, payloads: list[str] = None, **kwargs) -> None:
         """Supports erasing the raw metadata payloads with the specified names."""
+
         pass
 
     @abc.abstractmethod
-    def decode(self) -> None:
+    def decode(self, **kwargs) -> None:
         """Supports decoding the available metadata payloads in the image."""
 
         pass
 
     @abc.abstractmethod
-    def encode(self) -> None:
+    def encode(self, **kwargs) -> None:
         """Supports encoding and embedding the assigned metadata into the image."""
 
         pass

@@ -228,7 +228,7 @@ class Rational(str, Value):
         # as the matching instance property is not yet available:
         value = value.decode(cls._encoding.value)
 
-        parsed: RationalParts = cls.parse(value)
+        parsed: cls.RationalParts = cls.parse(value)
 
         # Create a new instance of the class, initialized with the decoded value:
         return cls(
@@ -370,9 +370,6 @@ class Bytes(bytes, Value):
 
         return super().__new__(cls, value)
 
-    def __bytes__(self) -> bytes:
-        return self
-
     def __str__(self) -> str:
         return object.__str__(self)
 
@@ -468,7 +465,7 @@ class Date(datetime.datetime, Value):
                                 return datetime.datetime.strptime(
                                     value, "%Y:%m:%d %H:%M:%S"
                                 )
-                            except ValueError as exception:
+                            except ValueError:
                                 try:
                                     # Parse YYYY:mm:dd to datetime value
                                     return datetime.datetime.strptime(value, "%Y:%m:%d")
@@ -562,7 +559,7 @@ class Time(datetime.time, Value):
                     try:
                         # Parse YYYY:mm:dd HH:MM:SS to datetime value
                         return datetime.datetime.strptime(value, "%H:%M:%S").time()
-                    except ValueError as exception:
+                    except ValueError:
                         try:
                             # Parse YYYY:mm:dd to datetime value
                             return datetime.datetime.strptime(value, "%Y:%m:%d").time()
@@ -994,7 +991,7 @@ class LanguageAlternative(Value):
             return cls.Localized(text=text, language=language, country=country)
 
     def __init__(self, value: str | list[str] = None, **kwargs):
-        self._alternates: list[Localized] = []
+        self._alternates: list[self.__class__.Localized] = []
 
         if isinstance(value, str):
             if parsed := self.parse(value):

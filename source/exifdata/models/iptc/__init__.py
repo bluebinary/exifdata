@@ -30,8 +30,8 @@ from exifdata.models.iptc.structures import (
 from exifdata.models.iptc.types import (
     # Undefined,
     # ASCII,
-    Long,
     Short,
+    Long,
     # Rational,
     # RationalSigned,
     # Byte,
@@ -57,7 +57,6 @@ class IPTC(Metadata):
     _aliases: dict[str, str] = {}
     _encodings: list[str] = ["UTF-8", "Unicode", "ASCII"]
     _types: dict[str, type] = {}
-
     _app13prefix: bytearray = [
         b"P",
         b"h",
@@ -74,69 +73,79 @@ class IPTC(Metadata):
         b"0",
         b"\x00",
     ]
+    _setup: bool = False
 
-    # Initialize the model's namespaces from the model configuration file
-    with open(
-        os.path.join(os.path.dirname(__file__), "data", "schema.json"), "r"
-    ) as handle:
-        # Ensure the model configuration file is valid
-        if not isinstance(namespaces := json.load(handle), dict):
-            raise TypeError("The 'namespaces' dictionary isn't valid!")
+    def __new__(cls):
+        """Initialize the model's namespaces from the schema configuration file once."""
 
-        # Dynamically create the model namespaces based on the provided configuration
-        for identifier, properties in namespaces.items():
-            # logger.debug(" - Namespace: %s" % (identifier))
+        # If the setup has already been performed previously, return immediately
+        if cls._setup is True:
+            return super().__new__(cls)
 
-            if not isinstance(identifier, str):
-                raise TypeError("All namespace dictionary keys must be strings!")
+        with open(
+            os.path.join(os.path.dirname(__file__), "data", "schema.json"), "r"
+        ) as handle:
+            # Ensure the model configuration file is valid
+            if not isinstance(namespacesdata := json.load(handle), dict):
+                raise TypeError("The 'namespaces' dictionary isn't valid!")
 
-            if identifier.startswith("@"):
-                # If any top-level aliases have been specified, capture those now
-                if identifier == "@aliases" and isinstance(properties, dict):
-                    _aliases = properties
-                continue
+            # Dynamically create the model namespaces based on the provided configuration
+            for namespaceid, namespacedata in namespacesdata.items():
+                # logger.debug(" - Namespace: %s" % (identifier))
 
-            if not isinstance(properties, dict):
-                raise TypeError(
-                    "All model schema top-level values must be dictionaries!"
-                )
+                if not isinstance(namespaceid, str):
+                    raise TypeError("All namespace dictionary keys must be strings!")
 
-            if structures := properties.get("structures"):
-                for _structure_id, _structure in structures.items():
-                    _structures[_structure.get("name")] = Structure(
-                        identifier=_structure_id,
-                        **_structure,
+                if namespaceid.startswith("@"):
+                    # If any top-level aliases have been specified, capture those now
+                    if namespaceid == "@aliases" and isinstance(namespacedata, dict):
+                        aliases = namespacedata
+                    continue
+
+                if not isinstance(namespacedata, dict):
+                    raise TypeError(
+                        "All model schema top-level values must be dictionaries!"
                     )
 
-            # Then add the name-spaced fields under the model, first creating the namespace
-            if fields := properties.pop("fields"):
-                # logger.debug(properties)
+                if structures := namespacedata.get("structures"):
+                    for structureid, structuredata in structures.items():
+                        # Assign the new Structure to the top-level _structures dictionary
+                        cls._structures[structuredata.get("name")] = Structure(
+                            identifier=structureid,
+                            **structuredata,
+                        )
 
-                # Each assignment to metadata.namespace adds to the array/list of namespaces
-                _namespaces[properties.get("name")] = namespace = Namespace(
-                    identifier=identifier,
-                    # metadata=self,  # Set later via Metadata.__getattr__()
-                    **properties,  # pass the properties via dictionary expansion
-                )
-
-                # Now iterate over the fields and add them to the relevant namespace
-                for identifier, properties in fields.items():
-                    # logger.debug("  - Field: %s (%s)" % (identifier, properties.get("name")))
-
-                    namespace.field = field = Field(
-                        namespace=namespace,
-                        identifier=identifier,
-                        **properties,  # pass the properties via dictionary expansion
+                # Add the namespaced fields under the model, first creating the namespace
+                if fieldsdata := namespacedata.pop("fields"):
+                    # Assign the new Namespace to the top-level _namespaces dictionary
+                    cls._namespaces[namespacedata.get("name")] = namespace = Namespace(
+                        identifier=namespaceid,
+                        # metadata=self,  # Set later via Metadata.__getattr__()
+                        **namespacedata,  # pass the properties via dictionary expansion
                     )
 
-                    field.record_id = RecordID.register(
-                        name=field.name,
-                        value=RecordInfo(
-                            record_id=namespace.tagid,
-                            dataset_id=field.tagid,
-                            type=field.type,
-                        ),
-                    )
+                    # Now iterate over the fields and add them to the relevant namespace
+                    for fieldid, fielddata in fieldsdata.items():
+                        # logger.debug("  - Field: %s (%s)" % (fieldid, fielddata.get("name")))
+
+                        namespace.field = field = Field(
+                            namespace=namespace,
+                            identifier=fieldid,
+                            **fielddata,  # pass the properties via dictionary expansion
+                        )
+
+                        field.record_id = RecordID.register(
+                            name=field.name,
+                            value=RecordInfo(
+                                record_id=namespace.tagid,
+                                dataset_id=field.tagid,
+                                type=field.type,
+                            ),
+                        )
+
+        cls._setup = True
+
+        return super().__new__(cls)
 
     @property
     def record(self):
@@ -229,23 +238,33 @@ class IPTC(Metadata):
         elif format is IPTCFormat.RAW:
             pass
 
-        #         # Iterate through the namespaces and fields to emit the metadata in a fixed
-        #         # order based on when the field name is encountered during iteration:
-        #         for namespace in self._namespaces.values():
-        #             if namespace.utilized is False:
-        #                 continue
-        #
-        #             for identifier, field in namespace._fields.items():
-        #                 if not (value := self._values.get(field.identifier)) is None:
-        #                     if record := Record(
-        #                         id=field.record_id,
-        #                         value=value,
-        #                     ):
-        #                         logger.debug("0x%02x, 0x%02x, %s, %s" % (field.record_id.record_id, field.record_id.dataset_id, field.identifier, field.record_id.type))
-        #
-        #                         encoded.append(record.encode(order=order))
+        # # Iterate through the namespaces and fields to emit the metadata in a fixed
+        # # order based on when the field name is encountered during iteration:
+        # for namespace in self._namespaces.values():
+        # if namespace.utilized is False:
+        #     continue
+        # for identifier, field in namespace._fields.items():
+        #     if not (value := self._values.get(field.identifier)) is None:
+        #         if record := Record(
+        #             id=field.record_id,
+        #             value=value,
+        #         ):
+        #             logger.debug("0x%02x, 0x%02x, %s, %s" % (field.record_id.record_id, field.record_id.dataset_id, field.identifier, field.record_id.type))
+        #             encoded.append(record.encode(order=order))
 
-        # from utilities import print_bytes_hex_debug
+        # Determine if the Record Version has been set
+        found_record_version: bool = False
+        for field_id in self._values.keys():
+            if result := self.field_by_id(field_id):
+                (namespace, field) = result
+
+                if field.record_id == RecordID.RecordVersion:
+                    found_record_version = True
+
+        # If not, add the Record Version field for IPTC [> 1C 02 00 00 02 00 04 00 00 <]
+        if found_record_version is False:
+            record = Record(id=RecordID.RecordVersion, value=Short(0x04))
+            encoded.append(record.encode(order=order))
 
         # Iterate over the values, encoding them as we go so that the encoded version of
         # the IPTC tags matches the order that they were decoded or added:
@@ -257,24 +276,30 @@ class IPTC(Metadata):
                     id=field.record_id,
                     value=value,
                 ):
-                    # logger.debug("0x%02x, 0x%02x, %s, %s" % (
-                    #     record.id.record_id,
-                    #     record.id.dataset_id,
-                    #     field.identifier,
-                    #     record.id.type,
-                    # ))
-                    # logger.debug("%r" % (value))
+                    logger.debug(
+                        "0x%02x, 0x%02x, %s, %s, %r"
+                        % (
+                            record.id.record_id,
+                            record.id.dataset_id,
+                            field.identifier,
+                            record.id.type,
+                            value,
+                        )
+                    )
 
                     encoded.append(record.encode(order=order))
 
-                    # print_bytes_hex_debug(encoded[-1])
+        if len(encoded) > 0:
+            # Pad the IPTC payload so that its length is evenly divisible by four bytes
+            while not sum(map(len, encoded)) % 4 == 0:
+                encoded.append(UInt8(0x00).encode(order=order))
 
         return b"".join(encoded)
 
     @classmethod
     def decode(
         cls,
-        value: bytes | io.BytesIO,
+        value: bytes | bytearray | io.BytesIO,
         format: IPTCFormat = IPTCFormat.APP13,
         order: ByteOrder = ByteOrder.MSB,
     ) -> IPTC:
@@ -289,17 +314,21 @@ class IPTC(Metadata):
             order,
         )
 
-        if not isinstance(value, bytes):
+        if isinstance(value, (bytes, bytearray)):
             value = io.BytesIO(value)
         elif isinstance(value, io.BytesIO):
             pass
         else:
-            raise TypeError("The 'value' argument must have a bytes or BytesIO value!")
+            raise TypeError(
+                "The 'value' argument must have a bytes, bytearray or io.BytesIO value!"
+            )
 
         if not isinstance(format, IPTCFormat):
             raise TypeError(
                 "The 'format' argument must have an IPTCFormat enumeration value!"
             )
+
+        position: int = value.tell()
 
         if format is IPTCFormat.APP13:
             iptc_found: bool = False
@@ -379,10 +408,17 @@ class IPTC(Metadata):
                 return None
 
         elif format is IPTCFormat.RAW:
-            while byte := value.read(1):
+            value.seek(0)
+
+            while isinstance(byte := value.read(1), bytes) and byte:
                 index = value.tell()
 
-                logger.debug("%02d ~> 0x%02x, %r", index, int(byte.hex(), 16), byte)
+                logger.debug(
+                    "%02d ~> 0x%02x, %r",
+                    index,
+                    (int(byte.hex(), 16) if byte else 0),
+                    byte,
+                )
 
                 if index == 0 and not byte == 0x1C:
                     raise ValueError(
@@ -391,7 +427,9 @@ class IPTC(Metadata):
 
         records: list[Record] = []
 
-        while byte := value.read(1):
+        value.seek(position)
+
+        while isinstance(byte := value.read(1), bytes) and byte:
             index = value.tell()
 
             logger.debug("%02d ~> 0x%02x, %r", index, int(byte.hex(), 16), byte)

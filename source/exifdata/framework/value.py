@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import abc
 import typing
-import enumerific
 
 from exifdata.logging import logger
 from exifdata import framework
@@ -130,6 +129,5 @@ class Value(object):
     @abc.abstractmethod
     def decode(cls, value: bytes) -> Value:
         raise NotImplementedError(
-            "The '%s.decode()' method has not been implemented!"
-            % (self.__class__.__name__)
+            "The '%s.decode()' method has not been implemented!" % (cls.__name__)
         )

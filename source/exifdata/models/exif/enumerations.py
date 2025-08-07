@@ -1,5 +1,3 @@
-import json
-import os
 import enumerific
 
 from exifdata.logging import logger

@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import os
 import json
-import enumerific
 import maxml
 
 from exifdata.logging import logger
@@ -76,78 +75,89 @@ class XMP(Metadata):
     _aliases: dict[str, str] = {}
     _encodings: list[str] = ["UTF-8", "Unicode", "ASCII"]
     _types: dict[str, type] = {}
+    _setup: bool = False
 
-    # Initialize the model's namespaces from the model configuration file
-    with open(
-        os.path.join(os.path.dirname(__file__), "data", "schema.json"), "r"
-    ) as handle:
-        # Ensure the model configuration file is valid
-        if not isinstance(namespaces := json.load(handle), dict):
-            raise TypeError("The 'namespaces' dictionary isn't valid!")
+    def __new__(cls):
+        """Initialize the model's namespaces from the schema configuration file once."""
 
-        # Dynamically create the model namespaces based on the provided configuration
-        for identifier, properties in namespaces.items():
-            # logger.debug(" - Namespace: %s" % (identifier))
+        # If the setup has already been performed previously, return immediately
+        if cls._setup is True:
+            return super().__new__(cls)
 
-            if not isinstance(identifier, str):
-                raise TypeError("All namespace dictionary keys must be strings!")
+        with open(
+            os.path.join(os.path.dirname(__file__), "data", "schema.json"), "r"
+        ) as handle:
+            # Ensure the model configuration file is valid
+            if not isinstance(namespacesdata := json.load(handle), dict):
+                raise TypeError("The 'namespaces' dictionary isn't valid!")
 
-            if identifier.startswith("@"):
-                # If any top-level aliases have been specified, capture those now
-                if identifier == "@aliases" and isinstance(properties, dict):
-                    _aliases = properties
-                continue
+            # Dynamically create the model namespaces based on the provided configuration
+            for namespaceid, namespacedata in namespacesdata.items():
+                # logger.debug(" - Namespace: %s" % (namespaceid))
 
-            if not isinstance(properties, dict):
-                raise TypeError(
-                    "All model schema top-level values must be dictionaries!"
-                )
+                if not isinstance(namespaceid, str):
+                    raise TypeError("All namespace dictionary keys must be strings!")
 
-            if structures := properties.get("structures"):
-                for _structure_id, _structure in structures.items():
-                    _structures[_structure.get("name")] = Structure(
-                        identifier=_structure_id,
-                        **_structure,
+                if namespaceid.startswith("@"):
+                    # If any top-level aliases have been specified, capture those now
+                    if namespaceid == "@aliases" and isinstance(namespacedata, dict):
+                        cls._aliases = namespacedata
+                    continue
+
+                if not isinstance(namespacedata, dict):
+                    raise TypeError(
+                        "All model schema top-level values must be dictionaries!"
                     )
 
-            # Then add the name-spaced fields under the model, first creating the namespace
-            if fields := properties.pop("fields"):
-                # logger.debug(properties)
+                if structuresdata := namespacedata.get("structures"):
+                    for structureid, structuredata in structuresdata.items():
+                        cls._structures[structuredata.get("name")] = Structure(
+                            identifier=structureid,
+                            **structuredata,
+                        )
 
-                # Each assignment to metadata.namespace adds to the array/list of namespaces
-                _namespaces[properties.get("name")] = namespace = Namespace(
-                    identifier=identifier,
-                    # metadata=self,  # Set later via Metadata.__getattr__()
-                    **properties,  # pass the properties via dictionary expansion
-                )
+                # Then add the name-spaced fields under the model, first creating the namespace
+                if fieldsdata := namespacedata.pop("fields"):
+                    # logger.debug(namespacedata)
 
-                # Now iterate over the fields and add them to the relevant namespace
-                for identifier, properties in fields.items():
-                    # logger.debug("  - Field: %s (%s)" % (identifier, properties.get("name")))
-
-                    namespace.field = field = Field(
-                        namespace=namespace,
-                        identifier=identifier,
-                        **properties,  # pass the properties via dictionary expansion
+                    # Each assignment to metadata.namespace adds to the array/list of namespaces
+                    cls._namespaces[namespacedata.get("name")] = namespace = Namespace(
+                        identifier=namespaceid,
+                        # metadata=self,  # Set later via Metadata.__getattr__()
+                        **namespacedata,  # pass the properties via dictionary expansion
                     )
 
-        # Define the required top-level document namespaces
-        namespaces = {
-            "x": "http://ns.adobe.com/x/1.0",
-            "xmlns": "http://ns.adobe.com/xmlns/1.0",
-            # "rdf":   "http://ns.adobe.com/rdf/1.0",
-            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-        }
+                    # Now iterate over the fields and add them to the relevant namespace
+                    for fieldid, fielddata in fieldsdata.items():
+                        # logger.debug("  - Field: %s (%s)" % (fieldid, fielddata.get("name")))
 
-        # maxml.Element.register_namespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+                        namespace.field = field = Field(
+                            namespace=namespace,
+                            identifier=fieldid,
+                            **fielddata,  # pass the properties via dictionary expansion
+                        )
 
-        # Register the required top-level document namespaces
-        for prefix, uri in namespaces.items():
-            maxml.Element.register_namespace(prefix, uri)
+            # Define the required top-level document namespaces
+            namespaces = {
+                "x": "http://ns.adobe.com/x/1.0",
+                "xmlns": "http://ns.adobe.com/xmlns/1.0",
+                # "rdf":   "http://ns.adobe.com/rdf/1.0",
+                "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            }
 
-        # Register the required document schema namespaces, sourced from configuration
-        for namespace in _namespaces.values():
-            maxml.Element.register_namespace(namespace.prefix, namespace.uri)
+            # maxml.Element.register_namespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+
+            # Register the required top-level document namespaces
+            for prefix, uri in namespaces.items():
+                maxml.Element.register_namespace(prefix, uri)
+
+            # Register the required document schema namespaces, sourced from configuration
+            for namespace in cls._namespaces.values():
+                maxml.Element.register_namespace(namespace.prefix, namespace.uri)
+
+        cls._setup = True
+
+        return super().__new__(cls)
 
     def encode(
         self,
@@ -160,6 +170,12 @@ class XMP(Metadata):
         an image file. By default the generated XML string will be compacted without any
         whitespace characters to minimise space requirements. For readability the output
         can be pretty printed to include whitespace by setting pretty to True."""
+
+        if len(self._values) == 0:
+            logger.info(
+                "No XMP metadata fields were assigned values, so there is nothing to encode."
+            )
+            return None
 
         if not isinstance(encoding, str):
             raise TypeError("The 'encoding' argument must have a string value!")

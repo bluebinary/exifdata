@@ -1,5 +1,3 @@
-import pytest
-
 from exifdata.models.iptc.types import (
     ByteOrder,
     Short,
@@ -9,9 +7,12 @@ from exifdata.models.iptc.types import (
 
 
 def test_type_short():
-    """Test the IPTC metadata field Short data type."""
+    """Test the IPTC metadata field Short unsigned data type."""
 
+    # Note that IPTC's short is unsigned, unlike the signed C-standard short type
     encoded = Short(value=123)
+
+    assert encoded.signed is False
 
     assert isinstance(encoded, Short)
     assert isinstance(encoded, int)

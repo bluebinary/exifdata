@@ -80,13 +80,17 @@ class RecordID(enumerific.extensible.Enumeration):
         # return UInt8(int(self.value.split("#")[0]))
         return self.value.type
 
-    def __eq__(self, other: RecordID | RecordInfo) -> bool:
+    def __eq__(self, other: RecordID | RecordInfo | int) -> bool:
         if isinstance(other, (RecordID, RecordInfo)):
             if not self.record_id == other.record_id:
                 return False
             if not self.dataset_id == other.dataset_id:
                 return False
             if not self.type == other.type:
+                return False
+            return True
+        elif isinstance(other, int):
+            if not self.record_id == other:
                 return False
             return True
         else:

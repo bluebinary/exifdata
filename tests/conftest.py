@@ -11,7 +11,34 @@ path = os.path.join(os.path.dirname(__file__), "..", "source")
 
 sys.path.insert(0, path)  # add 'exifdata' library path for importing into the tests
 
-import exifdata
+
+@pytest.fixture(scope="session", name="path")
+def path() -> callable:
+    """Create a fixture that can be used to obtain the absolute filepath of example data
+    files by specifying the path relative to the /tests/data folder."""
+
+    def fixture(path: str, exists: bool = True, extension: bool = True) -> str:
+        """Assemble the absolute filepath for the specified example data file."""
+
+        if not isinstance(path, str):
+            raise TypeError("The 'path' argument must have a string value!")
+
+        if not isinstance(exists, bool):
+            raise TypeError("The 'exists' argument must have a boolean value!")
+
+        if not isinstance(extension, bool):
+            raise TypeError("The 'extension' argument must have a boolean value!")
+
+        filepath = os.path.join(os.path.dirname(__file__), "data", path)
+
+        if exists is True and not os.path.exists(filepath):
+            raise ValueError(
+                f"The requested example file, '{filepath}', does not exist!"
+            )
+
+        return filepath
+
+    return fixture
 
 
 @pytest.fixture(scope="session", name="data")

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from exifdata.logging import logger
 from exifdata.configuration import secrets
 from exifdata.framework.adapter import Adapter
@@ -5,11 +7,11 @@ from exifdata.framework import Metadata
 from exifdata.models.exif import EXIF
 from exifdata.models.iptc import IPTC
 from exifdata.models.xmp import XMP
+
 from deliciousbytes import ByteOrder
 
-
 import subprocess
-
+import os
 
 logger = logger.getChild(__name__)
 
@@ -41,7 +43,7 @@ class EXIFTool(Adapter):
         return cls._command
 
     @classmethod
-    def open(cls, filepath: str, **kwargs) -> Adapter:
+    def open(cls, filepath: str, **kwargs) -> EXIFTool:
         """Supports opening the specified image file from disk. The image must exist at
         the specified filepath, and the image must use a supported image format."""
 
@@ -55,8 +57,9 @@ class EXIFTool(Adapter):
         return cls(filepath=filepath)
 
     @classmethod
-    def load(cls, metadata: dict[str, object]) -> Adapter:
+    def load(cls, metadata: dict[str, object]) -> EXIFTool:
         """Supports working with the specified metadata dictionary."""
+
         raise NotImplementedError
 
     def __init__(self, filepath: str = None, metadata: dict[str, object] = None):
@@ -111,7 +114,7 @@ class EXIFTool(Adapter):
             logger.warning(
                 "%s.decode(metadata: %s) - no fields set; need to pull metadata from the specified image!",
                 self.__class__.__name__,
-                fields,
+                metadata,
             )
             metadata = self.metadata
         elif not isinstance(metadata, dict):

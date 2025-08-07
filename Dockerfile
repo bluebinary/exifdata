@@ -3,7 +3,7 @@
 ################################# [Base Python Image] ##################################
 
 # Allow the Python version to be specified as a build argument, with a preferred default
-ARG VERSION=3.12
+ARG VERSION=3.13
 
 FROM python:${VERSION} AS base
 
@@ -66,6 +66,9 @@ if [[ "${SERVICE}" == "black" ]]; then
 		echo -e "black --check ${ARGS[@]:1} /source /tests /documentation";
 		black --check ${ARGS[@]:1} /source /tests /documentation;
 	fi
+elif [[ "${SERVICE}" == "flakes" ]]; then
+	echo -e "pyflakes /source /tests ${ARGS[@]}";
+	pyflakes /source /tests ${ARGS[@]};
 elif [[ "${SERVICE}" == "tests" ]]; then
 	echo -e "pytest /tests ${ARGS[@]}";
 	pytest /tests ${ARGS[@]};
