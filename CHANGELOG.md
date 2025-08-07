@@ -1,6 +1,6 @@
 # EXIFData Change Log
 
-## [0.5.6] - 2025-06-25 / 2025-08-04
+## [0.5.6] - 2025-08-07
 ### Added
 - Added support for the `SignedRational` data type in the EXIF metadata model.
 - Added support for the `SignedByte` data type in the EXIF metadata model.
