@@ -263,7 +263,7 @@ class Models(object):
         """Support assigning a value to any metadata model that has a field with a matching fully-qualified name or registered fully-qualified alias name."""
 
         logger.debug(
-            "%s.assign(name: %s, value: %s)",
+            "%s.assign(name: %r, value: %r)",
             self.__class__.__name__,
             name,
             value,
@@ -271,16 +271,27 @@ class Models(object):
 
         found: bool = False
 
+        fullname: str = name
+
         prefix: str = None
 
         if len(parts := name.split(":", maxsplit=1)) == 2:
             (prefix, name) = parts
 
+        modelprefixes: list[str] = []
+
+        for model in self._models:
+            modelprefixes.append(model.name.lower())
+
         for model in self._models:
             if models and not model.name in models:
                 continue
-            elif prefix and not model.name.lower() == prefix.lower():
-                continue
+            elif prefix:
+                if prefix.lower() in modelprefixes:
+                    if not model.name.lower() == prefix.lower():
+                        continue
+                else:
+                    name = fullname
 
             if match := model.field_by_property(property="names", value=name):
                 (namespace, field) = match
@@ -309,7 +320,7 @@ class Models(object):
             logger.warning(
                 "%s.assign() The '%s' field could not be found on any model!",
                 self.__class__.__name__,
-                name,
+                fullname,
             )
 
     def erase(self, payloads: list[str] = None) -> Models:
@@ -350,7 +361,7 @@ class Models(object):
 
         return self
 
-    def save(self, **kwargs):
+    def save(self, **kwargs) -> object:
         """Support saving the current metadata to the image."""
 
         return self.adapter.save(**kwargs)

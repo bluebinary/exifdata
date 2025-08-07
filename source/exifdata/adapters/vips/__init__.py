@@ -4,7 +4,7 @@ from exifdata.logging import logger
 from exifdata.framework.adapter import Adapter
 from exifdata.framework import Metadata
 from exifdata.models.exif import EXIF
-from exifdata.models.iptc import IPTC
+from exifdata.models.iptc import IPTC, IPTCFormat
 from exifdata.models.xmp import XMP
 
 from deliciousbytes import ByteOrder
@@ -242,7 +242,16 @@ class VIPS(Adapter):
             #     with open(filename, "wb+") as file:
             #         file.write(model.encode(pretty=True, order=order))
 
-            if isinstance(encoded := model.encode(order=order), bytes):
+            options: dict[str, object] = dict()
+
+            if model.name == "IPTC":
+                # IPTC written to the RichTIFFIPTC Tag (33723) does not require the
+                # "Photoshop" preamble required for the Adobe Resources Tag (34377)
+                # so we configure the IPTC model to generate the payload in its raw
+                # form; that is without the "Photoshop" preamble:
+                options = dict(format=IPTCFormat.RAW)
+
+            if isinstance(encoded := model.encode(order=order, **options), bytes):
                 for fieldname, cläss in self.mapping.items():
                     if isinstance(model, cläss):
                         self.set(name=fieldname, value=encoded)

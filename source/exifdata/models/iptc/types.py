@@ -56,6 +56,15 @@ class String(String, Value):
         # automatically to all of the superclass' __init__ methods, including Value.
         return super().__new__(cls, value)
 
+    def encode(
+        self,
+        order: ByteOrder = ByteOrder.MSB,
+        encoding: Encoding = Encoding.Unicode,
+    ) -> bytes:
+        # Encode the string value in the standard MSB order, regardless of file order as
+        # strings using single-byte characters, such as ASCII or UTF-8 strings
+        return super().encode(order=order, encoding=encoding)
+
     @classmethod
     def decode(
         cls,

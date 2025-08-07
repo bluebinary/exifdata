@@ -76,10 +76,13 @@ class ASCII(Value):
                 "The %s class does not have a string value!" % (self.__class__.__name__)
             )
 
-        encoded = self.value.encode("ASCII")
+        encoded: bytes = self.value.encode("ASCII")
 
+        # Byte order is not relevant for data types that have individual values which
+        # fit within single bytes, such as ASCII encoded characters from an ASCII string
         if order is ByteOrder.LSB:
-            encoded = bytes(reversed(bytearray(encoded)))
+            # encoded = bytes(reversed(bytearray(encoded)))
+            pass
 
         return encoded
 
@@ -88,8 +91,11 @@ class ASCII(Value):
         if not isinstance(value, bytes):
             raise ValueError("The 'value' argument must have a bytes value!")
 
+        # Byte order is not relevant for data types that have individual values which
+        # fit within single bytes, such as ASCII encoded characters from an ASCII string
         if order is ByteOrder.LSB:
-            value = bytes(reversed(bytearray(value)))
+            # value = bytes(reversed(bytearray(value)))
+            pass
 
         decoded: str = value.decode("ASCII")
 

@@ -50,7 +50,7 @@
           "7": "MacBinary II",
           "8": "IPTC Unstructured Character Oriented File Format (UCOFF)",
           "9": "United Press International ANPA 1312 variant",
-          "10": "United Press International Down-Load Message",
+          "10": "United Press International Download Message",
           "11": "JPEG File Interchange (JFIF)",
           "12": "Photo-CD Image-Pac (Eastman Kodak)",
           "13": "Bit Mapped Graphics File [.BMP] (Microsoft)",
@@ -142,7 +142,7 @@
       "envelope:DateSent": {
         "name": "DateSent",
         "label": null,
-        "definition": "Uses the format CCYYMMDD (century, year, month, day) as de-fined in ISO 8601 to indicate year, month and day the service sent the material.",
+        "definition": "Uses the format CCYYMMDD (century, year, month, day) as defined in ISO 8601 to indicate year, month and day the service sent the material.",
         "type": "Date",
         "bytes_min": 8,
         "bytes_max": 8,
@@ -250,7 +250,7 @@
       "application:ObjectName": {
         "name": "ObjectName",
         "label": null,
-        "definition": "Used as a shorthand reference for the object. Changes to exist-ing data, such as updated stories or new crops on photos, should be identified in tag <EditStatus>.",
+        "definition": "Used as a shorthand reference for the object. Changes to existing data, such as updated stories or new crops on photos, should be identified in tag <EditStatus>.",
         "type": "String",
         "bytes_min": 0,
         "bytes_max": 64,
@@ -690,6 +690,7 @@
       },
       "application:Copyright": {
         "name": "Copyright",
+        "alias": "CopyrightNotice",
         "label": null,
         "definition": "Contains any necessary copyright notice.",
         "type": "String",
@@ -942,7 +943,7 @@
           "7": "MacBinary II",
           "8": "IPTC Unstructured Character Oriented File Format (UCOFF)",
           "9": "United Press International ANPA 1312 variant",
-          "10": "United Press International Down-Load Message",
+          "10": "United Press International Download Message",
           "11": "JPEG File Interchange (JFIF)",
           "12": "Photo-CD Image-Pac (Eastman Kodak)",
           "13": "Bit Mapped Graphics File [.BMP] (Microsoft)",

@@ -98,6 +98,7 @@ class Metadata(object):
         self._namespaces: caselessdict[str, Namespace] = caselessdict(
             namespaces or self._namespaces or {}
         )
+
         self._aliases: caselessdict[str, Namespace | Field] = caselessdict(
             self._aliases or {}
         )

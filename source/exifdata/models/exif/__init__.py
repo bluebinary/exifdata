@@ -50,73 +50,83 @@ class EXIF(Metadata):
     _aliases: dict[str, str] = {}
     _encodings: list[str] = ["UTF-8", "Unicode", "ASCII"]
     _types: dict[str, type] = {}
+    _setup: bool = False
 
-    # Initialize the model's namespaces from the model configuration file
-    with open(
-        os.path.join(os.path.dirname(__file__), "data", "schema.json"), "r"
-    ) as handle:
-        # Ensure the model configuration file is valid
-        if not isinstance(namespaces := json.load(handle), dict):
-            raise TypeError("The 'namespaces' dictionary isn't valid!")
+    def __new__(cls):
+        """Initialize the model's namespaces from the schema configuration file once."""
 
-        # Dynamically create the model namespaces based on the provided configuration
-        for identifier, properties in namespaces.items():
-            if not isinstance(identifier, str):
-                raise TypeError("All namespace dictionary keys must be strings!")
+        # If the setup has already been performed previously, return immediately
+        if cls._setup is True:
+            return super().__new__(cls)
 
-            if identifier.startswith("@"):
-                # If any top-level aliases have been specified, capture those now
-                if identifier == "@aliases" and isinstance(properties, dict):
-                    _aliases = properties
-                continue
+        with open(
+            os.path.join(os.path.dirname(__file__), "data", "schema.json"), "r"
+        ) as handle:
+            # Ensure the model configuration file is valid
+            if not isinstance(namespacesdata := json.load(handle), dict):
+                raise TypeError("The EXIF schema.json dictionary isn't valid!")
 
-            if not isinstance(properties, dict):
-                raise TypeError(
-                    "All model schema top-level values must be dictionaries!"
-                )
+            # Dynamically create the model namespaces based on the provided configuration
+            for namespaceid, namespacedata in namespacesdata.items():
+                if not isinstance(namespaceid, str):
+                    raise TypeError("All namespace dictionary keys must be strings!")
 
-            if structures := properties.get("structures"):
-                for _structure_id, _structure in structures.items():
-                    _structures[_structure.get("name")] = Structure(
-                        identifier=_structure_id,
-                        **_structure,
+                if namespaceid.startswith("@"):
+                    # If any top-level aliases have been specified, capture those now
+                    if namespaceid == "@aliases" and isinstance(namespacedata, dict):
+                        cls._aliases = namespacedata
+                    continue
+
+                if not isinstance(namespacedata, dict):
+                    raise TypeError(
+                        "All model schema top-level values must be dictionaries!"
                     )
 
-            # Then add the name-spaced fields under the model, first creating the namespace
-            if fields := properties.pop("fields"):
-                # Each assignment to metadata.namespace adds to the array/list of namespaces
-                _namespaces[properties.get("name")] = namespace = Namespace(
-                    identifier=identifier,
-                    # metadata=self,  # Set later via Metadata.__getattr__()
-                    **properties,
-                )
+                if structuresdata := namespacedata.get("structures"):
+                    for structureid, structuredata in structuresdata.items():
+                        cls._structures[structuredata.get("name")] = Structure(
+                            identifier=structureid,
+                            **structuredata,
+                        )
 
-                # Now iterate over the fields and add them to the relevant namespace
-                for identifier, properties in fields.items():
-                    namespace.field = field = Field(
-                        namespace=namespace,
-                        identifier=identifier,
-                        **properties,
+                # Then add the name-spaced fields under the model, first creating the namespace
+                if fieldsdata := namespacedata.pop("fields"):
+                    cls._namespaces[namespacedata.get("name")] = namespace = Namespace(
+                        identifier=namespaceid,
+                        # metadata=self,  # Set later via Metadata.__getattr__()
+                        **namespacedata,
                     )
 
-                    # If the namespace has been marked for unwrapping, make its fields
-                    # available on the top-level metadata object as well as through the
-                    # namespace object itself, via its field name and any aliases:
-                    if namespace.unwrap is True:
-                        if field.name in _aliases:
-                            raise KeyError(
-                                f"The field alias, '{field.name}', has already been used!"
-                            )
+                    # Now iterate over the fields and add them to the relevant namespace
+                    for fieldid, fielddata in fieldsdata.items():
+                        namespace.field = field = Field(
+                            namespace=namespace,
+                            identifier=fieldid,
+                            **fielddata,
+                        )
 
-                        _aliases[field.name] = f"{namespace.id}:{field.name}"
-
-                        for alias in field.aliases:
-                            if alias in _aliases:
+                        # If the namespace has been marked for unwrapping, make its fields
+                        # available on the top-level metadata object as well as through the
+                        # namespace object itself, via its field name and any aliases:
+                        if namespace.unwrap is True:
+                            if field.name in cls._aliases:
                                 raise KeyError(
-                                    f"The field alias, '{alias}', has already been used!"
+                                    f"The field alias, '{field.name}', has already been used!"
                                 )
 
-                            _aliases[alias] = f"{namespace.id}:{field.name}"
+                            cls._aliases[field.name] = f"{namespace.id}:{field.name}"
+
+                            for alias in field.aliases:
+                                if alias in cls._aliases:
+                                    raise KeyError(
+                                        f"The field alias, '{alias}', has already been used!"
+                                    )
+
+                                cls._aliases[alias] = f"{namespace.id}:{field.name}"
+
+        cls._setup = True
+
+        return super().__new__(cls)
 
     def encode(self, order: ByteOrder = ByteOrder.MSB) -> bytes | None:
         """Provides support for encoding the assigned EXIF metadata field values into

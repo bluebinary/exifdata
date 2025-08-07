@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from exifdata.logging import logger
 from exifdata.framework.adapter import Adapter
-from exifdata.framework import Metadata, Field
+from exifdata.framework import Metadata, Field, Value
 from exifdata.models.exif import EXIF
 from exifdata.models.iptc import IPTC, IPTCFormat
 from exifdata.models.xmp import XMP
@@ -117,11 +117,20 @@ class TIFFData(Adapter):
         )
 
         if not isinstance(value, (bytes, bytearray)):
-            logger.warning(
-                "The value for '%s' must have a bytes or bytearray value!",
-                field,
-            )
-            return self
+            if isinstance(value, Value):
+                logger.warning(
+                    "The value for '%s' should have a bytes or bytearray value, but was %s!",
+                    field, type(value),
+                )
+
+                value = value.encode(order=self.image.order)
+            else:
+                logger.warning(
+                    "The value for '%s' should have a bytes or bytearray value, not %s!",
+                    field, type(value),
+                )
+
+                return self
 
         self.image.set(key=field, value=value, **kwargs)
 
