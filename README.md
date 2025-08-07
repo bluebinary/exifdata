@@ -259,7 +259,7 @@ The `Models` class offers the following properties:
 * `adapter` (`Adapter`) – The `adapter` property provides access to the reference to the
 current `Adapter` class instance associated with the `Models` class. The `Adapter` class
 is used by the `Models` class to interact with image data and raw metadata via various
-libraries such as PyVIPS or EXIFTool.
+libraries such as PyVIPS, EXIFTool and TIFFData.
 
 * `model` (`Metadata`) - The `model` property provides support for assigning one or more
 `Metadata` model class instances to the `Models` class. The property can only be used to
