@@ -259,7 +259,7 @@ class Models(object):
 
         return model
 
-    def assign(self, name: str, value: object, models: list[str] = None):
+    def assign(self, name: str, value: object, models: list[str] = None, **kwargs):
         """Support assigning a value to any metadata model that has a field with a matching fully-qualified name or registered fully-qualified alias name."""
 
         logger.debug(
@@ -307,7 +307,7 @@ class Models(object):
                 found = True
 
                 try:
-                    model.set(namespace=namespace, field=field, value=value)
+                    model.set(namespace=namespace, field=field, value=value, **kwargs)
                 except ValueError as exception:
                     logger.warning(
                         "%s.assign() The '%s' field failed validation: %s",

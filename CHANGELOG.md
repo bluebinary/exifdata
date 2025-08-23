@@ -1,5 +1,9 @@
 # EXIFData Change Log
 
+## [0.5.7] - 2025-08-20
+### Added
+- Added support for setting TIFF tag metadata on multiple IFDs within a single call.
+
 ## [0.5.6] - 2025-08-07
 ### Added
 - Added support for the `SignedRational` data type in the EXIF metadata model.
