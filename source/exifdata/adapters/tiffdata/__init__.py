@@ -155,7 +155,8 @@ class TIFFData(Adapter):
                 value = value.encode(order=self.image.order)
             else:
                 raise TypeError(
-                    "The value for '%s' should have a bytes or bytearray value, not %s!" % (
+                    "The value for '%s' should have a bytes or bytearray value, not %s!"
+                    % (
                         field,
                         type(value),
                     )
@@ -171,7 +172,10 @@ class TIFFData(Adapter):
         """Supports erasing the raw metadata payloads with the specified names."""
 
         logger.debug(
-            "%s.erase(payloads: %s, ifd: %s)", self.__class__.__name__, payloads, ifd,
+            "%s.erase(payloads: %s, ifd: %s)",
+            self.__class__.__name__,
+            payloads,
+            ifd,
         )
 
         if payloads is None:
@@ -255,7 +259,10 @@ class TIFFData(Adapter):
         """Supports encoding the metadata payloads and embedding them into the image."""
 
         logger.debug(
-            "%s.encode(order: %s, ifd: %s)", self.__class__.__name__, order, ifd,
+            "%s.encode(order: %s, ifd: %s)",
+            self.__class__.__name__,
+            order,
+            ifd,
         )
 
         if order is None:
