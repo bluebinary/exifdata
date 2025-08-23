@@ -3,4 +3,4 @@ enumerific>=1.0.5
 caselessly>=1.0.0
 deliciousbytes>=1.0.4
 maxml>=1.0.2
-tiffdata>=0.5.2
+tiffdata>=0.5.4
