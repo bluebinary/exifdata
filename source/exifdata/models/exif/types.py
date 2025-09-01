@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import datetime
 import fractions
+import unicodedata
 
 from exifdata.logging import logger
 
@@ -69,14 +70,64 @@ class ASCII(Value):
 
     _tagid: int = 2
     _length: int = 1
+    _replacements: dict[str, str] = {
+        # The copyright symbol "©" (ordinal 169) is outside the 7-bit ASCII range, 0-128
+        # and is common in fields like the Copyright field, so here we replace it with
+        # the traditionally used ASCII-compatible "(c)" replacement:
+        "©": "(c)",
+    }
+
+    @classmethod
+    def add_replacement(cls, search: str, replacement: str):
+        """Supports the replacement of strings that may appear in metadata that contains
+        characters that are outside the ASCII 7-bit character range, with strings that
+        are suitable for use in ASCII-only strings for EXIF metadata."""
+
+        if not isinstance(search, str):
+            raise TypeError("The 'search' argument must have a string value!")
+        elif len(search.strip()) == 0:
+            raise ValueError(
+                "The 'search' argument must have a non-empty string value!"
+            )
+
+        if not isinstance(replacement, str):
+            raise TypeError("The 'replacement' argument must have a string value!")
+        elif len(replacement.strip()) == 0:
+            raise ValueError(
+                "The 'replacement' argument must have a non-empty string value!"
+            )
+        else:
+            try:
+                replacement.encode("ASCII")
+            except UnicodeError:
+                raise ValueError(
+                    "The 'replacement' argument must contain an ASCII-compatible string value!"
+                )
+
+        cls._replacements[search] = replacement
 
     def encode(self, order: ByteOrder = ByteOrder.MSB) -> bytes:
-        if not isinstance(self.value, str):
+        if not isinstance(value := self.value, str):
             raise ValueError(
                 "The %s class does not have a string value!" % (self.__class__.__name__)
             )
 
-        encoded: bytes = self.value.encode("ASCII")
+        # Normalise non-ASCII characters where possible to their closest ASCII equivalents
+        value = unicodedata.normalize("NFKD", value)
+
+        # Filter out the combining characters from the expanded form, such as diacritics
+        value = "".join([char for char in value if not unicodedata.combining(char)])
+
+        # Check the string value for the presence of any of the search strings; if
+        # one or more are found, replace them with their replacements before encoding;
+        # to avoid replacements reformatted strings can be provided that are ASCII-only:
+        for search, replacement in self.__class__._replacements.items():
+            value = value.replace(search, replacement)
+
+        # Encode the source string, replacing any other characters outside of the ASCII
+        # range with a "?" placeholder to indicate the presence of a character that was
+        # supplied to the method but should not have been present in an ASCII string:
+        encoded: bytes = value.encode("ASCII", errors="replace")
 
         # Byte order is not relevant for data types that have individual values which
         # fit within single bytes, such as ASCII encoded characters from an ASCII string
@@ -97,7 +148,10 @@ class ASCII(Value):
             # value = bytes(reversed(bytearray(value)))
             pass
 
-        decoded: str = value.decode("ASCII")
+        try:
+            decoded: str = value.decode("ASCII")
+        except UnicodeError:
+            decoded: str = value.decode("UTF-8")
 
         return ASCII(value=decoded)
 
