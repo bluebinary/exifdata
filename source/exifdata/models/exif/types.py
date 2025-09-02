@@ -129,6 +129,10 @@ class ASCII(Value):
         # supplied to the method but should not have been present in an ASCII string:
         encoded: bytes = value.encode("ASCII", errors="replace")
 
+        # Ensure that the string ends with a NUL byte
+        if not encoded.endswith(b"\x00"):
+            encoded += b"\x00"
+
         # Byte order is not relevant for data types that have individual values which
         # fit within single bytes, such as ASCII encoded characters from an ASCII string
         if order is ByteOrder.LSB:
