@@ -32,6 +32,25 @@ def test_type_ascii_add_replacement_invalid():
         )
 
 
+def test_type_ascii_encoding_example_zero():
+    """Test the EXIF metadata field ASCII data type, by encoding a sample string."""
+
+    uncoded: str = "Hello World"
+
+    assert isinstance(uncoded, str)
+    assert len(uncoded) == 11
+
+    # Encode the string to ASCII, after replacing any registered replacements
+    encoded: bytes = ASCII(uncoded).encode()
+
+    assert isinstance(encoded, bytes)
+
+    # Ensure that the encoded ASCII string ends with the expected NUL terminating byte
+    assert len(encoded) == len(uncoded) + 1
+    assert encoded.endswith(b"\x00")
+    assert encoded == b"Hello World\x00"
+
+
 def test_type_ascii_encoding_example_one():
     """Test the EXIF metadata field ASCII data type, by encoding a sample string that
     contains non-ASCII characters, which have been assigned registered replacements."""
@@ -47,7 +66,7 @@ def test_type_ascii_encoding_example_one():
 
     # Note that both the "©" and the "®" have been replaced by the registered
     # replacement strings "(c)" and "(r)" respectively:
-    assert encoded == b"Copyright (c) Example Organisation(r) 2025"
+    assert encoded == b"Copyright (c) Example Organisation(r) 2025\x00"
 
 
 def test_type_ascii_encoding_example_two():
@@ -56,7 +75,7 @@ def test_type_ascii_encoding_example_two():
     that are outside of the ASCII range that haven't been assigned replacements here to
     test the normalisation of the string and the replacement of other characters."""
 
-    uncoded: str = "The Amazing® Café contains non-ASCII characters like ℗"
+    uncoded: str = "The Amazing® Café contains non-ASCII characters like ℗\x00"
 
     assert isinstance(uncoded, str)
 
@@ -68,4 +87,4 @@ def test_type_ascii_encoding_example_two():
     # Note that the "℗" has been replaced by the generic replacement "?" as no specific
     # replacement had been registered with the ASCII class for this character; and the
     # diacritic on Café has been replaced by its closest matching ASCII-equivalent:
-    assert encoded == b"The Amazing(r) Cafe contains non-ASCII characters like ?"
+    assert encoded == b"The Amazing(r) Cafe contains non-ASCII characters like ?\x00"

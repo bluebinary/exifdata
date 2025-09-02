@@ -1,5 +1,9 @@
 # EXIFData Change Log
 
+## [0.5.9] - 2025-09-01
+### Added
+- Added support for terminating ASCII strings with a NUL byte for EXIF metadata.
+
 ## [0.5.8] - 2025-09-01
 ### Added
 - Added improved support for out-of-range characters in ASCII-only strings for EXIF metadata.
