@@ -1,5 +1,9 @@
 # EXIFData Change Log
 
+## [0.6.0] - 2025-09-02
+### Added
+- Enabled wrapping of the XMP payload with the standard `<?xpacket>` tag by default.
+
 ## [0.5.9] - 2025-09-01
 ### Added
 - Added support for terminating ASCII strings with a NUL byte for EXIF metadata.

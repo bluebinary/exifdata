@@ -163,7 +163,7 @@ class XMP(Metadata):
         self,
         encoding: str = "UTF-8",
         pretty: bool = False,
-        wrap: bool = False,
+        wrap: bool = True,
         order: ByteOrder = None,  # ignored, but here for consistency with other models
     ) -> bytes:
         """Generate an encoded version of the XMP metadata suitable for embedding into
@@ -185,9 +185,6 @@ class XMP(Metadata):
                 "The 'encoding' argument must have one of the following values: %s"
                 % (", ".join(self.__class__._encodings))
             )
-
-        if encoding.upper() == "UTF-8":
-            encoding == "Unicode"
 
         if not isinstance(pretty, bool):
             raise TypeError("The 'pretty' argument must have a boolean value!")
@@ -297,9 +294,34 @@ class XMP(Metadata):
         )
 
         if wrap is True:
-            encoded = "".join(
+            bom: list[int] = []  # Placeholder for the XMP packet byte order mark bytes
+
+            # Determine byte order mark depending upon the encoding used for the text
+            # and override a possible byte order indication in the encoding type string
+            # to match the byte order that the file is encoded with for consistency:
+            match encoding.upper():
+                case "UTF-8":
+                    bom = [0xEF, 0xBB, 0xBF]
+                case "UTF-16" | "UTF-16BE" | "UTF-16LE" | "UTF-16-BE" | "UTF-16-LE":
+                    if order is ByteOrder.BigEndian:
+                        bom = [0xFE, 0xFF]
+                        encoding = "UTF-16-BE"
+                    elif order is ByteOrder.LittleEndian:
+                        bom = [0xFF, 0xFE]
+                        encoding = "UTF-16-LE"
+                case "UTF-32" | "UTF-32BE" | "UTF-32LE" | "UTF-32-BE" | "UTF-32-LE":
+                    if order is ByteOrder.BigEndian:
+                        bom = [0x00, 0x00, 0xFE, 0xFF]
+                        encoding = "UTF-32-BE"
+                    elif order is ByteOrder.LittleEndian:
+                        bom = [0xFF, 0xFE, 0x00, 0x00]
+                        encoding = "UTF-32-LE"
+
+            bom: str = bytearray(bom).decode("UTF-8")  # Convert the bytes to a string
+
+            encoded = ("\n" if pretty is True else "").join(
                 [
-                    """<?xpacket begin="\ufeff" id="W5M0MpCehiHzreSzNTczkc9d"?>""",
+                    f"""<?xpacket begin="{bom}" id="W5M0MpCehiHzreSzNTczkc9d"?>""",
                     encoded,
                     """<?xpacket end="w"?>""",
                 ]
