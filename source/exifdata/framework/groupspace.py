@@ -8,8 +8,8 @@ logger = logger.getChild(__name__)
 
 
 class Groupspace(object):
-    _namespaces: set[Namespace] = None
-    _metadata: Metadata = None
+    _namespaces: set[framework.Namespace] = None
+    _metadata: framework.Metadata = None
 
     def __init__(self, *args):
         from exifdata.framework.namespace import Namespace
@@ -24,15 +24,15 @@ class Groupspace(object):
                     self._namespaces.add(namespace)
 
     @property
-    def namespaces(self) -> set[Namespace]:
+    def namespaces(self) -> set[framework.Namespace]:
         return self._namespaces
 
     @property
-    def metadata(self) -> Metadata | None:
+    def metadata(self) -> framework.Metadata | None:
         return self._metadata
 
     @metadata.setter
-    def metadata(self, metadata: Metadata):
+    def metadata(self, metadata: framework.Metadata):
         from exifdata.framework.metadata import Metadata
 
         if not isinstance(metadata, Metadata):

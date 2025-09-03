@@ -7,3 +7,13 @@ from exifdata.framework import (
     Value,
     Metadata,
 )
+
+__all__ = [
+    "Namespace",
+    "Groupspace",
+    "Structure",
+    "Type",
+    "Field",
+    "Value",
+    "Metadata",
+]

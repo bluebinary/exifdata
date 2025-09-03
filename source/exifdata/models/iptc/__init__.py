@@ -99,7 +99,7 @@ class IPTC(Metadata):
                 if namespaceid.startswith("@"):
                     # If any top-level aliases have been specified, capture those now
                     if namespaceid == "@aliases" and isinstance(namespacedata, dict):
-                        aliases = namespacedata
+                        cls._aliases = namespacedata
                     continue
 
                 if not isinstance(namespacedata, dict):
@@ -489,3 +489,5 @@ IPTC.register_types(
     # Byte,
     String,
 )
+
+__all__ = ["IPTC"]

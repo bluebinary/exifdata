@@ -8,7 +8,6 @@ from exifdata.logging import logger
 from exifdata import framework
 
 from caselessly import (
-    caselesslist,
     caselessdict,
 )
 
@@ -22,15 +21,15 @@ logger = logger.getChild(__name__)
 
 
 class Metadata(object):
-    _namespaces: caselessdict[str, Namespace] = None
-    _aliases: caselessdict[str, Namespace | Field] = None
-    # _fields: caselessdict[str, Field] = None
-    _values: caselessdict[str, Value] = None
+    _namespaces: caselessdict[str, framework.Namespace] = None
+    _aliases: caselessdict[str, framework.Namespace | framework.Field] = None
+    # _fields: caselessdict[str, framework.Field] = None
+    _values: caselessdict[str, framework.Value] = None
     _special: list[str] = None
-    _types: dict[str, Value] = None
+    _types: dict[str, framework.Value] = None
 
     @classmethod
-    def register_type(cls, type: str, klass: Value):
+    def register_type(cls, type: str, klass: framework.Value):
         if not isinstance(type, str):
             raise TypeError("The 'type' argument must have a string value!")
 
@@ -40,15 +39,17 @@ class Metadata(object):
         cls._types[type] = klass
 
     @classmethod
-    def register_types(cls, *types: tuple[type]):
-        if not isinstance(types, (list, tuple)):
-            raise TypeError("The 'types' argument must reference a list of types!")
+    def register_types(cls, *types: tuple[type] | list[type]):
+        if not isinstance(types, (tuple, list)):
+            raise TypeError(
+                "The 'types' argument must reference a list or tuple of types!"
+            )
 
         for _type in types:
             cls.register_type(_type.__name__, _type)
 
     @classmethod
-    def type_by_name(cls, type: str) -> Value:
+    def type_by_name(cls, type: str) -> framework.Value:
         if not isinstance(type, str):
             raise TypeError("The 'type' argument must have a string value!")
 
@@ -60,14 +61,16 @@ class Metadata(object):
         return cls._types[type]
 
     @classmethod
-    def field_by_id(cls, id: str) -> tuple[Namespace, Field] | None:
+    def field_by_id(cls, id: str) -> tuple[framework.Namespace, framework.Field] | None:
         for name, namespace in cls._namespaces.items():
             for field in namespace.fields.values():
                 if field.id == id:
                     return (namespace, field)
 
     @classmethod
-    def field_by_name(cls, name: str) -> tuple[Namespace, Field] | None:
+    def field_by_name(
+        cls, name: str
+    ) -> tuple[framework.Namespace, framework.Field] | None:
         for name, namespace in cls._namespaces.items():
             for field in namespace.fields.values():
                 if field.name == name:
@@ -76,7 +79,7 @@ class Metadata(object):
     @classmethod
     def field_by_property(
         cls, property: str, value: object
-    ) -> tuple[Namespace, Field] | None:
+    ) -> tuple[framework.Namespace, framework.Field] | None:
         logger.debug(
             "%s.field_by_property(property: %s, value: %s, %s)"
             % (cls.__name__, property, value, type(value))
@@ -90,17 +93,17 @@ class Metadata(object):
                     elif isinstance(attr, list) and value in attr:
                         return (namespace, field)
 
-    def __init__(self, namespaces: dict[str, Namespace] = None):
+    def __init__(self, namespaces: dict[str, framework.Namespace] = None):
         logger.debug(
             "%s.__init__(namespaces: %s)" % (self.__class__.__name__, namespaces)
         )
 
-        self._namespaces: caselessdict[str, Namespace] = caselessdict(
+        self._namespaces: caselessdict[str, framework.Namespace] = caselessdict(
             namespaces or self._namespaces or {}
         )
 
-        self._aliases: caselessdict[str, Namespace | Field] = caselessdict(
-            self._aliases or {}
+        self._aliases: caselessdict[str, framework.Namespace | framework.Field] = (
+            caselessdict(self._aliases or {})
         )
 
         # Map any aliased namespaces
@@ -133,8 +136,8 @@ class Metadata(object):
                         "Top-level field aliases must comprise of only two parts separated by a single ':' character between the namespace and field names!"
                     )
 
-        # self._fields: caselessdict[str, Field] = caselessdict()
-        self._values: caselessdict[str, Value] = caselessdict()
+        # self._fields: caselessdict[str, framework.Field] = caselessdict()
+        self._values: caselessdict[str, framework.Value] = caselessdict()
         self._special: list[str] = [
             prop for prop in dir(self) if not prop.startswith("_")
         ]
@@ -250,10 +253,10 @@ class Metadata(object):
 
     def set(
         self,
-        value: Value | object,
+        value: framework.Value | object,
         name: str = None,
-        field: Field = None,
-        namespace: Namespace = None,
+        field: framework.Field = None,
+        namespace: framework.Namespace = None,
     ):
         logger.debug(
             "%s.set(value: %r, name: %s, field: %s, namespace: %s)"
@@ -293,7 +296,7 @@ class Metadata(object):
 
     @namespace.setter
     @typing.final
-    def namespace(self, namespace: Namespace):
+    def namespace(self, namespace: framework.Namespace):
         if not isinstance(namespace, framework.Namespace):
             raise TypeError(
                 "The 'namespace' property must be assigned a Namespace class instance value!"
@@ -316,13 +319,13 @@ class Metadata(object):
 
     @property
     @typing.final
-    def namespaces(self) -> dict[str, Namespace]:
+    def namespaces(self) -> dict[str, framework.Namespace]:
         # logger.debug("%s.namespaces => %s" % (self.__class__.__name__, self._namespaces))
         return self._namespaces
 
     @property
     @typing.final
-    def aliases(self) -> dict[str, Namespace | Groupspace]:
+    def aliases(self) -> dict[str, framework.Namespace | framework.Groupspace]:
         # logger.debug("%s.aliases => %s" % (self.__class__.__name__, self._aliases))
         return self._aliases
 
@@ -334,10 +337,10 @@ class Metadata(object):
 
     @property
     @typing.final
-    def fields(self) -> dict[str, Field]:
+    def fields(self) -> dict[str, framework.Field]:
         # logger.debug("%s.fields()" % (self.__class__.__name__))
 
-        fields: dict[str, Field] = {}
+        fields: dict[str, framework.Field] = {}
 
         for identifier, namespace in self._namespaces.items():
             # logger.debug(" - %s" % (identifier))
@@ -357,7 +360,7 @@ class Metadata(object):
     @typing.final
     def items(
         self, all: bool = False
-    ) -> typing.Generator[tuple[Field, Value], None, None]:
+    ) -> typing.Generator[tuple[framework.Field, framework.Value], None, None]:
         """Return the fields and values currently held by this metadata model."""
 
         if not isinstance(all, bool):
@@ -381,8 +384,8 @@ class Metadata(object):
         return keys
 
     @typing.final
-    def values(self) -> list[Value]:
-        values: list[Value] = []
+    def values(self) -> list[framework.Value]:
+        values: list[framework.Value] = []
 
         for namespace in self._namespaces.values():
             for field in namespace._fields.values():

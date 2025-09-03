@@ -4737,7 +4737,7 @@ The technical details of each field may be found below:
 | ID | `Iptc4xmpCore:Location` |
 | Name | location |
 | Label | – |
-| Definiton | Name of a location the content is focussing on -- either the location shown in visual media or referenced by text or audio media. This location name could either be the name of a sublocation to a city or the name of a well known location or (natural) monument outside a city. In the sense of a sublocation to a city this element is at the fourth level of a top-down geographical hierarchy. |
+| Definiton | Name of a location the content is focussing on – either the location shown in visual media or referenced by text or audio media. This location name could either be the name of a sublocation to a city or the name of a well known location or (natural) monument outside a city. In the sense of a sublocation to a city this element is at the fourth level of a top-down geographical hierarchy. |
 | Required? | No |
 | Type | Text |
 
@@ -4750,7 +4750,7 @@ The technical details of each field may be found below:
 | ID | `Iptc4xmpCore:CountryCode` |
 | Name | countryCode |
 | Label | – |
-| Definiton | Code of the country the content is focussing on -- either the country shown in visual media or referenced in text or audio media. This element is at the top/first level of a top-down geographical hierarchy. The code should be taken from ISO 3166 two or three letter code. The full name of a country should go to the "Country" element. |
+| Definiton | Code of the country the content is focussing on – either the country shown in visual media or referenced in text or audio media. This element is at the top/first level of a top-down geographical hierarchy. The code should be taken from ISO 3166 two or three letter code. The full name of a country should go to the "Country" element. |
 | Required? | No |
 | Type | Locale |
 

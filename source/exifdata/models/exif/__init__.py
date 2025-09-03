@@ -21,13 +21,20 @@ from exifdata.models.exif.enumerations import (
 )
 
 from exifdata.models.exif.types import (
-    Undefined,
-    ASCII,
-    Long,
-    Short,
-    Rational,
-    RationalSigned,
     Byte,
+    ASCII,
+    Short,
+    Long,
+    Rational,
+    ByteSigned,
+    Undefined,
+    ShortSigned,
+    LongSigned,
+    RationalSigned,
+    Float,
+    Double,
+    UTF8,
+    String,
 )
 
 from exifdata.models.exif.structures import (
@@ -217,11 +224,18 @@ class EXIF(Metadata):
 
 
 EXIF.register_types(
-    Undefined,
-    ASCII,
-    Long,
-    Short,
-    Rational,
-    RationalSigned,
     Byte,
+    ASCII,
+    Short,
+    Long,
+    Rational,
+    ByteSigned,
+    Undefined,
+    ShortSigned,
+    LongSigned,
+    RationalSigned,
+    Float,
+    Double,
+    UTF8,
+    String,
 )

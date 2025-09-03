@@ -104,7 +104,7 @@ The IFD Tag data types are as follows:
 
 The EXIFData library provides support for writing EXIF metadata model fields. The model provides one namespace.
 
-The EXIF metadata model's `exif` namespace offers 135 fields which are listed below along with a link to each field's technical information:
+The EXIF metadata model's `exif` namespace offers 145 fields which are listed below along with a link to each field's technical information:
 
 | Namespace  | Field Path | Field Name | Required? | Info |
 |------------|------------|------------|:---------:|------|
@@ -211,6 +211,16 @@ The EXIF metadata model's `exif` namespace offers 135 fields which are listed be
 | `exif` | `exif.LensMake` | LensMake | No | [🔗](#exif-exif-lensmake) |
 | `exif` | `exif.LensModel` | LensModel | No | [🔗](#exif-exif-lensmodel) |
 | `exif` | `exif.LensSerialNumber` | LensSerialNumber | No | [🔗](#exif-exif-lensserialnumber) |
+| `exif` | `exif.ImageTitle` | ImageTitle | No | [🔗](#exif-exif-imagetitle) |
+| `exif` | `exif.Photographer` | Photographer | No | [🔗](#exif-exif-photographer) |
+| `exif` | `exif.ImageEditor` | ImageEditor | No | [🔗](#exif-exif-imageeditor) |
+| `exif` | `exif.CameraFirmware` | CameraFirmware | No | [🔗](#exif-exif-camerafirmware) |
+| `exif` | `exif.RAWDevelopingSoftware` | RAWDevelopingSoftware | No | [🔗](#exif-exif-rawdevelopingsoftware) |
+| `exif` | `exif.ImageEditingSoftware` | ImageEditingSoftware | No | [🔗](#exif-exif-imageeditingsoftware) |
+| `exif` | `exif.MetadataEditingSoftware` | MetadataEditingSoftware | No | [🔗](#exif-exif-metadataeditingsoftware) |
+| `exif` | `exif.CompositeImage` | CompositeImage | No | [🔗](#exif-exif-compositeimage) |
+| `exif` | `exif.SourceImageNumberOfCompositeImage` | SourceImageNumberOfCompositeImage | No | [🔗](#exif-exif-sourceimagenumberofcompositeimage) |
+| `exif` | `exif.SourceExposureTimesOfCompositeImage` | SourceExposureTimesOfCompositeImage | No | [🔗](#exif-exif-sourceexposuretimesofcompositeimage) |
 | `exif` | `exif.GPSVersionID` | GPSVersionID | No | [🔗](#exif-exif-gpsversionid) |
 | `exif` | `exif.GPSLatitudeRef` | GPSLatitudeRef | No | [🔗](#exif-exif-gpslatituderef) |
 | `exif` | `exif.GPSLatitude` | GPSLatitude | No | [🔗](#exif-exif-gpslatitude) |
@@ -735,11 +745,11 @@ The technical details of each field may be found below:
 | Alias | Description |
 | Count/Length | -3 |
 | Default Value | – |
-| Definiton | Image title. |
-| Pseudonym | exifdata: dc:Title |
+| Definiton | Image description. |
+| Pseudonym | exiftool: dc:Description |
 | Required? | No |
 | Citaton | – |
-| Type | ASCII |
+| Type | String |
 
 <a id="exif-exif-make"></a>
 ### The `exif:Make` field has the following configuration:
@@ -756,7 +766,7 @@ The technical details of each field may be found below:
 | Definiton | Image input equipment manufacturer. |
 | Required? | No |
 | Citaton | – |
-| Type | ASCII |
+| Type | String |
 
 <a id="exif-exif-model"></a>
 ### The `exif:Model` field has the following configuration:
@@ -773,7 +783,7 @@ The technical details of each field may be found below:
 | Definiton | Image input equipment model. |
 | Required? | No |
 | Citaton | – |
-| Type | ASCII |
+| Type | String |
 
 <a id="exif-exif-software"></a>
 ### The `exif:Software` field has the following configuration:
@@ -790,7 +800,7 @@ The technical details of each field may be found below:
 | Definiton | Software used. |
 | Required? | No |
 | Citaton | – |
-| Type | ASCII |
+| Type | String |
 
 <a id="exif-exif-artist"></a>
 ### The `exif:Artist` field has the following configuration:
@@ -804,10 +814,10 @@ The technical details of each field may be found below:
 | Tag ID | 315 |
 | Count/Length | -3 |
 | Default Value | – |
-| Definiton | Person who created the image. |
+| Definiton | The name of the person who created the image. |
 | Required? | No |
 | Citaton | – |
-| Type | ASCII |
+| Type | String |
 
 <a id="exif-exif-copyright"></a>
 ### The `exif:Copyright` field has the following configuration:
@@ -824,7 +834,7 @@ The technical details of each field may be found below:
 | Definiton | Copyright holder. |
 | Required? | No |
 | Citaton | – |
-| Type | ASCII |
+| Type | String |
 
 <a id="exif-exif-exifversion"></a>
 ### The `exif:EXIFVersion` field has the following configuration:
@@ -1011,7 +1021,7 @@ The technical details of each field may be found below:
 | Definiton | Related audio file. |
 | Required? | No |
 | Citaton | – |
-| Type | ASCII |
+| Type | String |
 
 <a id="exif-exif-datetimeoriginal"></a>
 ### The `exif:DateTimeOriginal` field has the following configuration:
@@ -1895,7 +1905,7 @@ The technical details of each field may be found below:
 | Definiton | Unique image ID. |
 | Required? | No |
 | Citaton | – |
-| Type | ASCII |
+| Type | String |
 
 <a id="exif-exif-cameraownername"></a>
 ### The `exif:CameraOwnerName` field has the following configuration:
@@ -1912,7 +1922,7 @@ The technical details of each field may be found below:
 | Definiton | Camera owner name. |
 | Required? | No |
 | Citaton | – |
-| Type | ASCII |
+| Type | String |
 
 <a id="exif-exif-bodyserialnumber"></a>
 ### The `exif:BodySerialNumber` field has the following configuration:
@@ -1929,7 +1939,7 @@ The technical details of each field may be found below:
 | Definiton | Camera body serial number. |
 | Required? | No |
 | Citaton | – |
-| Type | ASCII |
+| Type | String |
 
 <a id="exif-exif-lensspecification"></a>
 ### The `exif:LensSpecification` field has the following configuration:
@@ -1958,12 +1968,12 @@ The technical details of each field may be found below:
 | Name | LensMake |
 | Label | – |
 | Tag ID | 42035 |
-| Count/Length | 4 |
+| Count/Length | -3 |
 | Default Value | – |
 | Definiton | Lens make. |
 | Required? | No |
 | Citaton | – |
-| Type | Rational |
+| Type | String |
 
 <a id="exif-exif-lensmodel"></a>
 ### The `exif:LensModel` field has the following configuration:
@@ -1980,7 +1990,7 @@ The technical details of each field may be found below:
 | Definiton | Lens model. |
 | Required? | No |
 | Citaton | – |
-| Type | ASCII |
+| Type | String |
 
 <a id="exif-exif-lensserialnumber"></a>
 ### The `exif:LensSerialNumber` field has the following configuration:
@@ -1997,7 +2007,178 @@ The technical details of each field may be found below:
 | Definiton | Lens serial number. |
 | Required? | No |
 | Citaton | – |
-| Type | ASCII |
+| Type | String |
+
+<a id="exif-exif-imagetitle"></a>
+### The `exif:ImageTitle` field has the following configuration:
+
+| Attribute | Value    |
+|-----------|----------|
+| Path      | `exif.ImageTitle` |
+| ID | `exif:ImageTitle` |
+| Name | ImageTitle |
+| Label | – |
+| Tag ID | 42038 |
+| Count/Length | -3 |
+| Default Value | – |
+| Definiton | Title of the image. |
+| Pseudonym | exiftool: dc:Title |
+| Required? | No |
+| Citaton | – |
+| Type | String |
+
+<a id="exif-exif-photographer"></a>
+### The `exif:Photographer` field has the following configuration:
+
+| Attribute | Value    |
+|-----------|----------|
+| Path      | `exif.Photographer` |
+| ID | `exif:Photographer` |
+| Name | Photographer |
+| Label | – |
+| Tag ID | 42039 |
+| Count/Length | -3 |
+| Default Value | – |
+| Definiton | Name of the photographer. |
+| Required? | No |
+| Citaton | – |
+| Type | String |
+
+<a id="exif-exif-imageeditor"></a>
+### The `exif:ImageEditor` field has the following configuration:
+
+| Attribute | Value    |
+|-----------|----------|
+| Path      | `exif.ImageEditor` |
+| ID | `exif:ImageEditor` |
+| Name | ImageEditor |
+| Label | – |
+| Tag ID | 42040 |
+| Count/Length | -3 |
+| Default Value | – |
+| Definiton | Name of the main person who edited the image. |
+| Required? | No |
+| Citaton | – |
+| Type | String |
+
+<a id="exif-exif-camerafirmware"></a>
+### The `exif:CameraFirmware` field has the following configuration:
+
+| Attribute | Value    |
+|-----------|----------|
+| Path      | `exif.CameraFirmware` |
+| ID | `exif:CameraFirmware` |
+| Name | CameraFirmware |
+| Label | – |
+| Tag ID | 42041 |
+| Count/Length | -3 |
+| Default Value | – |
+| Definiton | Name and version of software or firmware of the camera. |
+| Required? | No |
+| Citaton | – |
+| Type | String |
+
+<a id="exif-exif-rawdevelopingsoftware"></a>
+### The `exif:RAWDevelopingSoftware` field has the following configuration:
+
+| Attribute | Value    |
+|-----------|----------|
+| Path      | `exif.RAWDevelopingSoftware` |
+| ID | `exif:RAWDevelopingSoftware` |
+| Name | RAWDevelopingSoftware |
+| Label | – |
+| Tag ID | 42042 |
+| Count/Length | -3 |
+| Default Value | – |
+| Definiton | Name and version of software used to develop the RAW image. |
+| Required? | No |
+| Citaton | – |
+| Type | String |
+
+<a id="exif-exif-imageeditingsoftware"></a>
+### The `exif:ImageEditingSoftware` field has the following configuration:
+
+| Attribute | Value    |
+|-----------|----------|
+| Path      | `exif.ImageEditingSoftware` |
+| ID | `exif:ImageEditingSoftware` |
+| Name | ImageEditingSoftware |
+| Label | – |
+| Tag ID | 42043 |
+| Count/Length | -3 |
+| Default Value | – |
+| Definiton | Name and version of software used to edit the image. |
+| Required? | No |
+| Citaton | – |
+| Type | String |
+
+<a id="exif-exif-metadataeditingsoftware"></a>
+### The `exif:MetadataEditingSoftware` field has the following configuration:
+
+| Attribute | Value    |
+|-----------|----------|
+| Path      | `exif.MetadataEditingSoftware` |
+| ID | `exif:MetadataEditingSoftware` |
+| Name | MetadataEditingSoftware |
+| Label | – |
+| Tag ID | 42044 |
+| Count/Length | -3 |
+| Default Value | – |
+| Definiton | Name and version of software used to edit the image metadata. |
+| Required? | No |
+| Citaton | – |
+| Type | String |
+
+<a id="exif-exif-compositeimage"></a>
+### The `exif:CompositeImage` field has the following configuration:
+
+| Attribute | Value    |
+|-----------|----------|
+| Path      | `exif.CompositeImage` |
+| ID | `exif:CompositeImage` |
+| Name | CompositeImage |
+| Label | – |
+| Tag ID | 42080 |
+| Count/Length | 1 |
+| Default Value | – |
+| Definiton | Notes whether the image is a composite image or not. |
+| Required? | No |
+| Citaton | – |
+| Type | Short |
+
+<a id="exif-exif-sourceimagenumberofcompositeimage"></a>
+### The `exif:SourceImageNumberOfCompositeImage` field has the following configuration:
+
+| Attribute | Value    |
+|-----------|----------|
+| Path      | `exif.SourceImageNumberOfCompositeImage` |
+| ID | `exif:SourceImageNumberOfCompositeImage` |
+| Name | SourceImageNumberOfCompositeImage |
+| Label | – |
+| Tag ID | 42081 |
+| Count/Length | 1 |
+| Default Value | – |
+| Definiton | Number of source images captured for the composite image. |
+| Required? | No |
+| Citaton | – |
+| Type | Short |
+
+<a id="exif-exif-sourceexposuretimesofcompositeimage"></a>
+### The `exif:SourceExposureTimesOfCompositeImage` field has the following configuration:
+
+| Attribute | Value    |
+|-----------|----------|
+| Path      | `exif.SourceExposureTimesOfCompositeImage` |
+| ID | `exif:SourceExposureTimesOfCompositeImage` |
+| Name | SourceExposureTimesOfCompositeImage |
+| Label | – |
+| Tag ID | 42082 |
+| Count/Length | 1 |
+| Default Value | – |
+| Definiton | For composite images, records parameters relating to exposure. |
+| Required? | No |
+| Citaton | – |
+| Type | Undefined |
 
 <a id="exif-exif-gpsversionid"></a>
 ### The `exif:GPSVersionID` field has the following configuration:

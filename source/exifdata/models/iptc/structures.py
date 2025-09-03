@@ -8,32 +8,16 @@ from exifdata.framework import (
 
 from deliciousbytes import (
     ByteOrder,
-    Int,
-    Int8,
     Int16,
     Int32,
-    Int64,
     UInt,
     UInt8,
     UInt16,
     UInt32,
-    UInt64,
-    Bytes,
-    Bytes8,
-    Bytes16,
-    Bytes32,
-    Bytes64,
-    Bytes128,
-    Bytes256,
-    # String,
 )
 
 from exifdata.models.iptc.enumerations import (
     RecordID,
-)
-
-from exifdata.models.iptc.types import (
-    String,
 )
 
 
@@ -148,7 +132,7 @@ class Record(object):
         # Each IPTC record is denoted with an 0x1c byte
         encoded.append(bytes([0x1C]))
 
-        # This is followd by the record ID tag
+        # This is followed by the record ID tag
         encoded.append(self.id.record_id.encode(order=order))
 
         # This is followed by the dataset ID
