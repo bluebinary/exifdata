@@ -323,7 +323,7 @@ class Models(object):
                 fullname,
             )
 
-    def erase(self, payloads: list[str] = None) -> Models:
+    def erase(self, payloads: list[str] = None, **kwargs) -> Models:
         """Supports erasing the raw metadata payloads with the specified names."""
 
         logger.debug(
@@ -332,7 +332,7 @@ class Models(object):
             payloads,
         )
 
-        self.adapter.erase(payloads=payloads)
+        self.adapter.erase(payloads=payloads, **kwargs)
 
         return self
 
