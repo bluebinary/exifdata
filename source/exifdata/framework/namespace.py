@@ -6,7 +6,6 @@ from exifdata.logging import logger
 from exifdata import framework
 
 from caselessly import (
-    caselesslist,
     caselessdict,
 )
 
@@ -20,11 +19,11 @@ class Namespace(object):
     _uri: str = None
     _prefix: str = None
     _alias: str = None
-    _metadata: Metadata = None
+    _metadata: framework.Metadata = None
     _definition: str = None
-    _structures: caselessdict[str, Structure] = None
-    _fields: caselessdict[str, Field] = None
-    _fieldmap: caselessdict[str, Field] = None
+    _structures: caselessdict[str, framework.Structure] = None
+    _fields: caselessdict[str, framework.Field] = None
+    _fieldmap: caselessdict[str, framework.Field] = None
     _special: list[str] = None
     _utilized: bool = False
     _unwrap: bool = False
@@ -38,8 +37,8 @@ class Namespace(object):
         alias: str = None,
         label: str = None,
         definition: str = None,
-        metadata: Metadata = None,
-        structures: dict[str, Structure | dict] = None,
+        metadata: framework.Metadata = None,
+        structures: dict[str, framework.Structure | dict] = None,
         unwrap: bool = False,
     ):
         # logger.debug(
@@ -119,7 +118,7 @@ class Namespace(object):
 
         self._unwrap = unwrap
 
-        self._structures: caselessdict[str, Structure] = caselessdict()
+        self._structures: caselessdict[str, framework.Structure] = caselessdict()
 
         if structures is None:
             pass
@@ -133,8 +132,8 @@ class Namespace(object):
                         **structure,
                     )
 
-        self._fields: caselessdict[str, Field] = caselessdict()
-        self._fieldmap: caselessdict[str, Field] = caselessdict()
+        self._fields: caselessdict[str, framework.Field] = caselessdict()
+        self._fieldmap: caselessdict[str, framework.Field] = caselessdict()
         self._special = [prop for prop in dir(self) if not prop.startswith("_")]
 
     def __str__(self) -> str:
@@ -170,7 +169,13 @@ class Namespace(object):
     def __setattr__(
         self,
         name: str,
-        value: Value | object | list[Value] | tuple[Value] | set[Value],
+        value: (
+            framework.Value
+            | object
+            | list[framework.Value]
+            | tuple[framework.Value]
+            | set[framework.Value]
+        ),
     ):
         logger.debug(
             "%s.__setattr__(name: %s, value: %s)"
@@ -199,7 +204,7 @@ class Namespace(object):
                     )
 
                 if field.combine is False and isinstance(value, (list, tuple, set)):
-                    values: list[Value] = []
+                    values: list[framework.Value] = []
 
                     for val in value:
                         if isinstance(val, framework.Value):
@@ -261,11 +266,11 @@ class Namespace(object):
         return self._definition
 
     @property
-    def metadata(self) -> Metadata:
+    def metadata(self) -> framework.Metadata:
         return self._metadata
 
     @property
-    def structures(self) -> list[Structure]:
+    def structures(self) -> list[framework.Structure]:
         return self._structures
 
     @property
@@ -277,11 +282,11 @@ class Namespace(object):
         return self._unwrap
 
     @property
-    def fields(self) -> dict[str, Field]:
+    def fields(self) -> dict[str, framework.Field]:
         return self._fields
 
     @fields.setter
-    def fields(self, fields: dict[str, Field]):
+    def fields(self, fields: dict[str, framework.Field]):
         raise NotImplementedError
 
     @property
@@ -289,7 +294,7 @@ class Namespace(object):
         raise NotImplementedError
 
     @field.setter
-    def field(self, field: Field):
+    def field(self, field: framework.Field):
         if not isinstance(field, framework.Field):
             raise TypeError(
                 "The 'field' property must be assigned a Field class instance value!"
@@ -317,7 +322,7 @@ class Namespace(object):
         raise NotImplementedError
 
     @value.setter
-    def value(self, value: Value):
+    def value(self, value: framework.Value):
         if not isinstance(value, framework.Value):
             raise TypeError(
                 "The 'value' argument must reference a Value class instance!"
@@ -333,20 +338,25 @@ class Namespace(object):
                 "The Value class instance referenced by the 'value' argument must have an assigned 'field' value in order to be set via this setter, otherwise, the field name that the value should be associated with cannot be determined!"
             )
 
-        self._metadata: Metadata = value.metadata
+        self._metadata: framework.Metadata = value.metadata
 
         self._metadata._values[value.field.id] = value
 
-    def get(self, metadata: Metadata, field: Field) -> object:
+    def get(self, metadata: framework.Metadata, field: framework.Field) -> object:
         raise NotImplementedError
 
-    def set(self, metadata: Metadata, field: Field, value: Value | object):
+    def set(
+        self,
+        metadata: framework.Metadata,
+        field: framework.Field,
+        value: framework.Value | object,
+    ):
         if not isinstance(metadata, framework.Metadata):
             raise TypeError(
                 "The 'metadata' argument must reference a Metadata class instance!"
             )
 
-        self._metadata: Metadata = metadata
+        self._metadata: framework.Metadata = metadata
 
         if not isinstance(field, framework.Field):
             raise TypeError(
@@ -389,7 +399,7 @@ class Namespace(object):
 
         self._utilized = True
 
-    def items(self) -> typing.Generator[tuple[str, Field], None, None]:
+    def items(self) -> typing.Generator[tuple[str, framework.Field], None, None]:
         for name, field in self._fields.items():
             yield (name, field)
 
@@ -397,6 +407,6 @@ class Namespace(object):
         for name in self._fields.keys():
             yield name
 
-    def values(self) -> typing.Generator[Field, None, None]:
-        for value in self._fields.values():
-            yield value
+    def values(self) -> typing.Generator[framework.Field, None, None]:
+        for field in self._fields.values():
+            yield field

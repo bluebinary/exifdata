@@ -11,5 +11,5 @@ logger = logger.getChild(__name__)
 
 class Type(enumerific.Enumeration):
     @property
-    def klass(cls):
+    def klass(cls) -> type:
         return cls.value

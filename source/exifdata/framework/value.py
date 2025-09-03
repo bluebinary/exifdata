@@ -6,11 +6,6 @@ import typing
 from exifdata.logging import logger
 from exifdata import framework
 
-from caselessly import (
-    caselesslist,
-    caselessdict,
-)
-
 from deliciousbytes import (
     ByteOrder,
     Encoding,
@@ -21,20 +16,20 @@ logger = logger.getChild(__name__)
 
 
 class Value(object):
-    _field: Field = None
+    _field: framework.Field = None
     _value: object = None
     _encoding: Encoding = None
-    _metadata: Metadata = None
+    _metadata: framework.Metadata = None
     _order: ByteOrder = None
 
     @typing.final
     def __init__(
         self,
         value: object = None,
-        field: Field = None,
+        field: framework.Field = None,
         order: ByteOrder = ByteOrder.MSB,
         encoding: Encoding = None,
-        metadata: Metadata = None,
+        metadata: framework.Metadata = None,
         **kwargs,
     ):
         logger.debug(
@@ -100,7 +95,7 @@ class Value(object):
 
     @property
     @typing.final
-    def field(self) -> Field | None:
+    def field(self) -> framework.Field | None:
         return self._field
 
     @property
@@ -110,7 +105,7 @@ class Value(object):
 
     @property
     @typing.final
-    def metadata(self) -> Metadata | None:
+    def metadata(self) -> framework.Metadata | None:
         return self._metadata
 
     @property

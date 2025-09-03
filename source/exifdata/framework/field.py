@@ -5,11 +5,9 @@ from exifdata import framework
 
 from caselessly import (
     caselesslist,
-    caselessdict,
 )
 
 from deliciousbytes import (
-    ByteOrder,
     Encoding,
 )
 
@@ -18,8 +16,8 @@ logger = logger.getChild(__name__)
 
 
 class Field(object):
-    _namespace: Namespace = None
-    _structure: Structure = None
+    _namespace: framework.Namespace = None
+    _structure: framework.Structure = None
     _identifier: str | int = None
     _name: str = None
     _types: str | tuple[str] = None
@@ -46,11 +44,11 @@ class Field(object):
 
     def __init__(
         self,
-        namespace: Namespace,
+        namespace: framework.Namespace,
         identifier: str | int,
         name: str,
         type: str | list[str] | tuple[str] | set[str],
-        structure: Structure | str = None,
+        structure: framework.Structure | str = None,
         alias: str | list[str] = None,
         pseudonym: str | list[str] | dict[str, str] = None,
         encoding: Encoding | str = None,
@@ -78,7 +76,7 @@ class Field(object):
         # )
 
         if isinstance(namespace, framework.Namespace):
-            self._namespace: Namespace = namespace
+            self._namespace: framework.Namespace = namespace
         else:
             raise TypeError(
                 "The 'namespace' argument must have a Namespace class instance value!"
@@ -253,14 +251,14 @@ class Field(object):
             pass
         elif isinstance(structure, str):
             if structure in namespace.structures:
-                self._structure: Structure = namespace.structures[structure]
+                self._structure: framework.Structure = namespace.structures[structure]
             else:
                 raise ValueError(
                     "The 'structure' argument, if specified, must reference a valid Structure, not %s!"
                     % (structure)
                 )
-        elif isinstance(structure, Structure):
-            self._structure: Structure = structure
+        elif isinstance(structure, framework.Structure):
+            self._structure: framework.Structure = structure
         else:
             raise TypeError(
                 "The 'structure' argument, if specified, must have a string name or Structure class instance value!"
@@ -394,11 +392,11 @@ class Field(object):
         return self._definition
 
     @property
-    def namespace(self) -> Namespace:
+    def namespace(self) -> framework.Namespace:
         return self._namespace
 
     @namespace.setter
-    def namespace(self, namespace: Namespace):
+    def namespace(self, namespace: framework.Namespace):
         if not isinstance(namespace, framework.Namespace):
             raise TypeError(
                 "The 'namespace' property must be assigned to a Namespace class instance!"
@@ -406,11 +404,11 @@ class Field(object):
         self._namespace = namespace
 
     @property
-    def structure(self) -> Structure:
+    def structure(self) -> framework.Structure:
         return self._structure
 
     @structure.setter
-    def structure(self, structure: Structure):
+    def structure(self, structure: framework.Structure):
         if not isinstance(structure, framework.Structure):
             raise TypeError(
                 "The 'structure' property must be assigned to a Structure class instance!"
@@ -421,7 +419,9 @@ class Field(object):
     def section(self) -> str:
         return self._section
 
-    def value(self, value: object, metadata: Metadata = None) -> Value:
+    def value(
+        self, value: object, metadata: framework.Metadata = None
+    ) -> framework.Value:
         raise NotImplementedError
 
         if metadata is None:
