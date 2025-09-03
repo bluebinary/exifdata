@@ -304,12 +304,12 @@
       "exif:ImageDescription": {
         "name": "ImageDescription",
         "pseudonym": {
-          "exifdata": "dc:Title"
+          "exiftool": "dc:Description"
         },
         "label": null,
-        "definition": "Image title",
+        "definition": "Image description",
         "section": null,
-        "type": "ASCII",
+        "type": "String",
         "count": -3,
         "tagid": 270,
         "default": null,
@@ -320,7 +320,7 @@
         "label": null,
         "definition": "Image input equipment manufacturer",
         "section": null,
-        "type": "ASCII",
+        "type": "String",
         "count": -3,
         "tagid": 271,
         "default": null
@@ -330,7 +330,7 @@
         "label": null,
         "definition": "Image input equipment model",
         "section": null,
-        "type": "ASCII",
+        "type": "String",
         "count": -3,
         "tagid": 272,
         "default": null
@@ -340,7 +340,7 @@
         "label": null,
         "definition": "Software used",
         "section": null,
-        "type": "ASCII",
+        "type": "String",
         "count": -3,
         "tagid": 305,
         "default": null
@@ -348,9 +348,9 @@
       "exif:Artist": {
         "name": "Artist",
         "label": null,
-        "definition": "Person who created the image",
+        "definition": "The name of the person who created the image",
         "section": null,
-        "type": "ASCII",
+        "type": "String",
         "count": -3,
         "tagid": 315,
         "default": null
@@ -360,7 +360,7 @@
         "label": null,
         "definition": "Copyright holder",
         "section": null,
-        "type": "ASCII",
+        "type": "String",
         "count": -3,
         "tagid": 33432,
         "default": null
@@ -476,7 +476,7 @@
         "label": null,
         "definition": "Related audio file",
         "section": null,
-        "type": "ASCII",
+        "type": "String",
         "count": 13,
         "tagid": 40964,
         "default": null
@@ -1000,7 +1000,7 @@
         "label": null,
         "definition": "Unique image ID",
         "section": null,
-        "type": "ASCII",
+        "type": "String",
         "count": 33,
         "tagid": 42016,
         "default": null
@@ -1010,7 +1010,7 @@
         "label": null,
         "definition": "Camera owner name",
         "section": null,
-        "type": "ASCII",
+        "type": "String",
         "count": -3,
         "tagid": 42032,
         "default": null
@@ -1020,7 +1020,7 @@
         "label": null,
         "definition": "Camera body serial number",
         "section": null,
-        "type": "ASCII",
+        "type": "String",
         "count": -3,
         "tagid": 42033,
         "default": null
@@ -1040,8 +1040,8 @@
         "label": null,
         "definition": "Lens make",
         "section": null,
-        "type": "Rational",
-        "count": 4,
+        "type": "String",
+        "count": -3,
         "tagid": 42035,
         "default": null
       },
@@ -1050,7 +1050,7 @@
         "label": null,
         "definition": "Lens model",
         "section": null,
-        "type": "ASCII",
+        "type": "String",
         "count": -3,
         "tagid": 42036,
         "default": null
@@ -1060,9 +1060,112 @@
         "label": null,
         "definition": "Lens serial number",
         "section": null,
-        "type": "ASCII",
+        "type": "String",
         "count": -3,
         "tagid": 42037,
+        "default": null
+      },
+      "exif:ImageTitle": {
+        "name": "ImageTitle",
+        "pseudonym": {
+          "exiftool": "dc:Title"
+        },
+        "label": null,
+        "definition": "Title of the image",
+        "section": null,
+        "type": "String",
+        "count": -3,
+        "tagid": 42038,
+        "default": null
+      },
+      "exif:Photographer": {
+        "name": "Photographer",
+        "label": null,
+        "definition": "Name of the photographer",
+        "section": null,
+        "type": "String",
+        "count": -3,
+        "tagid": 42039,
+        "default": null
+      },
+      "exif:ImageEditor": {
+        "name": "ImageEditor",
+        "label": null,
+        "definition": "Name of the main person who edited the image",
+        "section": null,
+        "type": "String",
+        "count": -3,
+        "tagid": 42040,
+        "default": null
+      },
+      "exif:CameraFirmware": {
+        "name": "CameraFirmware",
+        "label": null,
+        "definition": "Name and version of software or firmware of the camera",
+        "section": null,
+        "type": "String",
+        "count": -3,
+        "tagid": 42041,
+        "default": null
+      },
+      "exif:RAWDevelopingSoftware": {
+        "name": "RAWDevelopingSoftware",
+        "label": null,
+        "definition": "Name and version of software used to develop the RAW image",
+        "section": null,
+        "type": "String",
+        "count": -3,
+        "tagid": 42042,
+        "default": null
+      },
+      "exif:ImageEditingSoftware": {
+        "name": "ImageEditingSoftware",
+        "label": null,
+        "definition": "Name and version of software used to edit the image",
+        "section": null,
+        "type": "String",
+        "count": -3,
+        "tagid": 42043,
+        "default": null
+      },
+      "exif:MetadataEditingSoftware": {
+        "name": "MetadataEditingSoftware",
+        "label": null,
+        "definition": "Name and version of software used to edit the image metadata",
+        "section": null,
+        "type": "String",
+        "count": -3,
+        "tagid": 42044,
+        "default": null
+      },
+      "exif:CompositeImage": {
+        "name": "CompositeImage",
+        "label": null,
+        "definition": "Notes whether the image is a composite image or not",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 42080,
+        "default": null
+      },
+      "exif:SourceImageNumberOfCompositeImage": {
+        "name": "SourceImageNumberOfCompositeImage",
+        "label": null,
+        "definition": "Number of source images captured for the composite image",
+        "section": null,
+        "type": "Short",
+        "count": 1,
+        "tagid": 42081,
+        "default": null
+      },
+      "exif:SourceExposureTimesOfCompositeImage": {
+        "name": "SourceExposureTimesOfCompositeImage",
+        "label": null,
+        "definition": "For composite images, records parameters relating to exposure",
+        "section": null,
+        "type": "Undefined",
+        "count": 1,
+        "tagid": 42082,
         "default": null
       },
       "exif:GPSVersionID": {

@@ -25,6 +25,26 @@ class TIFFData(Adapter):
         "EXIFIFD": EXIF,
         "RichTIFFIPTC": IPTC,
         "XMLPacket": XMP,
+        "Make": None,
+        "Model": None,
+        "Software": None,
+        "Artist": None,
+        "ImageDescription": None,
+        "Copyright": None,
+        "ImageUniqueID": None,
+        "CameraOwnerName": None,
+        "BodySerialNumber": None,
+        "LensSpecification": None,
+        "LensMake": None,
+        "LensModel": None,
+        "LensSerialNumber": None,
+        "ImageTitle": None,
+        "Photographer": None,
+        "ImageEditor": None,
+        "CameraFirmware": None,
+        "RAWDevelopingSoftware": None,
+        "ImageEditingSoftware": None,
+        "MetadataEditingSoftware": None,
     }
 
     _image: TIFF = None
@@ -80,7 +100,7 @@ class TIFFData(Adapter):
 
     @property
     def mapping(self) -> dict[str, Metadata]:
-        return self._mapping
+        return {key: value for key, value in self._mapping.items() if not value is None}
 
     def fields(self) -> list[str]:
         fields: list[str] = []
@@ -196,9 +216,11 @@ class TIFFData(Adapter):
                 raise TypeError(
                     "The 'payloads' argument, if specified, must reference a list of strings!"
                 )
-            elif not payload in self._mapping:
+            elif not payload.lower() in [
+                payload.lower() for payload in self._mapping.keys()
+            ]:
                 raise ValueError(
-                    f"The 'payload' argument, specified a field, '{payload}', that is not supported!"
+                    f"The 'payload' argument, specified a field, '{payload}', that is not recognised!"
                 )
 
             self.image.remove(key=payload, ifd=ifd)

@@ -7,7 +7,6 @@ import unicodedata
 from exifdata.logging import logger
 
 from exifdata.framework import (
-    Type,
     Value,
 )
 
@@ -15,15 +14,12 @@ from deliciousbytes import (
     ByteOrder,
     Encoding,
     Int,
-    UInt8,
-    UInt16,
-    UInt32,
-    Short,
     UnsignedShort,
     SignedShort,
-    Long,
     UnsignedLong,
     SignedLong,
+    Float,
+    Double,
 )
 
 
@@ -32,21 +28,22 @@ logger = logger.getChild(__name__)
 
 # The EXIF metadata standard defines the following data types:
 
-# | ID | Type                   |  Format    | Size             |
-# |----|------------------------|------------|------------------|
-# | 0  | Empty                  |            | 0 bytes          |
-# | 1  | Unsigned Byte          | byte       | 1-byte, 8-bits   |
-# | 2  | ASCII String           | const char | 1-byte, 8-bits   |
-# | 3  | Unsigned Short         | short      | 2-bytes, 16-bits |
-# | 4  | Unsigned Long          | long       | 4-bytes, 32-bits |
-# | 5  | Unsigned Rational      | two longs  | 8 bytes, 64-bits |
-# | 6  | Signed Byte            | byte       | 1-byte, 8-bits   |
-# | 7  | Undefined              |            | 1-byte, 8-bits   |
-# | 8  | Signed Short           | short      | 2-bytes, 16-bits |
-# | 9  | Signed Long            | long       | 4-bytes, 32-bits |
-# | 10 | Signed Rational        | two longs  | 8 bytes, 64-bits |
-# | 11 | Single-Precision Float | float      | 4-bytes, 32-bits |
-# | 12 | Double-Precision Float | double     | 8-bytes, 64-bits |
+# | ID  | Type                   |  Format    | Size             |
+# |-----|------------------------|------------|------------------|
+# |   0 | Empty                  |            | 0 bytes          |
+# |   1 | Unsigned Byte          | byte       | 1-byte, 8-bits   |
+# |   2 | ASCII String           | const char | 1-byte, 8-bits   |
+# |   3 | Unsigned Short         | short      | 2-bytes, 16-bits |
+# |   4 | Unsigned Long          | long       | 4-bytes, 32-bits |
+# |   5 | Unsigned Rational      | two longs  | 8 bytes, 64-bits |
+# |   6 | Signed Byte            | byte       | 1-byte, 8-bits   |
+# |   7 | Undefined              |            | 1-byte, 8-bits   |
+# |   8 | Signed Short           | short      | 2-bytes, 16-bits |
+# |   9 | Signed Long            | long       | 4-bytes, 32-bits |
+# |  10 | Signed Rational        | two longs  | 8 bytes, 64-bits |
+# |  11 | Single-Precision Float | float      | 4-bytes, 32-bits |
+# |  12 | Double-Precision Float | double     | 8-bytes, 64-bits |
+# | 129 | UTF-8 String           | utf-8      | 1-byte, 8-bits   |
 
 
 class Empty(Value):
@@ -54,6 +51,33 @@ class Empty(Value):
 
     _tagid: int = 0
     _length: int = 1
+
+
+class String(Value):
+    """The String class stands in for the ASCII and UTF8 classes, returning a subclass
+    of either the ASCII or UTF8 type depending on if the provided string fits within
+    the ASCII character space or not, determined by attempting to encode the string to
+    ASCII and catching any UnicodeError that will result from non-ASCII characters."""
+
+    def __new__(cls, value: str, **kwargs) -> Value:
+        if not isinstance(value, str):
+            raise TypeError("The 'value' argument must have a string value!")
+
+        if cls is String:
+            # By default, assume that an EXIF string value will be encoded to ASCII
+            klass: Value = ASCII
+
+            # If encoding the string to ASCII results in an UnicodeError, it contains one or
+            # more characters outside of the ASCII range, thus we will encode it using UTF-8
+            try:
+                value.encode("ASCII")
+            except UnicodeError as exception:
+                logger.debug("String.__new__(value: %s): %s", value, exception)
+                klass = UTF8
+
+            return super().__new__(klass)
+        else:
+            return super().__new__(cls)
 
 
 class Byte(Int, Value):
@@ -64,7 +88,7 @@ class Byte(Int, Value):
     _signed: bool = False
 
 
-class ASCII(Value):
+class ASCII(String, Value):
     """An 8-bit byte containing one 7-bit ASCII code. The final byte is terminated with
     NULL[00.H]. The ASCII count shall include the terminating NULL."""
 
@@ -286,7 +310,7 @@ class Rational(Value):
         return Rational(numerator=numerator, denominator=denominator)
 
 
-class SignedByte(Byte, Value):
+class ByteSigned(Byte, Value):
     """An 8-bit signed integer."""
 
     _tagid: int = 6
@@ -299,6 +323,14 @@ class Undefined(Value):
 
     _tagid: int = 7
     _length: int = 1
+
+
+class ShortSigned(SignedShort, Value):
+    """A 16-bit (2-byte) signed integer."""
+
+    _tagid: int = 8
+    _length: int = 2
+    _signed: bool = True
 
 
 class LongSigned(SignedLong, Value):
@@ -318,7 +350,23 @@ class RationalSigned(Rational):
     _signed: bool = True
 
 
-class UTF8(Value):
+class Float(Float, Value):
+    """A single-precision 32-bit floating-point number."""
+
+    _tagid: int = 11
+    _length: int = 4
+    _signed: bool = True
+
+
+class Double(Double, Value):
+    """A double-precision 64-bit floating-point number."""
+
+    _tagid: int = 12
+    _length: int = 8
+    _signed: bool = True
+
+
+class UTF8(String, Value):
     """An 8-bit byte representing a string according to UTF-8[22]. The final byte is
     terminated with NULL[00.H]. A BOM (Byte Order Mark) shall not be used. The UTF-8
     count shall include NULL. This is defined independently by this standard, rather
@@ -326,6 +374,42 @@ class UTF8(Value):
 
     _tagid: int = 129
     _length: int = 1
+
+    def encode(self, order: ByteOrder = ByteOrder.MSB) -> bytes:
+        if not isinstance(value := self.value, str):
+            raise ValueError(
+                "The %s class does not have a string value!" % (self.__class__.__name__)
+            )
+
+        # Encode the source string to UTF-8
+        encoded: bytes = value.encode("UTF-8")
+
+        # Ensure that the string ends with a NUL byte
+        if not encoded.endswith(b"\x00"):
+            encoded += b"\x00"
+
+        # Byte order is not relevant for data types that have individual values which
+        # fit within single bytes, such as UTF-8 encoded characters from an UTF-8 string
+        if order is ByteOrder.LSB:
+            # encoded = bytes(reversed(bytearray(encoded)))
+            pass
+
+        return encoded
+
+    @classmethod
+    def decode(cls, value: bytes, order: ByteOrder = ByteOrder.MSB) -> ASCII:
+        if not isinstance(value, bytes):
+            raise ValueError("The 'value' argument must have a bytes value!")
+
+        # Byte order is not relevant for data types that have individual values which
+        # fit within single bytes, such as UTF-8 encoded characters from an UTF-8 string
+        if order is ByteOrder.LSB:
+            # value = bytes(reversed(bytearray(value)))
+            pass
+
+        decoded: str = value.decode("UTF-8")
+
+        return UTF8(value=decoded)
 
 
 class DateTime(Value):
@@ -385,10 +469,14 @@ __all__ = [
     "Short",
     "Long",
     "Rational",
-    "SignedByte",
+    "ByteSigned",
     "Undefined",
+    "ShortSigned",
     "LongSigned",
     "RationalSigned",
+    "Float",
+    "Double",
     "UTF8",
+    "String",
     "DateTime",
 ]

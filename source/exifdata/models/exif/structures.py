@@ -1,27 +1,15 @@
 from __future__ import annotations
 
-import enumerific
 import builtins
 
 from deliciousbytes import (
     ByteOrder,
     Int,
-    Int8,
-    Int16,
-    Int32,
-    Int64,
-    UInt,
-    UInt8,
     UInt16,
     UInt32,
     UInt64,
-    Bytes,
-    Bytes8,
-    Bytes16,
     Bytes32,
     Bytes64,
-    Bytes128,
-    Bytes256,
 )
 
 
@@ -47,7 +35,7 @@ class IFD(object):
     | Tags          | One or more byte-encoded IFDTag values, the length of which can |
     |               | be determined by multiplying the tag count by 12                |
     +---------------+-----------------------------------------------------------------+
-    | Next Offset   | Four bytes holding the pointer to the next IFD or 0 if none     |
+    | Next Offset   | Four or eight bytes holding the pointer to the next IFD or 0    |
     +---------------+-----------------------------------------------------------------+
 
     The tag count is stored as a short integer (UInt16) comprised of 2 bytes or 16 bits
@@ -57,9 +45,11 @@ class IFD(object):
 
     _count: UInt16 = None
     _tags: list[IFDTag] = None
-    _next: UInt32 = None
+    _next: UInt32 | UInt64 = None
 
-    def __init__(self, count: UInt16 = 0, tags: list[IFDTag] = None, next: UInt32 = 0):
+    def __init__(
+        self, count: UInt16 = 0, tags: list[IFDTag] = None, next: UInt32 | UInt64 = 0
+    ):
         if not isinstance(count, int):
             raise TypeError("The 'count' argument must have an integer value!")
         elif not (0 <= count <= UInt16.MAX):
@@ -85,13 +75,15 @@ class IFD(object):
 
         if not isinstance(next, int):
             raise TypeError("The 'next' argument must have an integer value!")
-        elif not 0 <= next <= UInt32.MAX:
-            raise TypeError(
+        elif 0 <= next <= UInt32.MAX:
+            self._next: UInt32 = UInt32(next)
+        elif 0 <= next <= UInt64.MAX:
+            self._next: UInt64 = UInt64(next)
+        else:
+            raise ValueError(
                 "The 'next' argument must have an integer value between 0 - %d!"
-                % (UInt32.MAX)
+                % (UInt64.MAX)
             )
-
-        self._next: UInt32 = UInt32(next)
 
     @property
     def count(self) -> UInt32:
@@ -161,18 +153,20 @@ class IFDTag(object):
     |               | * 10 = SRational (Signed) - signed rational of two signed-longs |
     |               | * 129 = UTF-8 - 8-bit byte UTF-8 string, null-terminated        |
     +---------------+-----------------------------------------------------------------+
-    | Data Count    | Four bytes holding the count of data values that follow         |
+    | Data Count    | Four or eight bytes hold the count of data values that follow   |
     +---------------+-----------------------------------------------------------------+
-    | Data / Offset | Four bytes holding the data or a pointer to the data            |
+    | Data / Offset | Four or eight bytes holding the data or a pointer to the data   |
     +---------------+-----------------------------------------------------------------+
     """
 
     _id: UInt16 = None
     _type: UInt16 = None
-    _count: UInt32 = None
-    _data: Bytes32 = None
+    _count: UInt32 | UInt64 = None
+    _data: Bytes32 | Bytes64 = None
 
-    def __init__(self, id: UInt16, type: UInt16, count: UInt32, data: Bytes32):
+    def __init__(
+        self, id: UInt16, type: UInt16, count: UInt32 | UInt64, data: Bytes32 | Bytes64
+    ):
         if not isinstance(id, int):
             raise TypeError("The 'id' argument must have an integer value!")
         elif not 1 <= id <= UInt16.MAX:

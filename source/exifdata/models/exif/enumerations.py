@@ -7,13 +7,24 @@ logger = logger.getChild(__name__)
 
 
 class TagType(enumerific.Enumeration):
-    Undefined = -1
-    Short = 1
-    Long = 2
-    Rational = 3
-    RationalSigned = 4
-    Byte = 5
-    ASCII = 6
+    """The TagType enumeration defines the data types supported by EXIF; the types and
+    values are from the EXIF metadata standard, except any enumeration options that have
+    negative values, which are affordances added for the benefit of the library."""
+
+    Byte = 1
+    ASCII = 2
+    Short = 3
+    Long = 4
+    Rational = 5
+    ByteSigned = 6
+    Undefined = 7
+    ShortSigned = 8
+    LongSigned = 9
+    RationalSigned = 10
+    Float = 11
+    Double = 12
+    UTF8 = 129
+    String = -129  # a polymorphic pseudo-type to ease working with ASCII/UTF-8 strings
 
 
 class TagCount(enumerific.Enumeration):
@@ -370,32 +381,32 @@ class Tags(object):
         TagID.ImageDescription: {
             "description": "Image title",
             "alias": "Description",
-            "type": TagType.ASCII,
+            "type": TagType.String,
             "count": TagCount.Any,
         },
         TagID.Make: {
             "description": "Image input equipment manufacturer",
-            "type": TagType.ASCII,
+            "type": TagType.String,
             "count": TagCount.Any,
         },
         TagID.Model: {
             "description": "Image input equipment model",
-            "type": TagType.ASCII,
+            "type": TagType.String,
             "count": TagCount.Any,
         },
         TagID.Software: {
             "description": "Software used",
-            "type": TagType.ASCII,
+            "type": TagType.String,
             "count": TagCount.Any,
         },
         TagID.Artist: {
             "description": "Person who created the image",
-            "type": TagType.ASCII,
+            "type": TagType.String,
             "count": TagCount.Any,
         },
         TagID.Copyright: {
             "description": "Copyright holder",
-            "type": TagType.ASCII,
+            "type": TagType.String,
             "count": TagCount.Any,
         },
         # 4.6.5 EXIF IFD Attribute Information: A. Tags Relating to Version
@@ -455,7 +466,7 @@ class Tags(object):
         # 4.6.5 EXIF IFD Attribute Information: E. Tags Relating to Related File Information
         TagID.RelatedSoundFile: {
             "description": "Related audio file",
-            "type": TagType.ASCII,
+            "type": TagType.String,
             "count": TagCount.Thirteen,
         },
         # 4.6.5 EXIF IFD Attribute Information: F. Tags Relating to Date and Time
@@ -722,17 +733,17 @@ class Tags(object):
         # 4.6.5 EXIF IFD Attribute Information: H. Other Tags
         TagID.ImageUniqueID: {
             "description": "Unique image ID",
-            "type": TagType.ASCII,
+            "type": TagType.String,
             "count": TagCount.ThirtyThree,
         },
         TagID.CameraOwnerName: {
             "description": "Camera owner name",
-            "type": TagType.ASCII,
+            "type": TagType.String,
             "count": TagCount.Any,
         },
         TagID.BodySerialNumber: {
             "description": "Camera body serial number",
-            "type": TagType.ASCII,
+            "type": TagType.String,
             "count": TagCount.Any,
         },
         TagID.LensSpecification: {
@@ -747,12 +758,12 @@ class Tags(object):
         },
         TagID.LensModel: {
             "description": "Lens model",
-            "type": TagType.ASCII,
+            "type": TagType.String,
             "count": TagCount.Any,
         },
         TagID.LensSerialNumber: {
             "description": "Lens serial number",
-            "type": TagType.ASCII,
+            "type": TagType.String,
             "count": TagCount.Any,
         },
         # 4.6.6 GPS Attribute Information: A. Tags Relating to GPS

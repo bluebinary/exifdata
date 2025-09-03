@@ -53,7 +53,7 @@ encoded IPTC-IIM format; relaxes most field length limits of the legacy format; 
 Unicode compliant.
 
 The EXIFData library provides support for reading and writing IPTC fields as IPTC-IIM as
-well as via the XMP. To work with IPTC metadata using the IPTC-IIM model, use the `IPTC`
+well as via XMP. To work with IPTC metadata using the IPTC-IIM model, use the `IPTC`
 metadata model class, and to work with IPTC metadata using the XMP model, use the `XMP`
 metadata model class and its `iptc_core` and `iptc_extended` namespaces, which for ease
 of use have both been aliased under the `iptc` namespace of the `XMP` metadata model.
@@ -171,7 +171,7 @@ The technical details of each field may be found below:
 | Minimum bytes | 2 |
 | Maximum bytes | 2 |
 | Definiton | A binary number representing the file format. The file format must be registered with IPTC or NAA with a unique number assigned to it. The information is used to route the data to the appropriate system and to allow the receiving system to perform the appropriate actions there to. |
-| Options | 0: No ObjectData; 1: IPTC-NAA Digital Newsphoto Parameter Record; 2: IPTC7901 Recommended Message Format; 3: Tagged Image File Format [.TIFF] (Adobe/Aldus Image Data); 4: Illustrator (Adobe Graphics Data); 5: AppleSingle (Apple Computer Inc); 6: NAA 89-3 (ANPA 1312); 7: MacBinary II; 8: IPTC Unstructured Character Oriented File Format (UCOFF); 9: United Press International ANPA 1312 variant; 10: United Press International Down-Load Message; 11: JPEG File Interchange (JFIF); 12: Photo-CD Image-Pac (Eastman Kodak); 13: Bit Mapped Graphics File [.BMP] (Microsoft); 14: Digital Audio File [.WAV] (Microsoft & Creative Labs); 15: Audio plus Moving Video [.AVI] (Microsoft); 16: PC DOS/Windows Executable Files [.COM][.EXE]; 17: Compressed Binary File [.ZIP] (PKWare Inc); 18: Audio Interchange File Format [.AIFF] (Apple Computer Inc); 19: RIFF Wave (Microsoft Corporation); 20: Freehand (Macromedia/Aldus); 21: Hypertext Markup Language [.HTML] (The Internet Society); 22: MPEG 2 Audio Layer 2 (Musicom), ISO/IEC; 23: MPEG 2 Audio Layer 3, ISO/IEC; 24: Portable Document File [.PDF] Adobe; 25: News Industry Text Format (NITF); 26: Tape Archive [.TAR]; 27: Tidningarnas Telegrambyra NITF version (TTNITF DTD); 28: Ritzaus Bureau NITF version (RBNITF DTD); 29: Corel Draw [.CDR] |
+| Options | 0: No ObjectData; 1: IPTC-NAA Digital Newsphoto Parameter Record; 2: IPTC7901 Recommended Message Format; 3: Tagged Image File Format [.TIFF] (Adobe/Aldus Image Data); 4: Illustrator (Adobe Graphics Data); 5: AppleSingle (Apple Computer Inc); 6: NAA 89-3 (ANPA 1312); 7: MacBinary II; 8: IPTC Unstructured Character Oriented File Format (UCOFF); 9: United Press International ANPA 1312 variant; 10: United Press International Download Message; 11: JPEG File Interchange (JFIF); 12: Photo-CD Image-Pac (Eastman Kodak); 13: Bit Mapped Graphics File [.BMP] (Microsoft); 14: Digital Audio File [.WAV] (Microsoft & Creative Labs); 15: Audio plus Moving Video [.AVI] (Microsoft); 16: PC DOS/Windows Executable Files [.COM][.EXE]; 17: Compressed Binary File [.ZIP] (PKWare Inc); 18: Audio Interchange File Format [.AIFF] (Apple Computer Inc); 19: RIFF Wave (Microsoft Corporation); 20: Freehand (Macromedia/Aldus); 21: Hypertext Markup Language [.HTML] (The Internet Society); 22: MPEG 2 Audio Layer 2 (Musicom), ISO/IEC; 23: MPEG 2 Audio Layer 3, ISO/IEC; 24: Portable Document File [.PDF] Adobe; 25: News Industry Text Format (NITF); 26: Tape Archive [.TAR]; 27: Tidningarnas Telegrambyra NITF version (TTNITF DTD); 28: Ritzaus Bureau NITF version (RBNITF DTD); 29: Corel Draw [.CDR] |
 | Repeatable? | No |
 | Required? | Yes |
 | Type | Short |
@@ -274,7 +274,7 @@ The technical details of each field may be found below:
 | Tag ID | 70 |
 | Minimum bytes | 8 |
 | Maximum bytes | 8 |
-| Definiton | Uses the format CCYYMMDD (century, year, month, day) as de-fined in ISO 8601 to indicate year, month and day the service sent the material. |
+| Definiton | Uses the format CCYYMMDD (century, year, month, day) as defined in ISO 8601 to indicate year, month and day the service sent the material. |
 | Repeatable? | No |
 | Required? | Yes |
 | Type | Date |
@@ -505,7 +505,7 @@ The technical details of each field may be found below:
 | Tag ID | 5 |
 | Minimum bytes | 0 |
 | Maximum bytes | 64 |
-| Definiton | Used as a shorthand reference for the object. Changes to exist-ing data, such as updated stories or new crops on photos, should be identified in tag <EditStatus>. |
+| Definiton | Used as a shorthand reference for the object. Changes to existing data, such as updated stories or new crops on photos, should be identified in tag <EditStatus>. |
 | Repeatable? | No |
 | Required? | No |
 | Type | String |
@@ -1154,6 +1154,7 @@ The technical details of each field may be found below:
 | Tag ID | 116 |
 | Minimum bytes | 0 |
 | Maximum bytes | 128 |
+| Alias | CopyrightNotice |
 | Definiton | Contains any necessary copyright notice. |
 | Repeatable? | No |
 | Required? | No |
@@ -1480,7 +1481,7 @@ The technical details of each field may be found below:
 | Minimum bytes | 2 |
 | Maximum bytes | 2 |
 | Definiton | A binary number representing the file format of the object data preview. The file format must be registered with IPTC or NAA organizations with a unique number assigned to it. |
-| Options | 0: No ObjectData; 1: IPTC-NAA Digital Newsphoto Parameter Record; 2: IPTC7901 Recommended Message Format; 3: Tagged Image File Format [.TIFF] (Adobe/Aldus Image Data); 4: Illustrator (Adobe Graphics Data); 5: AppleSingle (Apple Computer Inc); 6: NAA 89-3 (ANPA 1312); 7: MacBinary II; 8: IPTC Unstructured Character Oriented File Format (UCOFF); 9: United Press International ANPA 1312 variant; 10: United Press International Down-Load Message; 11: JPEG File Interchange (JFIF); 12: Photo-CD Image-Pac (Eastman Kodak); 13: Bit Mapped Graphics File [.BMP] (Microsoft); 14: Digital Audio File [.WAV] (Microsoft & Creative Labs); 15: Audio plus Moving Video [.AVI] (Microsoft); 16: PC DOS/Windows Executable Files [.COM][.EXE]; 17: Compressed Binary File [.ZIP] (PKWare Inc); 18: Audio Interchange File Format [.AIFF] (Apple Computer Inc); 19: RIFF Wave (Microsoft Corporation); 20: Freehand (Macromedia/Aldus); 21: Hypertext Markup Language [.HTML] (The Internet Society); 22: MPEG 2 Audio Layer 2 (Musicom), ISO/IEC; 23: MPEG 2 Audio Layer 3, ISO/IEC; 24: Portable Document File [.PDF] Adobe; 25: News Industry Text Format (NITF); 26: Tape Archive [.TAR]; 27: Tidningarnas Telegrambyra NITF version (TTNITF DTD); 28: Ritzaus Bureau NITF version (RBNITF DTD); 29: Corel Draw [.CDR] |
+| Options | 0: No ObjectData; 1: IPTC-NAA Digital Newsphoto Parameter Record; 2: IPTC7901 Recommended Message Format; 3: Tagged Image File Format [.TIFF] (Adobe/Aldus Image Data); 4: Illustrator (Adobe Graphics Data); 5: AppleSingle (Apple Computer Inc); 6: NAA 89-3 (ANPA 1312); 7: MacBinary II; 8: IPTC Unstructured Character Oriented File Format (UCOFF); 9: United Press International ANPA 1312 variant; 10: United Press International Download Message; 11: JPEG File Interchange (JFIF); 12: Photo-CD Image-Pac (Eastman Kodak); 13: Bit Mapped Graphics File [.BMP] (Microsoft); 14: Digital Audio File [.WAV] (Microsoft & Creative Labs); 15: Audio plus Moving Video [.AVI] (Microsoft); 16: PC DOS/Windows Executable Files [.COM][.EXE]; 17: Compressed Binary File [.ZIP] (PKWare Inc); 18: Audio Interchange File Format [.AIFF] (Apple Computer Inc); 19: RIFF Wave (Microsoft Corporation); 20: Freehand (Macromedia/Aldus); 21: Hypertext Markup Language [.HTML] (The Internet Society); 22: MPEG 2 Audio Layer 2 (Musicom), ISO/IEC; 23: MPEG 2 Audio Layer 3, ISO/IEC; 24: Portable Document File [.PDF] Adobe; 25: News Industry Text Format (NITF); 26: Tape Archive [.TAR]; 27: Tidningarnas Telegrambyra NITF version (TTNITF DTD); 28: Ritzaus Bureau NITF version (RBNITF DTD); 29: Corel Draw [.CDR] |
 | Repeatable? | No |
 | Required? | No |
 | Type | Short |

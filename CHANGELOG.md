@@ -1,5 +1,9 @@
 # EXIFData Change Log
 
+## [0.6.1] - 2025-09-03
+### Added
+- Added support for UTF-8 encoded strings in EXIF metadata.
+
 ## [0.6.0] - 2025-09-02
 ### Added
 - Enabled wrapping of the XMP payload with the standard `<?xpacket>` tag by default.
