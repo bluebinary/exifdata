@@ -1,5 +1,9 @@
 # EXIFData Change Log
 
+## [0.6.2] - 2025-09-08
+### Added
+- Updated `TIFFData` version dependency to `0.5.7`.
+
 ## [0.6.1] - 2025-09-03
 ### Added
 - Added support for UTF-8 encoded strings in EXIF metadata.
