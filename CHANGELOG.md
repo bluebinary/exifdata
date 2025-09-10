@@ -1,5 +1,9 @@
 # EXIFData Change Log
 
+## [0.6.3] - 2025-09-09
+### Added
+- Improved EXIF tag data type handling.
+
 ## [0.6.2] - 2025-09-08
 ### Added
 - Updated `TIFFData` version dependency to `0.5.7`.

@@ -191,7 +191,7 @@ class IPTC(Metadata):
 
     def encode(
         self,
-        order: ByteOrder = ByteOrder.MSB,
+        order: ByteOrder = None,
         format: IPTCFormat = IPTCFormat.APP13,
     ) -> bytes:
         """Provides support for encoding the assigned IPTC metadata field values into
@@ -300,8 +300,8 @@ class IPTC(Metadata):
     def decode(
         cls,
         value: bytes | bytearray | io.BytesIO,
+        order: ByteOrder = None,
         format: IPTCFormat = IPTCFormat.APP13,
-        order: ByteOrder = ByteOrder.MSB,
     ) -> IPTC:
         """Provides support for decoding the provided IPTC metadata payload into its
         corresponding IPTC metadata fields which can then be accessed for use."""
@@ -323,9 +323,14 @@ class IPTC(Metadata):
                 "The 'value' argument must have a bytes, bytearray or io.BytesIO value!"
             )
 
+        if not isinstance(order, ByteOrder):
+            raise TypeError(
+                "The 'order' argument must reference a ByteOrder enumeration option!"
+            )
+
         if not isinstance(format, IPTCFormat):
             raise TypeError(
-                "The 'format' argument must have an IPTCFormat enumeration value!"
+                "The 'format' argument must reference an IPTCFormat enumeration option!"
             )
 
         position: int = value.tell()

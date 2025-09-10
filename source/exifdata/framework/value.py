@@ -95,6 +95,11 @@ class Value(object):
 
     @property
     @typing.final
+    def type(self) -> str:
+        return self.__class__.__name__
+
+    @property
+    @typing.final
     def field(self) -> framework.Field | None:
         return self._field
 

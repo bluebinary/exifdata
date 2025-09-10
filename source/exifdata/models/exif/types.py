@@ -53,7 +53,7 @@ class Empty(Value):
     _length: int = 1
 
 
-class String(Value):
+class String(Value, str):
     """The String class stands in for the ASCII and UTF8 classes, returning a subclass
     of either the ASCII or UTF8 type depending on if the provided string fits within
     the ASCII character space or not, determined by attempting to encode the string to
@@ -75,7 +75,7 @@ class String(Value):
                 logger.debug("String.__new__(value: %s): %s", value, exception)
                 klass = UTF8
 
-            return super().__new__(klass)
+            return super().__new__(klass, value)
         else:
             return super().__new__(cls)
 
@@ -129,6 +129,9 @@ class ASCII(String, Value):
                 )
 
         cls._replacements[search] = replacement
+
+    def __len__(self) -> int:
+        return len(self.encode())
 
     def encode(self, order: ByteOrder = ByteOrder.MSB) -> bytes:
         if not isinstance(value := self.value, str):
