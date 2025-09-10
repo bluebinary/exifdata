@@ -196,7 +196,7 @@ class XMP(Metadata):
             pass
         elif not isinstance(order, ByteOrder):
             raise TypeError(
-                "The 'order' argument must have a ByteOrder enumeration value!"
+                "The 'order' argument, if specified, must reference a ByteOrder enumeration option!"
             )
 
         root: maxml.Element = maxml.Element("x:xmpmeta", namespace="adobe:ns:meta/")
@@ -337,7 +337,7 @@ class XMP(Metadata):
         cls,
         value: bytes | str = None,
         encoding: str = "UTF-8",
-        order: ByteOrder = ByteOrder.MSB,
+        order: ByteOrder = None,  # ignored, but here for consistency with other models
     ) -> XMP:
         """Provides support for decoding the provided XMP metadata payload into its
         corresponding XMP metadata fields which can then be accessed for use."""
@@ -360,7 +360,7 @@ class XMP(Metadata):
             pass
         elif not isinstance(order, ByteOrder):
             raise TypeError(
-                "The 'order' argument, if specified, must have a ByteOrder value!"
+                "The 'order' argument, if specified, must reference a ByteOrder enumeration option!"
             )
 
         if isinstance(value, bytes):

@@ -139,11 +139,11 @@ class EXIF(Metadata):
         """Provides support for encoding the assigned EXIF metadata field values into
         the binary representation needed for embedding into an image file."""
 
-        encoded: list[bytes] = []
+        encoded: bytearray = bytearray()
 
         if not isinstance(order, ByteOrder):
             raise TypeError(
-                "The 'order' argument must have a ByteOrder enumeration value!"
+                "The 'order' argument must reference a ByteOrder enumeration option!"
             )
 
         if len(self._values) == 0:
@@ -169,30 +169,24 @@ class EXIF(Metadata):
                             )
                         )
 
-                    data: list[bytes] = []
+                    data: bytearray = bytearray()
 
                     if isinstance(value, list):
                         for value in value:
-                            data.append(value.encode(order=order))
+                            data += value.encode(order=order)
                     else:
-                        data.append(value.encode(order=order))
-
-                    # logger.debug(data)
-
-                    data: bytes = b"".join(data)
-
-                    # logger.debug(type(value), data)
+                        data += value.encode(order=order)
 
                     ifd.tag = IFDTag(
                         id=field.tagid,
-                        type=TagType.reconcile(field.type).value,
+                        type=TagType.reconcile(value.type).value,
                         count=count,
-                        data=data,
+                        data=bytes(data),
                     )
 
-        encoded.append(ifd.encode(order=order))
+        encoded += ifd.encode()
 
-        return b"".join(encoded) if len(encoded) > 0 else None
+        return bytes(encoded) if len(encoded) > 0 else None
 
     @classmethod
     def decode(
