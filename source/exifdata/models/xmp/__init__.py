@@ -267,7 +267,7 @@ class XMP(Metadata):
                                                     ),
                                                 )
 
-                                            li.text = encoded
+                                            li.text = str(encoded)
                             else:
                                 encoded = value.encode(element=element)
 
@@ -287,7 +287,7 @@ class XMP(Metadata):
                                         % (type(encoded), encoded.__class__.__name__),
                                     )
 
-                                element.text = encoded
+                                element.text = str(encoded)
 
         encoded = root.tostring(
             pretty=pretty,
