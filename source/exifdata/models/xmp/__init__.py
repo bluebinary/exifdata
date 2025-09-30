@@ -12,9 +12,10 @@ from exifdata.framework import (
     Type,
     Namespace,
     Structure,
-    Field,
     Value,
 )
+
+from exifdata.models.xmp.framework.field import Field
 
 from exifdata.models.xmp.types import (
     Integer,
@@ -139,7 +140,7 @@ class XMP(Metadata):
 
             # Define the required top-level document namespaces
             namespaces = {
-                "x": "http://ns.adobe.com/x/1.0",
+                # "x": "adobe:ns:meta/",
                 "xmlns": "http://ns.adobe.com/xmlns/1.0",
                 # "rdf":   "http://ns.adobe.com/rdf/1.0",
                 "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -149,7 +150,7 @@ class XMP(Metadata):
 
             # Register the required top-level document namespaces
             for prefix, uri in namespaces.items():
-                maxml.Element.register_namespace(prefix, uri)
+                maxml.Element.register_namespace(prefix, uri, promoted=True)
 
             # Register the required document schema namespaces, sourced from configuration
             for namespace in cls._namespaces.values():
@@ -221,11 +222,14 @@ class XMP(Metadata):
 
                     if structure := field.structure:
                         if struct := description.find(structure.identifier):
-                            if bag := struct.find("rdf:Bag"):
-                                if listing := bag.find("rdf:li"):
-                                    parent = listing
-                                else:
-                                    pass
+                            if structure.type == "Bag":
+                                if bag := struct.find("rdf:Bag"):
+                                    if listing := bag.find("rdf:li"):
+                                        parent = listing
+                                    else:
+                                        pass
+                            elif structure.type == "Group":
+                                parent = struct
                             else:
                                 pass
                         elif struct := description.subelement(structure.identifier):
@@ -238,6 +242,9 @@ class XMP(Metadata):
                                         },
                                     ):
                                         parent = listing
+                            elif structure.type == "Group":
+                                struct.set("rdf:parseType", "Resource")
+                                parent = struct
                             else:
                                 raise TypeError(
                                     "The 'structure.type' of '%s' is not currently supported!"
@@ -269,7 +276,7 @@ class XMP(Metadata):
 
                                             li.text = str(encoded)
                             else:
-                                encoded = value.encode(element=element)
+                                encoded = value.encode(element=element, field=field)
 
                                 # For values that haven't been encoded to a usable type
                                 if encoded is None:

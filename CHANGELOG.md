@@ -1,5 +1,9 @@
 # EXIFData Change Log
 
+## [0.6.5] - 2025-09-29
+### Added
+- Enhanced XMP assembly and field configuration.
+
 ## [0.6.3] - 2025-09-09
 ### Added
 - Improved EXIF tag data type handling.
