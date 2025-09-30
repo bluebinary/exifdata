@@ -27,7 +27,7 @@ logger = logger.getChild(__name__)
 
 class Value(Value):
     @abc.abstractmethod
-    def encode(self, element: maxml.Element):
+    def encode(self, element: maxml.Element, field: Field = None):
         pass
 
 
@@ -41,7 +41,7 @@ class Integer(int, Value):
 
         return super().__new__(cls, value)
 
-    def encode(self, element: maxml.Element = None) -> bytes:
+    def encode(self, element: maxml.Element = None, field: Field = None) -> bytes:
         return str(self).encode(self.encoding.value)
 
     @classmethod
@@ -70,7 +70,7 @@ class Real(float, Value):
 
         return super().__new__(cls, float(value))
 
-    def encode(self, element: maxml.Element = None) -> bytes:
+    def encode(self, element: maxml.Element = None, field: Field = None) -> bytes:
         return str(self).encode(self.encoding.value)
 
     @classmethod
@@ -216,7 +216,7 @@ class Rational(str, Value):
 
         return self
 
-    def encode(self, element: maxml.Element = None) -> bytes:
+    def encode(self, element: maxml.Element = None, field: Field = None) -> bytes:
         return str(self).encode(self.encoding.value)
 
     @classmethod
@@ -283,7 +283,7 @@ class Boolean(Value):
 
         return True
 
-    def encode(self, element: maxml.Element = None) -> bytes:
+    def encode(self, element: maxml.Element = None, field: Field = None) -> bytes:
         if self.value is None and self.nullable is True:
             return ""
         else:
@@ -302,7 +302,22 @@ class Boolean(Value):
         return cls(value=(value.lower() == "true"))
 
 
-class ASCII(str, Value):
+class String(str, Value):
+    @classmethod
+    def decode(cls, value: bytes) -> String:
+        if not isinstance(value, bytes):
+            raise TypeError("The 'value' argument must have a bytes value!")
+
+        try:
+            return ASCII(value.decode("ASCII"))
+        except UnicodeError as exception:
+            try:
+                return Unicode(value.decode("UTF-8"))
+            except UnicodeError as exception:
+                raise exception
+
+
+class ASCII(String):
     _encoding: Encoding = Encoding.ASCII
 
     def __new__(cls, *args, value: str = None, **kwargs):
@@ -318,7 +333,7 @@ class ASCII(str, Value):
     def __bytes__(self) -> bytes:
         return str.encode(self, self.encoding.value)
 
-    def encode(self, element: maxml.Element = None) -> bytes:
+    def encode(self, element: maxml.Element = None, field: Field = None) -> bytes:
         return str.encode(self, self.encoding.value)
 
     @classmethod
@@ -331,7 +346,7 @@ class ASCII(str, Value):
         return cls(value=value)
 
 
-class Unicode(str, Value):
+class Unicode(String):
     _encoding: Encoding = Encoding.Unicode
 
     def __new__(cls, *args, value: str = None, **kwargs):
@@ -347,7 +362,7 @@ class Unicode(str, Value):
     def __bytes__(self) -> bytes:
         return str.encode(self, self.encoding.value)
 
-    def encode(self, element: maxml.Element = None) -> bytes:
+    def encode(self, element: maxml.Element = None, field: Field = None) -> bytes:
         return str.encode(self, self.encoding.value)
 
     @classmethod
@@ -376,7 +391,7 @@ class Bytes(bytes, Value):
     def __bytes__(self) -> bytes:
         return self
 
-    def encode(self, element: maxml.Element = None) -> bytes:
+    def encode(self, element: maxml.Element = None, field: Field = None) -> bytes:
         # possible encoded bytes prefix: "data:image/jpeg;base64,xxxx" where xxxx is b64
         # determine if prefix is needed, and add to decode also if so
         return base64.b64encode(self)
@@ -518,7 +533,7 @@ class Date(datetime.datetime, Value):
     def __bytes__(self) -> bytes:
         return str.encode(str(self), self.encoding.value)
 
-    def encode(self, element: maxml.Element = None) -> bytes:
+    def encode(self, element: maxml.Element = None, field: Field = None) -> bytes:
         return str.encode(str(self), self.encoding.value)
 
     @classmethod
@@ -609,7 +624,7 @@ class Time(datetime.time, Value):
     def __bytes__(self) -> bytes:
         return str.encode(str(self), self.encoding.value)
 
-    def encode(self, element: maxml.Element = None) -> bytes:
+    def encode(self, element: maxml.Element = None, field: Field = None) -> bytes:
         return str.encode(str(self), self.encoding.value)
 
     @classmethod
@@ -728,7 +743,7 @@ class Timecode(datetime.time, Value):
     def __bytes__(self) -> bytes:
         return str.encode(str(self), self.encoding.value)
 
-    def encode(self, element: maxml.Element = None) -> bytes:
+    def encode(self, element: maxml.Element = None, field: Field = None) -> bytes:
         return str.encode(str(self), self.encoding.value)
 
     @classmethod
@@ -913,9 +928,15 @@ class ContactInfo(Value):
 class LanguageAlternative(Value):
     """Represents a string that may have one or more alternative language versions"""
 
+    _alternates: list[Localized] = None
+
     class Localized(object):
         """The Localized string holds a string value along with its assigned language
         and country code."""
+
+        _text: str = None
+        _language: str = None
+        _country: str = None
 
         def __init__(self, text: str, language: str, country: str):
             if not isinstance(text, str):
@@ -923,19 +944,30 @@ class LanguageAlternative(Value):
 
             self._text: str = text
 
-            if not isinstance(language, str):
-                raise TypeError("The 'language' argument must have a string value!")
+            if language is None:
+                pass
+            elif not isinstance(language, str):
+                raise TypeError(
+                    "The 'language' argument, if specified, must have a string value!"
+                )
 
             self._language: str = language
 
-            if not isinstance(country, str):
-                raise TypeError("The 'country' argument must have a string value!")
+            if country is None:
+                pass
+            elif not isinstance(country, str):
+                raise TypeError(
+                    "The 'country' argument, if specified, must have a string value!"
+                )
 
             self._country: str = country
 
         @property
         def key(self) -> str:
-            return f"{self._language}-{self._country}"
+            if self._language and self._country:
+                return f"{self._language}-{self._country}"
+            else:
+                return "x-default"
 
         @property
         def text(self) -> str:
@@ -946,18 +978,19 @@ class LanguageAlternative(Value):
             return self._text
 
         @property
-        def language(self) -> str:
+        def language(self) -> str | None:
             return self._language
 
         @property
-        def country(self) -> str:
+        def country(self) -> str | None:
             return self._country
 
         @property
         def isocode(self) -> str:
-            return f"{self._language}-{self._country}"
-
-    _alternates: list[Localized] = None
+            if self._language and self._country:
+                return f"{self._language}-{self._country}"
+            else:
+                return "x-default"
 
     @classmethod
     def parse(cls, value: str, language: str = None, country: str = None) -> Localized:
@@ -982,9 +1015,9 @@ class LanguageAlternative(Value):
             r"^((?P<language>[a-z]{2})(\-(?P<country>[A-Z]{2}))?\:)?(?P<text>.*)$",
             value,
         ):
-            language = matched.group("language") or language or secrets.get("language")
+            language = matched.group("language") or language
 
-            country = matched.group("country") or country or secrets.get("country")
+            country = matched.group("country") or country
 
             text = matched.group("text")
 
@@ -1023,18 +1056,36 @@ class LanguageAlternative(Value):
     #     </rdf:Alt>
     # </Iptc4xmpCore:AltTextAccessibility>
 
-    def encode(self, element: maxml.Element) -> None:
+    def encode(self, element: maxml.Element, field: Field = None) -> None:
+        if not isinstance(element, maxml.Element):
+            raise TypeError(
+                "The 'element' argument must reference a MaXML Element class instance!"
+            )
+
+        if field is None:
+            pass
+        elif not isinstance(field, Field):
+            raise TypeError(
+                "The 'field' argument, if specified, must reference a Field instance!"
+            )
+
         maxml.Element.register_namespace(
             prefix="xml",
             uri="http://www.w3.org/XML/1998/namespace",
         )
 
         if len(self.alternates) > 0:
-            if alt := element.subelement("rdf:Alt"):
-                for alternate in self.alternates:
-                    if li := alt.subelement("rdf:li"):
-                        li.set("xml:lang", alternate.isocode)
-                        li.text = alternate.text
+            if isinstance(field, Field) and field.localised is False:
+                if seq := element.subelement("rdf:Seq"):
+                    for alternate in self.alternates:
+                        if li := seq.subelement("rdf:li"):
+                            li.text = alternate.text
+            else:
+                if alt := element.subelement("rdf:Alt"):
+                    for alternate in self.alternates:
+                        if li := alt.subelement("rdf:li"):
+                            li.set("xml:lang", alternate.isocode)
+                            li.text = alternate.text
 
 
 class Ancestor(Value):

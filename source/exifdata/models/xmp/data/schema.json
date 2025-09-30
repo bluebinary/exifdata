@@ -2362,8 +2362,7 @@
     "structures": {
       "Iptc4xmpCore:CreatorContactInfo": {
         "name": "CreatorContactInfo",
-        "type": "Bag",
-        "kind": "List"
+        "type": "Group"
       }
     }
   },
@@ -2439,7 +2438,9 @@
           "exiftool": "ArtworkCreator"
         },
         "definition": "Contains the name of the artist who has created artwork or an object in the image. In cases where the artist could or should not be identified the name of a company or organisation may be appropriate.",
-        "type": "Text",
+        "type": "LanguageAlternative",
+        "combine": true,
+        "localised": false,
         "structure": "Iptc4xmpExt:ArtworkOrObject"
       },
       "Iptc4xmpExt:AOCreatorID": {
@@ -2607,7 +2608,8 @@
           "exiftool": "ArtworkTitle"
         },
         "definition": "A reference for the artwork or object in the image.",
-        "type": "Text",
+        "type": "LanguageAlternative",
+        "combine": true,
         "structure": "Iptc4xmpExt:ArtworkOrObject"
       }
     },
